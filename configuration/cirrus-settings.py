@@ -14,7 +14,7 @@ class ReframeSettings:
         'systems': {
             'cirrus': {
                 'descr': 'Cirrus',
-                'hostnames': ['cirrus'],
+                'hostnames': ['indy2'],
                 'modules_system': 'tmod',
                 'partitions': {
                     'login': {
