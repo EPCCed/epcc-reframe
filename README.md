@@ -1,2 +1,3 @@
-# cirrus-reframe
-Repository for Cirrus Reframe configuration and tests
+# EPCC Reframe
+
+Repository for Reframe configuration and tests for EPCC systems
