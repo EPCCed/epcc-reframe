@@ -21,8 +21,8 @@ class ReframeSettings:
                         'scheduler': 'local',
                         'modules': [],
                         'access':  [],
-                        'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi',
-                                     'PrgEnv-gcc6-impi'],
+                        'environs': ['PrgEnv-intel18', 'PrgEnv-intel17',
+                                     'PrgEnv-gcc6'],
                         'descr': 'Login nodes',
                         'max_jobs': 4
                     },
@@ -31,8 +31,8 @@ class ReframeSettings:
                         'scheduler': 'pbs+mpirun',
                         'modules': [],
                         'access':  [],
-                        'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi',
-                                     'PrgEnv-gcc6-impi'],
+                        'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6',
+                                     'PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
                         'descr': 'Compute nodes (Broadwell)',
                         'max_jobs': 10
                     }
@@ -42,19 +42,51 @@ class ReframeSettings:
     
         'environments': {
             '*': {
+                'PrgEnv-intel17': {
+                    'type': 'ProgEnvironment',
+                    'modules': ['intel-tools-17'],
+                    'cc': 'icc',
+                    'cxx': 'icpc',
+                    'ftn': 'ifort',
+                },
+    
+                'PrgEnv-intel18': {
+                    'type': 'ProgEnvironment',
+                    'modules': ['intel-tools-18'],
+                    'cc': 'icc',
+                    'cxx': 'icpc',
+                    'ftn': 'ifort',
+                },
+    
+                'PrgEnv-gcc6': {
+                    'type': 'ProgEnvironment',
+                    'modules': ['gcc/6.3.0'],
+                    'cc': 'gcc',
+                    'cxx': 'g++',
+                    'ftn': 'gfortran',
+                }
                 'PrgEnv-intel17-impi': {
                     'type': 'ProgEnvironment',
                     'modules': ['intel-tools-17', 'intel-mpi-17'],
+                    'cc': 'mpiicc',
+                    'cxx': 'mpiicpc',
+                    'ftn': 'mpiifort',
                 },
     
                 'PrgEnv-intel18-impi': {
                     'type': 'ProgEnvironment',
                     'modules': ['intel-tools-18', 'intel-mpi-18'],
+                    'cc': 'mpiicc',
+                    'cxx': 'mpiicpc',
+                    'ftn': 'mpiifort',
                 },
     
                 'PrgEnv-gcc6-impi': {
                     'type': 'ProgEnvironment',
                     'modules': ['gcc/6.3.0', 'intel-mpi-18'],
+                    'cc': 'mpicc',
+                    'cxx': 'mpicxx',
+                    'ftn': 'mpif90',
                 }
             }
         }
