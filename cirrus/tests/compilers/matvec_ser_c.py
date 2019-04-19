@@ -6,7 +6,7 @@ import reframe.utility.sanity as sn
 class MatVec_Ser(rfm.RegressionTest):
     def __init__(self):
         super().__init__()
-        self.descr = 'Matrix-vector multiplication with L2 norm check'
+        self.descr = 'Matrix-vector multiplication with L2 norm check: C compiler test'
         self.valid_systems = ['*']
         self.valid_prog_environs = ['*']
         self.sourcepath = 'matrix_vector_multiplication.c'
@@ -24,5 +24,5 @@ class MatVec_Ser(rfm.RegressionTest):
                 r'time for single matrix vector multiplication', self.stdout),
             sn.assert_lt(sn.abs(expected_norm - found_norm), 1.0e-6)
         ])
-        self.maintainers = ['you-can-type-your-email-here']
-        self.tags = {'tutorial'}
+        self.maintainers = ['a.turner@epcc.ed.ac.uk']
+        self.tags = {'simple','production','serial'}

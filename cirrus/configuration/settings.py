@@ -23,26 +23,25 @@ class ReframeSettings:
                         'access':  [],
                         'environs': ['PrgEnv-intel18', 'PrgEnv-intel17',
                                      'PrgEnv-gcc6'],
-                        'descr': 'Login nodes',
+                        'descr': 'Login nodes: serial tests',
                         'max_jobs': 4
                     },
     
                     'compute_ser': {
                         'scheduler': 'pbs+local',
                         'modules': [],
-                        'access':  ['-A z04', '-q tds'],
+                        'access':  ['-A z04'],
                         'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6'],
-                        'descr': 'Compute nodes (Broadwell)',
+                        'descr': 'Compute nodes (Broadwell): serial jobs',
                         'max_jobs': 10
                     },
 
                     'compute_impi': {
                         'scheduler': 'pbs+mpirun',
                         'modules': [],
-                        'access':  ['-A z04', '-q tds'],
-                        'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6',
-                                     'PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
-                        'descr': 'Compute nodes (Broadwell)',
+                        'access':  ['-A z04'],
+                        'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
+                        'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
                         'max_jobs': 10
                     }
                 }
