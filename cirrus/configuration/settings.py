@@ -17,7 +17,7 @@ class ReframeSettings:
                 'hostnames': ['indy2'],
                 'modules_system': 'tmod',
                 'partitions': {
-                    'login': {
+                    'login_ser': {
                         'scheduler': 'local',
                         'modules': [],
                         'access':  [],
@@ -27,10 +27,19 @@ class ReframeSettings:
                         'max_jobs': 4
                     },
     
-                    'compute': {
+                    'compute_ser': {
+                        'scheduler': 'pbs+local',
+                        'modules': [],
+                        'access':  ['-A z04', '-q tds'],
+                        'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6'],
+                        'descr': 'Compute nodes (Broadwell)',
+                        'max_jobs': 10
+                    },
+
+                    'compute_impi': {
                         'scheduler': 'pbs+mpirun',
                         'modules': [],
-                        'access':  [],
+                        'access':  ['-A z04', '-q tds'],
                         'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6',
                                      'PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
                         'descr': 'Compute nodes (Broadwell)',
@@ -52,7 +61,7 @@ class ReframeSettings:
     
                 'PrgEnv-intel18': {
                     'type': 'ProgEnvironment',
-                    'modules': ['intel-tools-18'],
+                    'modules': ['intel-tools-18/18.0.5.274'],
                     'cc': 'icc',
                     'cxx': 'icpc',
                     'ftn': 'ifort',
@@ -64,7 +73,8 @@ class ReframeSettings:
                     'cc': 'gcc',
                     'cxx': 'g++',
                     'ftn': 'gfortran',
-                }
+                },
+
                 'PrgEnv-intel17-impi': {
                     'type': 'ProgEnvironment',
                     'modules': ['intel-tools-17', 'intel-mpi-17'],
@@ -75,7 +85,7 @@ class ReframeSettings:
     
                 'PrgEnv-intel18-impi': {
                     'type': 'ProgEnvironment',
-                    'modules': ['intel-tools-18', 'intel-mpi-18'],
+                    'modules': ['intel-tools-18/18.0.5.274', 'intel-mpi-18'],
                     'cc': 'mpiicc',
                     'cxx': 'mpiicpc',
                     'ftn': 'mpiifort',
