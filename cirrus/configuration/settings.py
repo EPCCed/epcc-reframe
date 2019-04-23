@@ -43,6 +43,15 @@ class ReframeSettings:
                         'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
                         'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
                         'max_jobs': 10
+                    },
+
+                    'compute_mpt': {
+                        'scheduler': 'pbs+hpempt',
+                        'modules': [],
+                        'access':  ['-A z04'],
+                        'environs': ['PrgEnv-intel18-mpt', 'PrgEnv-intel17-mpt', 'PrgEnv-gcc6-mpt'],
+                        'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
+                        'max_jobs': 10
                     }
                 }
             }
@@ -93,6 +102,38 @@ class ReframeSettings:
                 'PrgEnv-gcc6-impi': {
                     'type': 'ProgEnvironment',
                     'modules': ['gcc/6.3.0', 'intel-mpi-18'],
+                    'cc': 'mpicc',
+                    'cxx': 'mpicxx',
+                    'ftn': 'mpif90',
+                },
+
+                'PrgEnv-intel17-mpt': {
+                    'type': 'ProgEnvironment',
+                    'modules': ['intel-tools-17', 'mpt'],
+                    'variables': {
+                         'MPICC_CC': 'icc',
+                         'MPICXX_CXX': 'icpc'
+                    },
+                    'cc': 'mpicc',
+                    'cxx': 'mpicxx',
+                    'ftn': 'mpif90',
+                },
+    
+                'PrgEnv-intel18-mpt': {
+                    'type': 'ProgEnvironment',
+                    'modules': ['intel-tools-18/18.0.5.274', 'mpt'],
+                    'variables': {
+                         'MPICC_CC': 'icc',
+                         'MPICXX_CXX': 'icpc'
+                    },
+                    'cc': 'mpicc',
+                    'cxx': 'mpicxx',
+                    'ftn': 'mpif90',
+                },
+    
+                'PrgEnv-gcc6-mpt': {
+                    'type': 'ProgEnvironment',
+                    'modules': ['gcc/6.3.0', 'mpt'],
                     'cc': 'mpicc',
                     'cxx': 'mpicxx',
                     'ftn': 'mpif90',

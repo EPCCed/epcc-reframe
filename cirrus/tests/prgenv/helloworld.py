@@ -110,6 +110,7 @@ class HelloWorldTestOpenMP(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('openmp', lang, linkage)
         self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
+        self.valid_prog_environs = ['*']
         self.sourcepath += '_openmp.' + lang
         self.descr += ' OpenMP ' + str.capitalize(linkage)
         self.prgenv_flags = {
@@ -136,12 +137,13 @@ class HelloWorldTestMPI(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('mpi', lang, linkage)
         self.valid_systems = ['cirrus:compute_impi']
+        self.valid_prog_environs = ['*']
         self.sourcepath += '_mpi.' + lang
         self.descr += ' MPI ' + linkage.capitalize()
         self.prgenv_flags = {
-            'PrgEnv-gcc6': [],
-            'PrgEnv-intel17': [],
-            'PrgEnv-intel18': []
+            'PrgEnv-gcc6-impi': [],
+            'PrgEnv-intel17-impi': [],
+            'PrgEnv-intel18-impi': []
         }
 
         # for the MPI test the self.num_tasks_per_node should always be one. If
@@ -160,10 +162,11 @@ class HelloWorldTestMPIOpenMP(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('mpi_openmp', lang, linkage)
         self.valid_systems = ['cirrus:compute_impi']
+        self.valid_prog_environs = ['*']
         self.sourcepath += '_mpi_openmp.' + lang
         self.descr += ' MPI + OpenMP ' + linkage.capitalize()
         self.prgenv_flags = {
-            'PrgEnv-gcc-impi': ['-fopenmp'],
+            'PrgEnv-gcc6-impi': ['-fopenmp'],
             'PrgEnv-intel17-impi': ['-qopenmp'],
             'PrgEnv-intel18-impi': ['-qopenmp'],
         }
