@@ -88,14 +88,14 @@ class HelloWorldBaseTest(rfm.RegressionTest):
 class HelloWorldTestSerial(HelloWorldBaseTest):
     def __init__(self, lang, linkage, **kwargs):
         super().__init__('serial', lang, linkage, **kwargs)
-        self.valid_systems += ['kesch:pn']
+        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
+        self.valid_prog_environs = ['*']
         self.sourcepath += '_serial.' + lang
         self.descr += ' Serial ' + linkage.capitalize()
         self.prgenv_flags = {
-            'PrgEnv-cray': [],
-            'PrgEnv-gnu': [],
-            'PrgEnv-intel': [],
-            'PrgEnv-pgi': []
+            'PrgEnv-gcc6': [],
+            'PrgEnv-intel17': [],
+            'PrgEnv-intel18': []
         }
         self.num_tasks = 1
         self.num_tasks_per_node = 1
@@ -109,22 +109,17 @@ class HelloWorldTestSerial(HelloWorldBaseTest):
 class HelloWorldTestOpenMP(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('openmp', lang, linkage)
-        self.valid_systems += ['kesch:pn']
+        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
         self.sourcepath += '_openmp.' + lang
         self.descr += ' OpenMP ' + str.capitalize(linkage)
         self.prgenv_flags = {
-            'PrgEnv-cray': ['-homp'],
-            'PrgEnv-gnu': ['-fopenmp'],
-            'PrgEnv-intel': ['-qopenmp'],
-            'PrgEnv-pgi': ['-mp']
+            'PrgEnv-gcc6': ['-fopenmp'],
+            'PrgEnv-intel17': ['-qopenmp'],
+            'PrgEnv-intel18': ['-qopenmp'],
         }
         self.num_tasks = 1
         self.num_tasks_per_node = 1
         self.num_cpus_per_task = 4
-        if self.current_system.name == 'kesch' and linkage == 'dynamic':
-            self.valid_prog_environs += ['PrgEnv-cray-nompi',
-                                         'PrgEnv-pgi-nompi',
-                                         'PrgEnv-gnu-nompi']
 
         # On SLURM there is no need to set OMP_NUM_THREADS if one defines
         # num_cpus_per_task, but adding for completeness and portability
@@ -140,13 +135,13 @@ class HelloWorldTestOpenMP(HelloWorldBaseTest):
 class HelloWorldTestMPI(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('mpi', lang, linkage)
+        self.valid_systems = ['cirrus:compute_impi']
         self.sourcepath += '_mpi.' + lang
         self.descr += ' MPI ' + linkage.capitalize()
         self.prgenv_flags = {
-            'PrgEnv-cray': [],
-            'PrgEnv-gnu': [],
-            'PrgEnv-intel': [],
-            'PrgEnv-pgi': []
+            'PrgEnv-gcc6': [],
+            'PrgEnv-intel17': [],
+            'PrgEnv-intel18': []
         }
 
         # for the MPI test the self.num_tasks_per_node should always be one. If
@@ -164,13 +159,13 @@ class HelloWorldTestMPI(HelloWorldBaseTest):
 class HelloWorldTestMPIOpenMP(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('mpi_openmp', lang, linkage)
+        self.valid_systems = ['cirrus:compute_impi']
         self.sourcepath += '_mpi_openmp.' + lang
         self.descr += ' MPI + OpenMP ' + linkage.capitalize()
         self.prgenv_flags = {
-            'PrgEnv-cray': ['-homp'],
-            'PrgEnv-gnu': ['-fopenmp'],
-            'PrgEnv-intel': ['-qopenmp'],
-            'PrgEnv-pgi': ['-mp']
+            'PrgEnv-gcc-impi': ['-fopenmp'],
+            'PrgEnv-intel17-impi': ['-qopenmp'],
+            'PrgEnv-intel18-impi': ['-qopenmp'],
         }
         self.num_tasks = 6
         self.num_tasks_per_node = 3
