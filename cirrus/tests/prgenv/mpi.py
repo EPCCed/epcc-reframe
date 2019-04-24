@@ -7,7 +7,7 @@ import reframe.utility.sanity as sn
 class MpiInitTest(rfm.RegressionTest):
     """This test checks the value returned by calling MPI_Init_thread.
 
-    Output should look the same for every prgenv (cray, gnu, intel, pgi)
+    Output should look the same for every prgenv
     (mpi_thread_multiple seems to be not supported):
 
     # 'single':
@@ -30,9 +30,8 @@ class MpiInitTest(rfm.RegressionTest):
 
     def __init__(self, required_thread):
         super().__init__()
-        self.valid_systems = ['daint:gpu', 'daint:mc', 'dom:gpu', 'dom:mc']
-        self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu',
-                                    'PrgEnv-intel', 'PrgEnv-pgi']
+        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt']
+        self.valid_prog_environs = ['*']
         self.build_system = 'SingleSource'
         self.sourcepath = 'mpi_init_thread.cpp'
         self.cppflags = {
@@ -60,27 +59,19 @@ class MpiInitTest(rfm.RegressionTest):
             sn.assert_eq(found_mpithread,
                          self.mpithread_version[required_thread])
         ])
-        self.maintainers = ['JG']
-        self.tags = {'production'}
+        self.maintainers = ['a.turner@epcc.ed.ac.uk']
+        self.tags = {'basic','production'}
 
 
 @rfm.simple_test
 class MpiHelloTest(rfm.RegressionTest):
     def __init__(self):
         super().__init__()
-        self.valid_systems = ['daint:gpu', 'daint:mc',
-                              'dom:gpu', 'dom:mc',
-                              'kesch:cn', 'kesch:pn',
-                              'leone:normal', 'monch:compute']
-        self.valid_prog_environs = ['PrgEnv-cray']
-        if self.current_system.name == 'kesch':
-            self.exclusive_access = True
-            self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu',
-                                        'PrgEnv-intel']
-
+        self.valid_systems = ['cirrus:compute_impi', 'cirrus:compute_mpt']
+        self.valid_prog_environs = ['*']
         self.descr = 'MPI Hello World'
         self.sourcepath = 'mpi_helloworld.c'
-        self.maintainers = ['RS', 'VK']
+        self.maintainers = ['a.turner@epcc.ed.ac.uk']
         self.num_tasks_per_node = 1
         self.num_tasks = 0
         num_processes = sn.extractsingle(
@@ -88,7 +79,7 @@ class MpiHelloTest(rfm.RegressionTest):
             self.stdout, 'nprocs', int)
         self.sanity_patterns = sn.assert_eq(num_processes,
                                             self.num_tasks_assigned-1)
-        self.tags = {'diagnostic', 'ops'}
+        self.tags = {'basic', 'production'}
 
     @property
     @sn.sanity_function
