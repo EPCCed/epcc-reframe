@@ -39,7 +39,7 @@ class ReframeSettings:
                     'compute_impi': {
                         'scheduler': 'pbs+mpirun',
                         'modules': [],
-                        'access':  ['-A z04'],
+                        'access':  ['-A z04','-l place=scatter:excl'],
                         'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
                         'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
                         'max_jobs': 10
@@ -48,7 +48,7 @@ class ReframeSettings:
                     'compute_mpt': {
                         'scheduler': 'pbs+hpempt',
                         'modules': [],
-                        'access':  ['-A z04'],
+                        'access':  ['-A z04','-l place=scatter:excl'],
                         'environs': ['PrgEnv-intel18-mpt', 'PrgEnv-intel17-mpt', 'PrgEnv-gcc6-mpt'],
                         'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
                         'max_jobs': 10
