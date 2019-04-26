@@ -3,7 +3,6 @@ from datetime import datetime
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-
 class HelloWorldBaseTest(rfm.RegressionTest):
     def __init__(self, variant, lang, linkage):
         super().__init__()
@@ -21,7 +20,7 @@ class HelloWorldBaseTest(rfm.RegressionTest):
         self.compilation_time_seconds = None
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'simple','production'}
+        self.tags = {'basic','production'}
 
     def setup(self, partition, environ, **job_opts):
         result = sn.findall(r'Hello World from thread \s*(\d+) out '
@@ -67,7 +66,7 @@ class HelloWorldBaseTest(rfm.RegressionTest):
             }
         }
 
-        envname = environ.name.replace('-nompi', '')
+        envname = environ.name
         prgenv_flags = self.prgenv_flags[envname]
         self.build_system.cflags = prgenv_flags
         self.build_system.cxxflags = prgenv_flags
