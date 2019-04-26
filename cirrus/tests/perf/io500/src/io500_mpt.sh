@@ -48,17 +48,17 @@ function setup_directories {
   # If you want to set up stripe tuning on your output directories or anything similar, then this is good place to do it.
   timestamp=`date +%Y.%m.%d-%H.%M.%S`           # create a uniquifier
   io500_workdir=$PWD/datafiles/io500.$timestamp # directory where the data will be stored
-  io500_result_dir=$PWD/results/$timestamp      # the directory where the output results will be kept
-  mkdir -p $io500_workdir $io500_result_dir
+  io500_result_dir=$PWD      # the directory where the output results will be kept
+  mkdir -p $io500_workdir
 }
 
 function setup_paths {
   # Set the paths to the binaries.  If you ran ./utilities/prepare.sh successfully, then binaries are in ./bin/
-  io500_ior_cmd=$PWD/bin/ior
-  io500_mdtest_cmd=$PWD/bin/mdtest
-  io500_mdreal_cmd=$PWD/bin/md-real-io
-  io500_mpirun="mpirun"
-  io500_mpiargs="-np 2"
+  io500_ior_cmd=/lustre/sw/io500/io-500-mpt/bin/ior
+  io500_mdtest_cmd=/lustre/sw/io500/io-500-mpt/bin/mdtest
+  io500_mdreal_cmd=/lustre/sw/io500/io-500-mpt/bin/md-real-io
+  io500_mpirun="mpiexec_mpt"
+  io500_mpiargs="-n 2"
 }
 
 function setup_ior_easy {
@@ -114,7 +114,7 @@ function setup_find {
   #   script for this which sets up MPI as you would like.  Then change
   #   io500_find_cmd to point to your wrapper script.
   io500_find_mpi="True"
-  io500_find_cmd="$PWD/bin/pfind"
+  io500_find_cmd="/lustre/sw/io500/io-500-mpt/bin/pfind"
   # uses stonewalling, run pfind 
   io500_find_cmd_args="-s $io500_stonewall_timer -r $io500_result_dir/pfind_results"
 
@@ -132,7 +132,7 @@ function setup_mdreal {
 function run_benchmarks {
   # Important: source the io500_fixed.sh script.  Do not change it. If you discover
   # a need to change it, please email the mailing list to discuss
-  source ./utilities/io500_fixed.sh 2>&1 | tee $io500_result_dir/io-500-summary.$timestamp.txt
+  source /lustre/sw/io500/io-500-mpt/utilities/io500_fixed.sh 2>&1 | tee $io500_result_dir/io-500-summary.$timestamp.txt
 }
 
 # Add key/value pairs defining your system
