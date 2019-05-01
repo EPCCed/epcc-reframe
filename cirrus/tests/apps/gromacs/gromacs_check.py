@@ -31,6 +31,12 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
                                      output_file, 'perf', float)
         }
 
+        self.reference = {
+            'cirrus:compute_mpt': {
+                'perf': (12.3, -0.1, 0.1, 'ns/day')
+            }
+        }
+
         self.modules = ['gromacs']
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
         self.strict_check = False
@@ -41,32 +47,23 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
             }
         }
 
+@rfm.simple_test
 class GromacsCPUCheck(GromacsBaseCheck):
-    def __init__(self, variant):
+    def __init__(self):
         super().__init__('md.log')
 
         self.valid_systems = ['cirrus:compute_mpt']
         self.descr = 'GROMACS check'
-        self.name = 'gromacs_cpu_%s_check' % variant
+        self.name = 'gromacs_cpu_check'
         self.executable_opts = ('mdrun -noconfout -s gmx_1400k_atoms.tpr ').split()
 
-        self.num_tasks = 72
+        self.num_tasks = 36
         self.num_tasks_per_node = 36
         self.num_cpus_per_task = 1
         self.time_limit = (1, 0, 0)
         self.variables = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
+        self.tags = {'production'}
 
-
-@rfm.simple_test
-class GromacsCPUProdCheck(GromacsCPUCheck):
-    def __init__(self):
-        super().__init__('prod')
-        self.tags |= {'production'}
-        self.reference = {
-            'cirrus:compute_mpt': {
-                'perf': (12.3, -0.1, 0.1, 'ns/day')
-            }
-        }
 

@@ -30,16 +30,16 @@ class ReframeSettings:
                     'compute_ser': {
                         'scheduler': 'pbs+local',
                         'modules': [],
-                        'access':  ['-A z04',],
+                        'access':  ['-A z04','-q tds'],
                         'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6'],
                         'descr': 'Compute nodes (Broadwell): serial jobs',
                         'max_jobs': 10
                     },
 
                     'compute_impi': {
-                        'scheduler': 'pbs+mpirun',
+                        'scheduler': 'pbs+impi',
                         'modules': [],
-                        'access':  ['-A z04','-l place=scatter:excl'],
+                        'access':  ['-A z04','-l place=scatter:excl', '-q tds'],
                         'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
                         'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
                         'max_jobs': 10
@@ -48,7 +48,16 @@ class ReframeSettings:
                     'compute_mpt': {
                         'scheduler': 'pbs+hpempt',
                         'modules': [],
-                        'access':  ['-A z04','-l place=scatter:excl'],
+                        'access':  ['-A z04','-l place=scatter:excl','-q tds'],
+                        'environs': ['PrgEnv-intel18-mpt', 'PrgEnv-intel17-mpt', 'PrgEnv-gcc6-mpt'],
+                        'descr': 'Compute nodes (Broadwell): HPE MPT parallel jobs',
+                        'max_jobs': 10
+                    },
+                    # This environemnt allows you to lanch scripts containing the MPI command
+                    'compute_mptloc': {
+                        'scheduler': 'pbs+local',
+                        'modules': [],
+                        'access':  ['-A z04','-l place=scatter:excl','-q tds'],
                         'environs': ['PrgEnv-intel18-mpt', 'PrgEnv-intel17-mpt', 'PrgEnv-gcc6-mpt'],
                         'descr': 'Compute nodes (Broadwell): HPE MPT parallel jobs',
                         'max_jobs': 10

@@ -50,6 +50,10 @@ function setup_directories {
   io500_workdir=$PWD/datafiles/io500.$timestamp # directory where the data will be stored
   io500_result_dir=$PWD      # the directory where the output results will be kept
   mkdir -p $io500_workdir
+  mkdir $io500_workdir/ior_easy
+  mkdir $io500_workdir/ior_hard
+  lfs setstripe -c -1 $io500_workdir/ior_easy
+  lfs setstripe -c -1 $io500_workdir/ior_hard
 }
 
 function setup_paths {
@@ -58,30 +62,30 @@ function setup_paths {
   io500_mdtest_cmd=/lustre/sw/io500/io-500-mpt/bin/mdtest
   io500_mdreal_cmd=/lustre/sw/io500/io-500-mpt/bin/md-real-io
   io500_mpirun="mpiexec_mpt"
-  io500_mpiargs="-n 2"
+  io500_mpiargs="-ppn 8 -n 80"
 }
 
 function setup_ior_easy {
   # io500_ior_easy_size is the amount of data written per rank in MiB units,
   # but it can be any number as long as it is somehow used to scale the IOR
   # runtime as part of io500_ior_easy_params
-  io500_ior_easy_size=2000
+  io500_ior_easy_size=45000
   # 2M writes, 2 GB per proc, file per proc
-  io500_ior_easy_params="-t 2048k -b ${io500_ior_easy_size}m -F"
+  io500_ior_easy_params="-t 2048k -b ${io500_ior_easy_size}m -F -E -a MPIIO"
 }
 
 function setup_mdt_easy {
   io500_mdtest_easy_params="-u -L" # unique dir per thread, files only at leaves
-  io500_mdtest_easy_files_per_proc=25000
+  io500_mdtest_easy_files_per_proc=100000
 }
 
 function setup_ior_hard {
-  io500_ior_hard_writes_per_proc=10000
-  io500_ior_hard_other_options="" #e.g., -E to keep precreated files using lfs setstripe, or -a MPIIO
+  io500_ior_hard_writes_per_proc=700
+  io500_ior_hard_other_options="-E" #e.g., -E to keep precreated files using lfs setstripe, or -a MPIIO
 }
 
 function setup_mdt_hard {
-  io500_mdtest_hard_files_per_proc=5000
+  io500_mdtest_hard_files_per_proc=27000
   io500_mdtest_hard_other_options=""
 }
 
@@ -132,18 +136,18 @@ function setup_mdreal {
 function run_benchmarks {
   # Important: source the io500_fixed.sh script.  Do not change it. If you discover
   # a need to change it, please email the mailing list to discuss
-  source /lustre/sw/io500/io-500-mpt/utilities/io500_fixed.sh 2>&1 | tee $io500_result_dir/io-500-summary.$timestamp.txt
+  source /lustre/sw/io500/io-500-mpt/utilities/io500_fixed.sh 2>&1 | tee $io500_result_dir/io-500-summary.txt
 }
 
 # Add key/value pairs defining your system
 # Feel free to add extra ones if you'd like
 function extra_description {
   # top level info
-  io500_info_system_name='xxx'      # e.g. Oakforest-PACS
-  io500_info_institute_name='xxx'   # e.g. JCAHPC
+  io500_info_system_name='Cirrus'      # e.g. Oakforest-PACS
+  io500_info_institute_name='EPCC'   # e.g. JCAHPC
   io500_info_storage_age_in_months='xxx' # not install date but age since last refresh
   io500_info_storage_install_date='xxx'  # MM/YY
-  io500_info_filesystem='xxx'     # e.g. BeeGFS, DataWarp, GPFS, IME, Lustre
+  io500_info_filesystem='Lustre'     # e.g. BeeGFS, DataWarp, GPFS, IME, Lustre
   io500_info_filesystem_version='xxx'
   io500_info_filesystem_vendor='xxx'
   # client side info
