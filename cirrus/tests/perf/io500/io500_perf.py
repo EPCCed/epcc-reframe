@@ -12,7 +12,7 @@ class IO500BaseTest(rfm.RunOnlyRegressionTest):
         self.num_tasks = 80
         self.num_tasks_per_node = 8
         self.num_cpus_per_task = 1
-        self.time_limit = (1, 0, 0)
+        self.time_limit = (2, 0, 0)
         self.variables = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
@@ -33,7 +33,7 @@ class IO500BaseTest(rfm.RunOnlyRegressionTest):
 
         self.reference = {
             'cirrus:compute_mptloc': {
-                'perf': (6.0, -0.1, 0.1),
+                'perf': (8.8, -0.1, 0.1),
             }
         }
 

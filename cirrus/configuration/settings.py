@@ -30,7 +30,7 @@ class ReframeSettings:
                     'compute_ser': {
                         'scheduler': 'pbs+local',
                         'modules': [],
-                        'access':  ['-A z04','-q tds'],
+                        'access':  ['-A z04'],
                         'environs': ['PrgEnv-intel18', 'PrgEnv-intel17', 'PrgEnv-gcc6'],
                         'descr': 'Compute nodes (Broadwell): serial jobs',
                         'max_jobs': 10
@@ -39,7 +39,7 @@ class ReframeSettings:
                     'compute_impi': {
                         'scheduler': 'pbs+impi',
                         'modules': [],
-                        'access':  ['-A z04','-l place=scatter:excl', '-q tds'],
+                        'access':  ['-A z04','-l place=scatter:excl'],
                         'environs': ['PrgEnv-intel18-impi', 'PrgEnv-intel17-impi', 'PrgEnv-gcc6-impi'],
                         'descr': 'Compute nodes (Broadwell): Intel MPI parallel jobs',
                         'max_jobs': 10
@@ -48,16 +48,17 @@ class ReframeSettings:
                     'compute_mpt': {
                         'scheduler': 'pbs+hpempt',
                         'modules': [],
-                        'access':  ['-A z04','-l place=scatter:excl','-q tds'],
+                        'access':  ['-A z04','-l place=scatter:excl'],
                         'environs': ['PrgEnv-intel18-mpt', 'PrgEnv-intel17-mpt', 'PrgEnv-gcc6-mpt'],
                         'descr': 'Compute nodes (Broadwell): HPE MPT parallel jobs',
                         'max_jobs': 10
                     },
-                    # This environemnt allows you to lanch scripts containing the MPI command
+                    # This environemnt allows you to lanch scripts containing the MPI command rather
+                    # than direct 'mpiexec_mpt' invocation
                     'compute_mptloc': {
                         'scheduler': 'pbs+local',
                         'modules': [],
-                        'access':  ['-A z04','-l place=scatter:excl','-q tds'],
+                        'access':  ['-A z04','-l place=scatter:excl'],
                         'environs': ['PrgEnv-intel18-mpt', 'PrgEnv-intel17-mpt', 'PrgEnv-gcc6-mpt'],
                         'descr': 'Compute nodes (Broadwell): HPE MPT parallel jobs',
                         'max_jobs': 10

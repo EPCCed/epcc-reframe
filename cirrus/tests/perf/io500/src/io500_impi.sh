@@ -61,7 +61,7 @@ function setup_paths {
   io500_ior_cmd=/lustre/sw/io500/io-500-mpt/bin/ior
   io500_mdtest_cmd=/lustre/sw/io500/io-500-mpt/bin/mdtest
   io500_mdreal_cmd=/lustre/sw/io500/io-500-mpt/bin/md-real-io
-  io500_mpirun="mpiexec_mpt"
+  io500_mpirun="mpirun"
   io500_mpiargs="-ppn 8 -n 80"
 }
 

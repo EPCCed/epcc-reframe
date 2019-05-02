@@ -57,7 +57,7 @@ class GromacsCPUCheck(GromacsBaseCheck):
         self.name = 'gromacs_cpu_check'
         self.executable_opts = ('mdrun -noconfout -s gmx_1400k_atoms.tpr ').split()
 
-        self.num_tasks = 36
+        self.num_tasks = 288
         self.num_tasks_per_node = 36
         self.num_cpus_per_task = 1
         self.time_limit = (1, 0, 0)
