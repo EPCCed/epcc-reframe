@@ -38,7 +38,7 @@ class BaseMatrixVectorTest(rfm.RegressionTest):
 class SerialTest(BaseMatrixVectorTest):
     def __init__(self):
         super().__init__('Serial')
-        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
+        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser','tesseract:login_ser']
         self.sourcepath = 'matrix_vector_multiplication.c'
 
 
@@ -47,7 +47,7 @@ class OpenMPTest(BaseMatrixVectorTest):
     def __init__(self):
         super().__init__('OpenMP')
         self.sourcepath = 'matrix_vector_multiplication_openmp.c'
-        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
+        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser','tesseract:login_ser']
         self.prgenv_flags = {
             'PrgEnv-gcc6': ['-fopenmp'],
             'PrgEnv-intel17': ['-qopenmp'],
@@ -62,7 +62,7 @@ class OpenMPTest(BaseMatrixVectorTest):
 class MPITest(BaseMatrixVectorTest):
     def __init__(self):
         super().__init__('MPI')
-        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt']
+        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt','tesseract:compute_impi']
         self.sourcepath = 'matrix_vector_multiplication_mpi_openmp.c'
         self.prgenv_flags = {
             'PrgEnv-gcc6-impi': ['-fopenmp'],

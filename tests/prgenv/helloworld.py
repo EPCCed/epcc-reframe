@@ -87,7 +87,7 @@ class HelloWorldBaseTest(rfm.RegressionTest):
 class HelloWorldTestSerial(HelloWorldBaseTest):
     def __init__(self, lang, linkage, **kwargs):
         super().__init__('serial', lang, linkage, **kwargs)
-        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
+        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser','tesseract:login_ser']
         self.valid_prog_environs = ['*']
         self.sourcepath += '_serial.' + lang
         self.descr += ' Serial ' + linkage.capitalize()
@@ -108,7 +108,7 @@ class HelloWorldTestSerial(HelloWorldBaseTest):
 class HelloWorldTestOpenMP(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('openmp', lang, linkage)
-        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser']
+        self.valid_systems = ['cirrus:login_ser','cirrus:compute_ser','tesseract:login_ser']
         self.valid_prog_environs = ['*']
         self.sourcepath += '_openmp.' + lang
         self.descr += ' OpenMP ' + str.capitalize(linkage)
@@ -135,7 +135,7 @@ class HelloWorldTestOpenMP(HelloWorldBaseTest):
 class HelloWorldTestMPI(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('mpi', lang, linkage)
-        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt']
+        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt','tesseract:compute_impi']
         self.valid_prog_environs = ['*']
         self.sourcepath += '_mpi.' + lang
         self.descr += ' MPI ' + linkage.capitalize()
@@ -163,7 +163,7 @@ class HelloWorldTestMPI(HelloWorldBaseTest):
 class HelloWorldTestMPIOpenMP(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('mpi_openmp', lang, linkage)
-        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt']
+        self.valid_systems = ['cirrus:compute_impi','cirrus:compute_mpt','tesseract:compute_impi']
         self.valid_prog_environs = ['*']
         self.sourcepath += '_mpi_openmp.' + lang
         self.descr += ' MPI + OpenMP ' + linkage.capitalize()
