@@ -46,6 +46,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
                 'num_switches': 1
             }
         }
+        self.tags = {'applications','performance'}
 
 @rfm.simple_test
 class GromacsCPUCheck(GromacsBaseCheck):
@@ -64,6 +65,5 @@ class GromacsCPUCheck(GromacsBaseCheck):
         self.variables = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
-        self.tags = {'production'}
 
 

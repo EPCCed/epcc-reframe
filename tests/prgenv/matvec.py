@@ -25,7 +25,7 @@ class BaseMatrixVectorTest(rfm.RegressionTest):
             sn.assert_lt(sn.abs(expected_norm - found_norm), 1.0e-6)
         ])
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'basic', 'production'}
+        self.tags = {'prgenv'}
 
     def setup(self, partition, environ, **job_opts):
         if self.prgenv_flags is not None:

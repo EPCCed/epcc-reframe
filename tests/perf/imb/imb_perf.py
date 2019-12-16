@@ -38,7 +38,7 @@ class IMBBaseTest(rfm.RunOnlyRegressionTest):
 #        }
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'basic', 'production'}
+        self.tags = {'performance'}
 
 @rfm.simple_test
 class IMBAlltoallvTest(IMBBaseTest):

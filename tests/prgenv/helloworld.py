@@ -20,7 +20,7 @@ class HelloWorldBaseTest(rfm.RegressionTest):
         self.compilation_time_seconds = None
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'basic','production'}
+        self.tags = {'prgenv'}
 
     def setup(self, partition, environ, **job_opts):
         result = sn.findall(r'Hello World from thread \s*(\d+) out '
