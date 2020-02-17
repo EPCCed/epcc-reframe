@@ -6,7 +6,7 @@
 #   * -c ${EPCC_REFRAME_TEST_DIR}
 #   * -r
 #
-# Requires the 'reframe.py' command to be in the user's PATH
+# Requires the 'reframe' command to be in the user's PATH
 # 
 #   Usage:
 #       epcc-reframe [Other ReFrame options]
@@ -24,8 +24,8 @@ then
    exit 2
 fi
 
-reframe.py -C ${EPCC_REFRAME_CONFIG} \
-           -c ${EPCC_REFRAME_TEST_DIR} \
-           -r \
-           $@
+reframe -C ${EPCC_REFRAME_CONFIG} \
+        -c ${EPCC_REFRAME_TEST_DIR} \
+        -r \
+        $@
 
