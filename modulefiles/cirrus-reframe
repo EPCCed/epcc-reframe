@@ -1,0 +1,11 @@
+#%Module##############################
+# Modulefile for EPCC Reframe configuration
+#
+
+set is_module_rm [module-info mode remove]
+
+set EPCC_REFRAME_DIR /lustre/sw/reframe/epcc-reframe
+
+prepend-path PATH $EPCC_REFRAME_DIR/bin
+setenv EPCC_REFRAME_CONFIG $EPCC_REFRAME_DIR/configuration/cirrus_settings.py
+setenv EPCC_REFRAME_TEST_DIR $EPCC_REFRAME_DIR/tests
