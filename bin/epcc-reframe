@@ -1,0 +1,31 @@
+#!/bin/bash
+# Wrapper script to run ReFrame with the correct settings on EPCC systems
+#
+# Automatically sets the following options
+#   - -C ${EPCC_REFRAME_CONFIG}
+#   * -c ${EPCC_REFRAME_TEST_DIR}
+#   * -r
+#
+# Requires the 'reframe.py' command to be in the user's PATH
+# 
+#   Usage:
+#       epcc-reframe [Other ReFrame options]
+#
+
+# Check environment variables are set
+if [[ -z "${EPCC_REFRAME_CONFIG}" ]]
+then
+   echo "Error: EPCC_REFRAME_CONFIG is not defined (path to ReFrame configuration file)"
+   exit 1
+fi
+if [[ -z "${EPCC_REFRAME_TEST_DIR}" ]]
+then
+   echo "Error: EPCC_REFRAME_TEST_DIR is not defined (path to ReFrame tests directory)"
+   exit 2
+fi
+
+reframe.py -C ${EPCC_REFRAME_CONFIG} \
+           -c ${EPCC_REFRAME_TEST_DIR} \
+           -r \
+           $@
+
