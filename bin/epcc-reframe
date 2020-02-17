@@ -4,7 +4,7 @@
 # Automatically sets the following options
 #   - -C ${EPCC_REFRAME_CONFIG}
 #   * -c ${EPCC_REFRAME_TEST_DIR}
-#   * -r
+#   * -R 
 #
 # Requires the 'reframe' command to be in the user's PATH
 # 
@@ -26,6 +26,6 @@ fi
 
 reframe -C ${EPCC_REFRAME_CONFIG} \
         -c ${EPCC_REFRAME_TEST_DIR} \
-        -r \
+        -R \
         $@
 
