@@ -8,4 +8,4 @@ set EPCC_REFRAME_DIR /home/z19/z19/aturner/software/epcc-reframe
 
 prepend-path PATH $EPCC_REFRAME_DIR/bin
 setenv EPCC_REFRAME_CONFIG $EPCC_REFRAME_DIR/configuration/archer2_settings.py
-setenv EPCC_REFRAME_TEST_DIR $EPCC_REFRAME_DIR/tests
+setenv EPCC_REFRAME_TEST_DIR $EPCC_REFRAME_DIR/tests-dev

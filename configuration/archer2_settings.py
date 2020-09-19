@@ -11,7 +11,15 @@ site_configuration = {
                     'descr': 'Login nodes',
                     'scheduler': 'local',
                     'launcher': 'local',
-                    'environs': ['gnu'],
+                    'environs': ['gnu','cray'],
+                },
+                {
+                    'name': 'compute',
+                    'descr': 'Compute nodes',
+                    'scheduler': 'slurm',
+                    'launcher': 'srun',
+                    'environs': ['gnu', 'cray'],
+                    'max_jobs': 100
                 }
             ]
         }
@@ -20,6 +28,14 @@ site_configuration = {
         {
             'name': 'gnu',
             'modules': ['PrgEnv-gnu'],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'cray',
+            'modules': ['PrgEnv-cray'],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',

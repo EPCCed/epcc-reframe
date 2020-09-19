@@ -1,0 +1,400 @@
+[2020-09-19T19:42:19] debug: reframe: executing OS command: modulecmd python -V
+[2020-09-19T19:42:19] debug: reframe: [ReFrame Environment]
+  RFM_CHECK_SEARCH_PATH=<not set>
+  RFM_CHECK_SEARCH_RECURSIVE=<not set>
+  RFM_CLEAN_STAGEDIR=<not set>
+  RFM_COLORIZE=<not set>
+  RFM_CONFIG_FILE=<not set>
+  RFM_GRAYLOG_ADDRESS=<not set>
+  RFM_IGNORE_CHECK_CONFLICTS=<not set>
+  RFM_IGNORE_REQNODENOTAVAIL=<not set>
+  RFM_INSTALL_PREFIX=/home/z19/z19/aturner/software/reframe-3.1
+  RFM_KEEP_STAGE_FILES=<not set>
+  RFM_MODULE_MAPPINGS=<not set>
+  RFM_MODULE_MAP_FILE=<not set>
+  RFM_NON_DEFAULT_CRAYPE=<not set>
+  RFM_OUTPUT_DIR=<not set>
+  RFM_PERFLOG_DIR=<not set>
+  RFM_PREFIX=<not set>
+  RFM_PURGE_ENVIRONMENT=<not set>
+  RFM_REPORT_FILE=<not set>
+  RFM_SAVE_LOG_FILES=<not set>
+  RFM_STAGE_DIR=<not set>
+  RFM_SYSLOG_ADDRESS=<not set>
+  RFM_SYSTEM=<not set>
+  RFM_TIMESTAMP_DIRS=<not set>
+  RFM_UNLOAD_MODULES=<not set>
+  RFM_USER_MODULES=<not set>
+  RFM_USE_LOGIN_SHELL=<not set>
+  RFM_VERBOSE=<not set>
+[2020-09-19T19:42:19] info: reframe: [ReFrame Setup]
+[2020-09-19T19:42:19] info: reframe:   version:           3.1
+[2020-09-19T19:42:19] info: reframe:   command:           '/home/z19/z19/aturner/software/reframe-3.1/bin/reframe -C /home/z19/z19/aturner/software/epcc-reframe/configuration/archer2_settings.py -c /home/z19/z19/aturner/software/epcc-reframe/tests-dev -R -r'
+[2020-09-19T19:42:19] info: reframe:   launched by:       aturner@login01-nmn
+[2020-09-19T19:42:19] info: reframe:   working directory: '/work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello'
+[2020-09-19T19:42:19] info: reframe:   settings file:     '/home/z19/z19/aturner/software/epcc-reframe/configuration/archer2_settings.py'
+[2020-09-19T19:42:19] info: reframe:   check search path: (R) '/work/z19/z19/aturner/software/epcc-reframe/tests-dev'
+[2020-09-19T19:42:19] info: reframe:   stage directory:   '/work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/stage'
+[2020-09-19T19:42:19] info: reframe:   output directory:  '/work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/output'
+[2020-09-19T19:42:19] info: reframe: 
+[2020-09-19T19:42:19] info: reframe: [==========] Running 1 check(s)
+[2020-09-19T19:42:19] info: reframe: [==========] Started on Sat Sep 19 19:42:19 2020 
+[2020-09-19T19:42:19] info: reframe: 
+[2020-09-19T19:42:19] info: reframe: [----------] started processing HelloTest (HelloTest)
+[2020-09-19T19:42:19] info: reframe: [ [32mRUN     [0m ] HelloTest on archer2:login using gnu
+[2020-09-19T19:42:19] debug: HelloTest: entering stage: setup
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: setting up paths
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: setting up the job descriptor
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: job scheduler backend: local
+[2020-09-19T19:42:19] debug: reframe: scheduling test case for running
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: entering stage: compile
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: copying /work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/src to stage directory (/work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/stage/archer2/login/gnu/HelloTest)
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: symlinking files: []
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: Staged sourcepath: /work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/stage/archer2/login/gnu/HelloTest/hello.c
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: executing OS command: modulecmd python show PrgEnv-gnu
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: executing OS command: modulecmd python unload PrgEnv-cray
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: executing OS command: modulecmd python load PrgEnv-gnu
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: executing OS command: /work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/stage/archer2/login/gnu/HelloTest/rfm_HelloTest_build.sh
+[2020-09-19T19:42:19] debug: HelloTest on archer2:login using gnu: entering stage: compile_wait
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: pid 112928 already dead or assigned elsewhere
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: pid 112928 already dead or assigned elsewhere
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: pid 112928 already dead or assigned elsewhere
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: compilation finished
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: executing OS command: modulecmd python show PrgEnv-gnu
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: executing OS command: modulecmd python unload PrgEnv-cray
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: executing OS command: modulecmd python load PrgEnv-gnu
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: executing OS command: /work/z19/z19/aturner/software/epcc-reframe/tests-dev/basics/hello/stage/archer2/login/gnu/HelloTest/rfm_HelloTest_job.sh
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: spawned job (pid=112955)
+[2020-09-19T19:42:20] info: reframe: [----------] finished processing HelloTest (HelloTest)
+[2020-09-19T19:42:20] info: reframe: 
+[2020-09-19T19:42:20] info: reframe: [----------] waiting for spawned checks to finish
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 482.393 polls/sec
+[2020-09-19T19:42:20] debug: reframe: rate equation: 482.193*exp(-0.180*x)+0.200
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 482.213
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 318.928 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 481.850
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 291.517 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 481.502
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 278.746 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 481.151
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 270.475 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 480.793
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 266.182 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 480.443
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 263.227 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 480.094
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 261.523 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 479.749
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 260.379 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 479.406
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 259.430 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 479.064
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 258.550 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 478.720
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 257.898 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 478.377
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 257.197 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 478.032
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 256.730 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 477.690
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 256.388 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 477.349
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 256.012 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 477.007
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 255.758 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 476.667
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 255.482 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 476.325
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 255.297 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 475.986
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 254.777 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 475.637
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 254.170 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 475.285
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 253.716 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 474.936
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 253.522 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 474.594
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 253.354 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 474.253
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 253.275 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 473.914
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 253.133 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 473.573
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 253.041 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 473.234
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.876 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 472.892
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.785 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 472.552
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.632 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 472.211
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.499 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 471.869
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.380 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 471.529
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.278 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 471.189
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.224 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 470.851
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 252.116 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 470.511
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 251.738 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 470.157
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 251.559 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 469.813
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 0
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 251.299 polls/sec
+[2020-09-19T19:42:20] debug: reframe: polling rate (desired): 469.465
+[2020-09-19T19:42:20] debug: reframe: sleeping: 0.002s
+[2020-09-19T19:42:20] debug: reframe: running tasks: 1
+[2020-09-19T19:42:20] debug: reframe: updating counts for running test cases
+[2020-09-19T19:42:20] debug: reframe: polling 1 task(s)
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: run
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: wait
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: pid 112955 already dead or assigned elsewhere
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: pid 112955 already dead or assigned elsewhere
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: pid 112955 already dead or assigned elsewhere
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: spawned job finished
+[2020-09-19T19:42:20] debug: reframe: removing task from running list: HelloTest on archer2:login using gnu
+[2020-09-19T19:42:20] debug: reframe: finalizing tasks: 1
+[2020-09-19T19:42:20] debug: reframe: finalizing task: HelloTest on archer2:login using gnu
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: sanity
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: performance
+[2020-09-19T19:42:20] info: reframe: [ [32m      OK[0m ] (1/1) HelloTest on archer2:login using gnu [compile: 0.396s run: 0.324s total: 0.733s]
+[2020-09-19T19:42:20] verbose: reframe: ==> setup: 0.004s compile: 0.396s run: 0.324s sanity: 0.001s performance: 0.000s total: 0.733s
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: entering stage: cleanup
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: copying interesting files to output directory
+[2020-09-19T19:42:20] debug: HelloTest on archer2:login using gnu: removing stage directory
+[2020-09-19T19:42:20] debug: reframe: polling rate (real): 205.689 polls/sec
+[2020-09-19T19:42:20] info: reframe: [----------] all spawned checks have finished
+
+[2020-09-19T19:42:20] info: reframe: [ [32m PASSED [0m ] Ran 1 test case(s) from 1 check(s) (0 failure(s))
+[2020-09-19T19:42:20] info: reframe: [==========] Finished on Sat Sep 19 19:42:20 2020 

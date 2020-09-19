@@ -23,7 +23,7 @@ class HelloWorldBaseTest(rfm.RegressionTest):
         self.descr = self.lang_names[lang] + ' Hello World'
         self.sourcepath = 'hello_world'
         self.build_system = 'SingleSource'
-        self.valid_systems = ['archer2:login_ser']
+        self.valid_systems = ['archer2:login']
 
         self.valid_prog_environs = ['PrgEnv-gnu' ]
 
@@ -119,7 +119,7 @@ class HelloWorldBaseTest(rfm.RegressionTest):
 class HelloWorldTestSerial(HelloWorldBaseTest):
     def __init__(self, lang, linkage):
         super().__init__('serial', lang, linkage)
-        self.valid_systems += ['archer2:login_ser']
+        self.valid_systems += ['archer2:login']
         self.valid_prog_environs += ['PrgEnv-gnu']
         self.sourcepath += '_serial.' + lang
         self.descr += ' Serial ' + linkage.capitalize()
