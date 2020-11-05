@@ -7,15 +7,18 @@ class StreamTest(rfm.RegressionTest):
     def __init__(self):
         self.valid_systems = ['*']
         self.valid_prog_environs = ['*']
-        self.prebuild_cmds = [
-            'wget http://www.cs.virginia.edu/stream/FTP/Code/stream.c',
-        ]
+        if self.current_environ == 'cray':
+            self.prebuild_cmds = ['module restore PrgEnv-cray']
+        elif self.current_environ == 'gnu':
+            self.prebuild_cmds = ['module restore PrgEnv-gnu']
+        elif self.current_environ == 'amd':
+            self.prebuild_cmds = ['module restore PrgEnv-aocc']
         self.build_system = 'SingleSource'
         self.sourcepath = 'stream.c'
         self.build_system.cppflags = ['-DSTREAM_ARRAY_SIZE=$((1 << 25))']
         self.build_system.cflags = ['-fopenmp', '-O3', '-Wall']
         self.variables = {
-            'OMP_NUM_THREADS': '4',
+            'OMP_NUM_THREADS': '16',
             'OMP_PLACES': 'cores'
         }
         self.sanity_patterns = sn.assert_found(r'Solution Validates',
@@ -31,11 +34,17 @@ class StreamTest(rfm.RegressionTest):
                                       self.stdout, 1, float)
         }
         self.reference = {
-            'archer2': {
-                'Copy':  (38350, -0.05, 0.05, 'MB/s'),
-                'Scale': (24000, -0.05, 0.05, 'MB/s'),
-                'Add':   (26000, -0.05, 0.05, 'MB/s'),
-                'Triad': (26000, -0.05, 0.05, 'MB/s')
+            'archer2:login': {
+                'Copy':  (127000, -0.05, 0.05, 'MB/s'),
+                'Scale': (69000, -0.05, 0.05, 'MB/s'),
+                'Add':   (77000, -0.10, 0.10, 'MB/s'),
+                'Triad': (77000, -0.10, 0.10, 'MB/s')
+            },
+            'archer2:compute': {
+                'Copy':  (37350, -0.05, 0.05, 'MB/s'),
+                'Scale': (26000, -0.05, 0.05, 'MB/s'),
+                'Add':   (29000, -0.05, 0.05, 'MB/s'),
+                'Triad': (29000, -0.05, 0.05, 'MB/s')
             }
         }
         # Flags per programming environment

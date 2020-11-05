@@ -3,7 +3,7 @@ site_configuration = {
         {
             'name': 'archer2',
             'descr': 'ARCHER2 TDS',
-            'hostnames': ['login'],
+            'hostnames': ['uan'],
             'modules_system': 'tmod4',
             'partitions': [
                 {
@@ -11,14 +11,14 @@ site_configuration = {
                     'descr': 'Login nodes',
                     'scheduler': 'local',
                     'launcher': 'local',
-                    'environs': ['gnu','cray'],
+                    'environs': ['gnu','cray','amd'],
                 },
                 {
                     'name': 'compute',
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
-                    'environs': ['gnu', 'cray'],
+                    'environs': ['gnu', 'cray', 'amd'],
                     'max_jobs': 100
                 }
             ]
@@ -27,7 +27,6 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
-            'modules': ['PrgEnv-gnu'],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -35,7 +34,13 @@ site_configuration = {
         },
         {
             'name': 'cray',
-            'modules': ['PrgEnv-cray'],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'amd',
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
