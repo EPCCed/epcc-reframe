@@ -61,7 +61,7 @@ class GromacsCPUCheck(GromacsBaseCheck):
         self.num_tasks = 512
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = (1, 0, 0)
+        self.time_limit = '1h'
         self.variables = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
