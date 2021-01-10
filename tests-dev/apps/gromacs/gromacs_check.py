@@ -31,13 +31,6 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
                                      output_file, 'perf', float)
         }
 
-        self.reference = {
-            'archer2:compute': {
-                'perf': (12.3, -0.1, 0.1, 'ns/day')
-            }
-        }
-
-        self.modules = ['gromacs']
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
         self.strict_check = False
         self.use_multithreading = False
@@ -58,12 +51,19 @@ class GromacsCPUCheck(GromacsBaseCheck):
         self.name = 'gromacs_cpu_check'
         self.executable_opts = ('mdrun -noconfout -s gmx_1400k_atoms.tpr ').split()
 
-        self.num_tasks = 512
-        self.num_tasks_per_node = 128
-        self.num_cpus_per_task = 1
-        self.time_limit = '1h'
+        if (self.current_system.name in ['archer2']):
+           self.prerun_cmds = ['module restore /etc/cray-pe.d/PrgEnv-gnu','module load gromacs']
+           self.num_tasks = 512
+           self.num_tasks_per_node = 128
+           self.num_cpus_per_task = 1
+           self.time_limit = '1h'
         self.variables = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
+        }
+
+        self.reference = {
+                'archer2:compute': {'perf': (22.4, -0.1, 0.1, 'ns/day'),
+            }
         }
 
 

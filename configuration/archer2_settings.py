@@ -18,6 +18,7 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
+                    'access': ['--partition=standard','--qos=standard'],
                     'environs': ['gnu', 'cray', 'amd'],
                     'max_jobs': 100
                 }
@@ -27,6 +28,7 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
+            'modules': ['epcc-job-env'],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -34,6 +36,7 @@ site_configuration = {
         },
         {
             'name': 'cray',
+            'modules': ['epcc-job-env'],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -41,6 +44,7 @@ site_configuration = {
         },
         {
             'name': 'amd',
+            'modules': ['epcc-job-env'],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
