@@ -15,3 +15,4 @@ class HelloTest(rfm.RegressionTest):
         elif self.current_environ == 'amd':
             self.prebuild_cmds = ['module restore PrgEnv-aocc']
         self.sanity_patterns = sn.assert_found(r'Hello, World\!', self.stdout)
+        self.tags = {'compilers','basic'}
