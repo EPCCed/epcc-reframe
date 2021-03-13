@@ -52,7 +52,8 @@ class GromacsCPUCheck(GromacsBaseCheck):
         self.executable_opts = ('mdrun -noconfout -s gmx_1400k_atoms.tpr ').split()
 
         if (self.current_system.name in ['archer2']):
-           self.prerun_cmds = ['module restore /etc/cray-pe.d/PrgEnv-gnu','module load gromacs']
+           self.modules = ['libfabric','gromacs']
+#           self.prerun_cmds = ['module restore /etc/cray-pe.d/PrgEnv-gnu','module load gromacs']
            self.num_tasks = 512
            self.num_tasks_per_node = 128
            self.num_cpus_per_task = 1
