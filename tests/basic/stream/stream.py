@@ -52,6 +52,7 @@ class StreamTest(rfm.RegressionTest):
             'archer2:login': 4,
             'archer2:compute': 8
         }
+        self.tags = {'performance','basic'}
 
     @rfm.run_before('compile')
     def setflags(self):

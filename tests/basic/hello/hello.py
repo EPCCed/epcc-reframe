@@ -9,6 +9,7 @@ class HelloTest(rfm.RegressionTest):
         self.valid_prog_environs = ['*']
         self.sourcepath = f'hello.{lang}'
         self.sanity_patterns = sn.assert_found(r'Hello, World\!', self.stdout)
+        self.tags = {'compilers','basic'}
 
     @rfm.run_before('compile')
     def setenv(self):
@@ -18,3 +19,5 @@ class HelloTest(rfm.RegressionTest):
            self.prebuild_cmds = ['module restore PrgEnv-gnu']
         elif self.current_environ.name == 'amd':
            self.prebuild_cmds = ['module restore PrgEnv-aocc']
+        
+
