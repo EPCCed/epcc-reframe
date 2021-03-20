@@ -7,12 +7,6 @@ class StreamTest(rfm.RegressionTest):
     def __init__(self):
         self.valid_systems = ['*']
         self.valid_prog_environs = ['*']
-        if self.current_environ == 'cray':
-            self.prebuild_cmds = ['module restore PrgEnv-cray']
-        elif self.current_environ == 'gnu':
-            self.prebuild_cmds = ['module restore PrgEnv-gnu']
-        elif self.current_environ == 'amd':
-            self.prebuild_cmds = ['module restore PrgEnv-aocc']
         self.build_system = 'SingleSource'
         self.sourcepath = 'stream.c'
         self.build_system.cppflags = ['-DSTREAM_ARRAY_SIZE=$((1 << 25))']
@@ -64,6 +58,12 @@ class StreamTest(rfm.RegressionTest):
     def setflags(self):
         environ = self.current_environ.name
         self.build_system.cflags = self.flags.get(environ, [])
+        if self.current_environ.name == 'cray':
+           self.prebuild_cmds = ['module restore PrgEnv-cray']
+        elif self.current_environ.name == 'gnu':
+           self.prebuild_cmds = ['module restore PrgEnv-gnu']
+        elif self.current_environ.name == 'amd':
+           self.prebuild_cmds = ['module restore PrgEnv-aocc']
 
     @rfm.run_before('run')
     def set_num_threads(self):
