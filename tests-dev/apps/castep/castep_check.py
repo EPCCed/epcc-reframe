@@ -14,11 +14,8 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
 
         self.keep_files = [output_file]
 
-        # Number of SCF cycles here must match the input file to correctly
-        # calculate performance in mean SCF cycles per second
-        scf_cycles = 10.0
-        energy = sn.extractsingle(r'Final Energy, E\s+=(?P<energy>\S+)',
-                                  output_file, 'energy', float, item=-1)
+        energy = sn.extractsingle(r'Final energy, E\s+=\s+(?P<energy>\S+)',
+                                  output_file, 'energy', float)
         energy_reference = -77705.21093039
 
         self.sanity_patterns = sn.all([
@@ -28,9 +25,8 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
 
         self.perf_patterns = {
             'runtime': sn.extractsingle(r'Total time\s+=\s+(?P<runtime>\S+)',
-                                     output_file, 'runtime', float)
-            
-            'perf': scf_cycles / sn.extractsingle(r'Calculation time\s+=\s+(?P<calctime>\S+)',
+                                     output_file, 'runtime', float),
+            'calctime': sn.extractsingle(r'Calculation time\s+=\s+(?P<calctime>\S+)',
                                      output_file, 'calctime', float)
         }
 
@@ -65,7 +61,9 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
         }
 
         self.reference = {
-                'archer2:compute': {'perf': (0.054, -0.1, 0.1, 'SCF cycles/s'),
+            'archer2:compute': {
+                'runtime': (305.0, -0.1, 0.1, 's'),
+                'calctime': (284.5, -0.1, 0.1, 's'),
             }
         }
 

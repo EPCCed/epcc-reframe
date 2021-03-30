@@ -2,7 +2,7 @@ site_configuration = {
     'systems': [
         {
             'name': 'archer2',
-            'descr': 'ARCHER2 TDS',
+            'descr': 'ARCHER2',
             'hostnames': ['uan'],
             'modules_system': 'tmod4',
             'partitions': [
@@ -18,7 +18,7 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
-                    'access': ['--partition=standard','--qos=standard'],
+                    'access': ['--partition=standard','--qos=short','--reservation=shortqos'],
                     'environs': ['gnu', 'cray', 'amd'],
                     'max_jobs': 100
                 }
