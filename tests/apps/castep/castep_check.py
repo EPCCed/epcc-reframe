@@ -28,7 +28,7 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
 
         self.perf_patterns = {
             'runtime': sn.extractsingle(r'Total time\s+=\s+(?P<runtime>\S+)',
-                                     output_file, 'runtime', float)
+                                     output_file, 'runtime', float),
             
             'perf': scf_cycles / sn.extractsingle(r'Calculation time\s+=\s+(?P<calctime>\S+)',
                                      output_file, 'calctime', float)
