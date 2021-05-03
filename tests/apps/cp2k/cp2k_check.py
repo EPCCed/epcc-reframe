@@ -17,11 +17,11 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
         energy = sn.extractsingle(r'ENERGY\| Total FORCE_EVAL \( QS \) energy \(a.u.\):'
                                   r'\s+(?P<energy>\S+)',
                                   output_file, 'energy', float)
-        energy_reference = -870.9347
+        energy_reference = -870.93478865
 
         self.sanity_patterns = sn.all([
             sn.assert_found('CP2K   ', output_file),
-            sn.assert_reference(energy, energy_reference, -1.E-04, +1.0E-04)
+            sn.assert_reference(energy, energy_reference, -1.E-08, +1.0E-08)
         ])
 
         self.perf_patterns = {
@@ -63,7 +63,7 @@ class CP2KCPUCheck(CP2KBaseCheck):
         }
 
         self.reference = {
-                'archer2:compute': {'perf': (267, -7, 7, 'seconds'),
+                'archer2:compute': {'perf': (245, -10, 10, 'seconds'),
                 }
             }
         
