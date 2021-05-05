@@ -19,11 +19,11 @@ class InterfaceBoundsTest(rfm.RegressionTest):
         self.tags = {'compilers','basic','issues'}
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
 
-    @rfm.run_before('compile')
-    def setenv(self):
-        if self.current_environ.name == 'cray':
-           self.prebuild_cmds = ['module restore PrgEnv-cray']
-        elif self.current_environ.name == 'gnu':
-           self.prebuild_cmds = ['module restore PrgEnv-gnu']
-        elif self.current_environ.name == 'amd':
-           self.prebuild_cmds = ['module restore PrgEnv-aocc']
+#    @rfm.run_before('compile')
+#    def setenv(self):
+#        if self.current_environ.name == 'cray':
+#           self.prebuild_cmds = ['module restore PrgEnv-cray']
+#        elif self.current_environ.name == 'gnu':
+#           self.prebuild_cmds = ['module restore PrgEnv-gnu']
+#        elif self.current_environ.name == 'amd':
+#           self.prebuild_cmds = ['module restore PrgEnv-aocc']

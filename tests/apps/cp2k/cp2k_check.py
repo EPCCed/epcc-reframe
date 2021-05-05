@@ -52,7 +52,7 @@ class CP2KCPUCheck(CP2KBaseCheck):
         self.executable_opts = ('-i input_bulk_HFX_3.inp -o cp2k.out ').split()
 
         if (self.current_system.name in ['archer2']):
-           self.modules = ['libfabric','cp2k']
+           self.modules = ['cp2k']
            self.num_tasks = 384
            self.num_tasks_per_node = 16
            self.num_cpus_per_task = 8

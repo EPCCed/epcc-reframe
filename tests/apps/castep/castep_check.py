@@ -55,7 +55,7 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
         self.executable_opts = ['al3x3']
 
         if (self.current_system.name in ['archer2']):
-           self.modules = ['libfabric','castep']
+           self.modules = ['castep']
            self.num_tasks = 512
            self.num_tasks_per_node = 128
            self.num_cpus_per_task = 1

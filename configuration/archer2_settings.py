@@ -28,7 +28,12 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
-            'modules': ['epcc-job-env'],
+            'modules': [
+                {
+                    'name': '/etc/cray-pe.d/PrgEnv-gnu',
+                    'collection': True
+                }
+            ],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -36,7 +41,12 @@ site_configuration = {
         },
         {
             'name': 'cray',
-            'modules': ['epcc-job-env'],
+            'modules': [
+                {
+                    'name': '/etc/cray-pe.d/PrgEnv-cray',
+                    'collection': True
+                }
+            ],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -44,7 +54,12 @@ site_configuration = {
         },
         {
             'name': 'amd',
-            'modules': ['epcc-job-env'],
+            'modules': [
+                {
+                    'name': '/etc/cray-pe.d/PrgEnv-aocc',
+                    'collection': True
+                }
+            ],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',

@@ -11,13 +11,13 @@ class HelloTest(rfm.RegressionTest):
         self.sanity_patterns = sn.assert_found(r'Hello, World\!', self.stdout)
         self.tags = {'compilers','basic'}
 
-    @rfm.run_before('compile')
-    def setenv(self):
-        if self.current_environ.name == 'cray':
-           self.prebuild_cmds = ['module restore PrgEnv-cray']
-        elif self.current_environ.name == 'gnu':
-           self.prebuild_cmds = ['module restore PrgEnv-gnu']
-        elif self.current_environ.name == 'amd':
-           self.prebuild_cmds = ['module restore PrgEnv-aocc']
+#    @rfm.run_before('compile')
+#    def setenv(self):
+#        if self.current_environ.name == 'cray':
+#           self.prebuild_cmds = ['module restore PrgEnv-cray']
+#        elif self.current_environ.name == 'gnu':
+#           self.prebuild_cmds = ['module restore PrgEnv-gnu']
+#        elif self.current_environ.name == 'amd':
+#           self.prebuild_cmds = ['module restore PrgEnv-aocc']
         
 

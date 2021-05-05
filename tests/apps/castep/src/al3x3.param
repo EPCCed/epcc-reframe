@@ -8,7 +8,6 @@ metals_method     : dm
 mixing_scheme     : pulay
 finite_basis_corr : 0
 smearing_width    : 0.1 eV
-max_scf_cycles    : 10
 nup               : 648
 ndown             : 648
 nextra_bands      : 120
@@ -25,5 +24,5 @@ popn_calculate    : false
 
 ! Uncomment to use SMP optimisations in FFT
 ! (6 processes per SMP block in this example)
-!num_proc_in_smp   : 8
+num_proc_in_smp   : 4
 
