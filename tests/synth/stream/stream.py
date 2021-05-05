@@ -54,17 +54,6 @@ class StreamTest(rfm.RegressionTest):
         }
         self.tags = {'performance','basic'}
 
-#    @rfm.run_before('compile')
-#    def setflags(self):
-#        environ = self.current_environ.name
-#        self.build_system.cflags = self.flags.get(environ, [])
-#        if self.current_environ.name == 'cray':
-#           self.prebuild_cmds = ['module restore PrgEnv-cray']
-#        elif self.current_environ.name == 'gnu':
-#           self.prebuild_cmds = ['module restore PrgEnv-gnu']
-#        elif self.current_environ.name == 'amd':
-#           self.prebuild_cmds = ['module restore PrgEnv-aocc']
-
     @rfm.run_before('run')
     def set_num_threads(self):
         num_threads = self.cores.get(self.current_partition.fullname, 1)

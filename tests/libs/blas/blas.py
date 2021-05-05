@@ -35,17 +35,3 @@ class BlasTest(rfm.RegressionTest):
         }
         self.tags = {'performance','basic','numeric'}
 
-#    @rfm.run_before('compile')
-#    def setflags(self):
-#        if self.current_environ.name == 'gnu':
-#           self.prebuild_cmds.insert(0, 'module restore PrgEnv-gnu')
-#        elif self.current_environ.name == 'amd':
-#           self.prebuild_cmds.insert(0, 'module restore PrgEnv-aocc')
-#
-#    @rfm.run_before('run')
-#    def setrunmodules(self):
-#        if self.current_environ.name == 'gnu':
-#           self.prerun_cmds = ['module load gcc']
-#        elif self.current_environ.name == 'amd':
-#           self.prerun_cmds = ['module load aocc']
-
