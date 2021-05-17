@@ -24,7 +24,7 @@ static char *cpuset_to_cstr(cpu_set_t *mask, char *str)
  sprintf(ptr, "%d,%d,", i, i + 1);
  i++;
  } else {
- sprintf(ptr, "%d-%d,", i, i + run);
+ sprintf(ptr, "%d,%d,", i, i + run);
  i += run;
  }
  while (*ptr != 0) ptr++;
