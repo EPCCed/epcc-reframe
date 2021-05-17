@@ -50,8 +50,8 @@ int main(int argc, char *argv[])
  (void)sched_getaffinity(0, sizeof(coremask), &coremask);
  cpuset_to_cstr(&coremask, clbuf);
  #pragma omp barrier
- printf("Hello from rank %d, thread %d, on %s. (core affinity = %s)\n",
- rank, thread, hnbuf, clbuf);
+ printf("affinity = %d:%d:%s\n",
+ rank, thread, clbuf);
  }
  MPI_Finalize();
  return(0);

@@ -7,7 +7,8 @@ class AffinityTestBase(rfm.RegressionTest):
     def __init__(self, variant):
         self.valid_systems = ['*']
         self.valid_prog_environs = ['*']
-        self.sourcepath = 'xthi.c'
+        self.sourcepath = 'affinity.c'
+        self.build_system.cflags = ['-fopenmp']
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
         self.tags = {'basic'}
 
@@ -17,7 +18,7 @@ class AffinityTestBase(rfm.RegressionTest):
         def parse_cpus(x):
             return sorted(x)
 
-        re_aff_cores = r'affinity = \s+(?P<cpus>[\d,]+\d)'
+        re_aff_cores = r'affinity = \s+(?P<cpus>\d+:\d+:[\d+,]*\d+)'
         self.aff_cores = sn.extractall(
             re_aff_cores, self.stdout, 'cpus', parse_cpus)
         ref_key = 'ref_' + self.current_partition.fullname
