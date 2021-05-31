@@ -18,7 +18,7 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
-                    'access': ['--partition=standard','--qos=standard'],
+                    'access': ['--partition=standard','--qos=standard','--distribution=block:block'],
                     'environs': ['gnu', 'cray', 'amd'],
                     'max_jobs': 100
                 }
