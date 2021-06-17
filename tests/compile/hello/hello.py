@@ -9,5 +9,5 @@ class HelloTest(rfm.RegressionTest):
         self.valid_prog_environs = ['*']
         self.sourcepath = f'hello.{lang}'
         self.sanity_patterns = sn.assert_found(r'Hello, World\!', self.stdout)
-        self.tags = {'compilers','basic'}
+        self.tags = {'functionality','short'}
 

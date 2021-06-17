@@ -16,6 +16,6 @@ class InterfaceBoundsTest(rfm.RegressionTest):
         self.valid_prog_environs = ['*']
         self.sourcepath = f'gcc-mpi_f08.{lang}'
         self.sanity_patterns = sn.assert_not_found(r'F', self.stdout)
-        self.tags = {'compilers','basic','issues'}
+        self.tags = {'functionality','short','issues'}
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
 

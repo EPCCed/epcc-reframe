@@ -12,7 +12,7 @@ class AffinityTestBase(rfm.RegressionTest):
         self.sourcepath = 'affinity.c'
         self.cflags = ['-fopenmp']
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'basic'}
+        self.tags = {'functionality','short'}
 
     @rfm.run_before('sanity')
     def set_sanity(self):

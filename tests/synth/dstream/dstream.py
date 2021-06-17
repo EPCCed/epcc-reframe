@@ -57,7 +57,7 @@ class StreamTest(rfm.RegressionTest):
         }
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'performance','basic'}
+        self.tags = {'performance','short'}
 
     @rfm.run_before('run')
     def set_num_threads(self):
