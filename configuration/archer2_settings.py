@@ -2,8 +2,8 @@ site_configuration = {
     'systems': [
         {
             'name': 'archer2',
-            'descr': 'ARCHER2 TDS',
-            'hostnames': ['uan'],
+            'descr': 'ARCHER2',
+            'hostnames': ['uan','ln'],
             'modules_system': 'tmod4',
             'partitions': [
                 {
@@ -18,7 +18,8 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
-                    'access': ['--partition=standard','--qos=standard','--distribution=block:block'],
+#                    'access': ['--partition=standard','--qos=standard','--distribution=block:block'],
+                    'access': ['--hint=nomultithread','--distribution=block:block'],
                     'environs': ['gnu', 'cray', 'amd'],
                     'max_jobs': 16
                 }
@@ -31,6 +32,7 @@ site_configuration = {
             'modules': [
                 {
                     'name': '/etc/cray-pe.d/PrgEnv-gnu',
+                    'path': '/etc/cray-pe.d/PrgEnv-gnu',
                     'collection': True
                 }
             ],
@@ -44,6 +46,7 @@ site_configuration = {
             'modules': [
                 {
                     'name': '/etc/cray-pe.d/PrgEnv-cray',
+                    'path': '/etc/cray-pe.d/PrgEnv-cray',
                     'collection': True
                 }
             ],
@@ -57,6 +60,7 @@ site_configuration = {
             'modules': [
                 {
                     'name': '/etc/cray-pe.d/PrgEnv-aocc',
+                    'path': '/etc/cray-pe.d/PrgEnv-aocc',
                     'collection': True
                 }
             ],
