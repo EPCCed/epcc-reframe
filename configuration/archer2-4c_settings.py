@@ -18,6 +18,7 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
+#                    'access': ['--partition=standard','--qos=standard','--distribution=block:block'],
                     'access': ['--hint=nomultithread','--distribution=block:block'],
                     'environs': ['gnu', 'cray', 'amd'],
                     'max_jobs': 16
@@ -28,7 +29,13 @@ site_configuration = {
     'environments': [
         {
             'name': 'gnu',
-            'modules': ['PrgEnv-gnu'],
+            'modules': [
+                {
+                    'name': '/etc/cray-pe.d/PrgEnv-gnu',
+                    'path': '/etc/cray-pe.d/PrgEnv-gnu',
+                    'collection': True
+                }
+            ],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -36,7 +43,13 @@ site_configuration = {
         },
         {
             'name': 'cray',
-            'modules': ['PrgEnv-cray'],
+            'modules': [
+                {
+                    'name': '/etc/cray-pe.d/PrgEnv-cray',
+                    'path': '/etc/cray-pe.d/PrgEnv-cray',
+                    'collection': True
+                }
+            ],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
@@ -44,7 +57,13 @@ site_configuration = {
         },
         {
             'name': 'amd',
-            'modules': ['PrgEnv-aocc'],
+            'modules': [
+                {
+                    'name': '/etc/cray-pe.d/PrgEnv-aocc',
+                    'path': '/etc/cray-pe.d/PrgEnv-aocc',
+                    'collection': True
+                }
+            ],
             'cc': 'cc',
             'cxx': 'CC',
             'ftn': 'ftn',
