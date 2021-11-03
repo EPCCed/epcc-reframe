@@ -4,7 +4,7 @@ site_configuration = {
             'name': 'archer2',
             'descr': 'ARCHER2',
             'hostnames': ['uan','ln'],
-            'modules_system': 'tmod4',
+            'modules_system': 'lmod',
             'partitions': [
                 {
                     'name': 'login',

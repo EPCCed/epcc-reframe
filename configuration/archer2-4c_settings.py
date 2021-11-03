@@ -2,7 +2,7 @@ site_configuration = {
     'systems': [
         {
             'name': 'archer2',
-            'descr': 'ARCHER2',
+            'descr': 'ARCHER2 4-cabinet',
             'hostnames': ['uan','ln'],
             'modules_system': 'tmod4',
             'partitions': [
