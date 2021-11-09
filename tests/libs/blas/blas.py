@@ -5,7 +5,7 @@ import reframe.utility.sanity as sn
 class BlasTest(rfm.RegressionTest):
     def __init__(self, libname):
         self.valid_systems = ['archer2']
-        self.valid_prog_environs = ['gnu','amd']
+        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc']
 
         if libname == 'mkl':
             self.modules = ['mkl']

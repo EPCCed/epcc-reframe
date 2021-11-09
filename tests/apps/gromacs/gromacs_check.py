@@ -9,7 +9,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
     def __init__(self, output_file):
         super().__init__()
 
-        self.valid_prog_environs = ['gnu']
+        self.valid_prog_environs = ['PrgEnv-gnu']
         self.executable = 'gmx_mpi'
 
         self.keep_files = [output_file]
