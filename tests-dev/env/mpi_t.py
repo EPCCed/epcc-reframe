@@ -11,12 +11,14 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class MpiTCheck(rfm.RegressionTest):
     def __init__(self):
-        self.descr = 'Checks MPI_T control/performance variables/categories'
+        self.descr = 'Checks MPI_T control/categories'
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu', 'PrgEnv-aocc']
         self.build_system = 'SingleSource'
         self.sourcepath = 'mpit_vars.c'
+        self.num_tasks = 1
         self.num_tasks_per_node = 1
+        self.time_limit = "1m"
         self.variables = {'MPITEST_VERBOSE': '1', 'MPICH_VERSION_DISPLAY': '1'}
         self.rpt = 'rpt'
         self.executable_opts = [f'&> {self.rpt}']
@@ -33,16 +35,7 @@ class MpiTCheck(rfm.RegressionTest):
         regex = r'^\t(?P<vars>MPIR\S+)\t'
         rpt = os.path.join(self.stagedir, self.rpt)
         self.run_control_vars = sorted(sn.extractall(regex, rpt, 'vars'))
-        # 2/ MPI Performance Variables:
-        # --- extract reference data:
-        regex = r'(?P<vars>\w+)'
-        ref = os.path.join(self.stagedir, 'mpit_perf_vars.ref')
-        self.ref_perf_vars = sorted(sn.extractall(regex, ref, 'vars'))
-        # --- extract runtime data:
-        regex = r'^\t(?P<vars>(nem_|rma_)\S+)\t'
-        rpt = os.path.join(self.stagedir, self.rpt)
-        self.run_perf_vars = sorted(sn.extractall(regex, rpt, 'vars'))
-        # 3/ MPI Category:
+        # 2/ MPI Category:
         # --- extract reference data:
         regex = r'^(?P<category>.*)$'
         ref = os.path.join(self.stagedir, 'mpit_categories.ref')
@@ -53,9 +46,8 @@ class MpiTCheck(rfm.RegressionTest):
                  r' performance variables, \d+ subcategories)')
         rpt = os.path.join(self.stagedir, self.rpt)
         self.run_cat_vars = sorted(sn.extractall(regex, rpt, 'category'))
-        # 4/ Extracted lists can be compared (when sorted):
+        # 3/ Extracted lists can be compared (when sorted):
         self.sanity_patterns = sn.all([
             sn.assert_eq(self.ref_control_vars, self.run_control_vars),
-            sn.assert_eq(self.ref_perf_vars, self.run_perf_vars),
             sn.assert_eq(self.ref_cat_vars, self.run_cat_vars),
         ])

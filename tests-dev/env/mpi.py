@@ -12,7 +12,7 @@ import reframe.utility.sanity as sn
 class MpiInitTest(rfm.RegressionTest):
     '''This test checks the value returned by calling MPI_Init_thread.
 
-    Output should look the same for every prgenv (cray, gnu, intel, pgi)
+    Output should look the same for every prgenv
     (mpi_thread_multiple seems to be not supported):
 
     # 'single':
@@ -55,7 +55,7 @@ class MpiInitTest(rfm.RegressionTest):
             'single':     0,
             'funneled':   1,
             'serialized': 2,
-            'multiple':   2
+            'multiple':   3
         }
         self.sanity_patterns = sn.all([
             sn.assert_found(r'tid=0 out of 1 from rank 0 out of 1',
@@ -75,7 +75,8 @@ class MpiHelloTest(rfm.RegressionTest):
         self.descr = 'MPI Hello World'
         self.sourcepath = 'mpi_helloworld.c'
         self.num_tasks_per_node = 1
-        self.num_tasks = 0
+        self.num_tasks = 2
+        self.time_limit = '1m'
         num_processes = sn.extractsingle(
             r'Received correct messages from (?P<nprocs>\d+) processes',
             self.stdout, 'nprocs', int)
