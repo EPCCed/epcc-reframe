@@ -11,15 +11,17 @@ import reframe.utility.sanity as sn
 class UlimitCheck(rfm.RegressionTest):
     def __init__(self):
         self.descr = 'Checking the output of ulimit -s in node.'
-        self.valid_systems = ['daint:gpu', 'daint:mc',
-                              'dom:gpu',   'dom:mc', 'tiger:gpu']
+        self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-cray',  'PrgEnv-gnu',
-                                    'PrgEnv-intel', 'PrgEnv-pgi']
+                                    'PrgEnv-aocc']
         self.sourcepath = 'ulimit.c'
         self.sanity_patterns = sn.all([
             sn.assert_found(r'The soft limit is unlimited', self.stdout),
             sn.assert_found(r'The hard limit is unlimited', self.stdout),
         ])
 
-        self.maintainers = ['RS', 'CB']
+        self.ntasks = 1
+        self.ntasks_per_node = 1
+        self.time_limit = '1m'
+
         self.tags = {'production', 'scs', 'craype'}
