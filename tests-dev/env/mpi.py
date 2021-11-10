@@ -34,10 +34,9 @@ class MpiInitTest(rfm.RegressionTest):
     '''
 
     def __init__(self, required_thread):
-        self.valid_systems = ['daint:gpu', 'daint:mc', 'dom:gpu', 'dom:mc',
-                              'tiger:gpu']
+        self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu',
-                                    'PrgEnv-intel', 'PrgEnv-pgi']
+                                    'PrgEnv-aocc']
         self.build_system = 'SingleSource'
         self.sourcepath = 'mpi_init_thread.cpp'
         self.cppflags = {
@@ -47,7 +46,6 @@ class MpiInitTest(rfm.RegressionTest):
             'multiple':   ['-D_MPI_THREAD_MULTIPLE']
         }
         self.build_system.cppflags = self.cppflags[required_thread]
-        self.build_system.cppflags += ['-static']
         self.time_limit = '1m'
         found_mpithread = sn.extractsingle(
             r'^mpi_thread_required=\w+\s+mpi_thread_supported=\w+'
@@ -65,27 +63,17 @@ class MpiInitTest(rfm.RegressionTest):
             sn.assert_eq(found_mpithread,
                          self.mpithread_version[required_thread])
         ])
-        self.maintainers = ['JG', 'AJ']
         self.tags = {'production', 'craype'}
 
 
 @rfm.simple_test
 class MpiHelloTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['daint:gpu', 'daint:mc', 'dom:gpu', 'dom:mc',
-                              'kesch:cn', 'kesch:pn', 'tiger:gpu',
-                              'arolla:cn', 'arolla:pn', 'tsa:cn', 'tsa:pn']
-        self.valid_prog_environs = ['PrgEnv-cray']
-        if self.current_system.name == 'kesch':
-            self.exclusive_access = True
-            self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu']
-        elif self.current_system.name in ['arolla', 'tsa']:
-            self.exclusive_access = True
-            self.valid_prog_environs = ['PrgEnv-gnu']
+        self.valid_systems = ['archer2:compute']
+        self.valid_prog_environs = ['PrgEnv-cray','PrgEnv-gnu','PrgEnv-aocc']
 
         self.descr = 'MPI Hello World'
         self.sourcepath = 'mpi_helloworld.c'
-        self.maintainers = ['RS', 'AJ']
         self.num_tasks_per_node = 1
         self.num_tasks = 0
         num_processes = sn.extractsingle(

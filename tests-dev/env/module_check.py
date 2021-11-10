@@ -14,10 +14,10 @@ class DefaultPrgEnvCheck(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.descr = 'Ensure PrgEnv-cray is loaded by default'
         self.valid_prog_environs = ['builtin']
-        self.valid_systems = ['daint:login', 'dom:login']
+        self.valid_systems = ['archer2:login']
         self.executable = 'module'
-        self.executable_opts = ['list', '-t']
-        self.maintainers = ['TM', 'CB']
+        self.executable_opts = ['-t', 'list']
+        self.maintainers = ['Andy Turner']
         self.tags = {'production', 'craype'}
         self.sanity_patterns = sn.assert_found(r'^PrgEnv-cray', self.stderr)
 
@@ -26,15 +26,14 @@ class DefaultPrgEnvCheck(rfm.RunOnlyRegressionTest):
 class EnvironmentCheck(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.descr = 'Ensure programming environment is loaded correctly'
-        self.valid_systems = ['daint:login', 'dom:login']
-        self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu',
-                                    'PrgEnv-intel', 'PrgEnv-pgi']
+        self.valid_systems = ['archer2:login']
+        self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu', 'PrgEnv-aocc']
 
         self.executable = 'module'
-        self.executable_opts = ['list', '-t']
+        self.executable_opts = ['-t', 'list']
         self.sanity_patterns = sn.assert_found(self.env_module_patt,
                                                self.stderr)
-        self.maintainers = ['TM', 'CB']
+        self.maintainers = ['Andy Turner']
         self.tags = {'production', 'craype'}
 
     @property

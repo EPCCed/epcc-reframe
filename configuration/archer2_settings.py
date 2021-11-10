@@ -11,7 +11,7 @@ site_configuration = {
                     'descr': 'Login nodes',
                     'scheduler': 'local',
                     'launcher': 'local',
-                    'environs': ['gnu','cray','amd'],
+                    'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                 },
                 {
                     'name': 'compute',
@@ -19,7 +19,7 @@ site_configuration = {
                     'scheduler': 'slurm',
                     'launcher': 'srun',
                     'access': ['--hint=nomultithread','--distribution=block:block'],
-                    'environs': ['gnu', 'cray', 'amd'],
+                    'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                     'max_jobs': 16
                 }
             ]
@@ -27,7 +27,7 @@ site_configuration = {
     ],
     'environments': [
         {
-            'name': 'gnu',
+            'name': 'PrgEnv-gnu',
             'modules': ['PrgEnv-gnu'],
             'cc': 'cc',
             'cxx': 'CC',
@@ -35,7 +35,7 @@ site_configuration = {
             'target_systems': ['archer2']
         },
         {
-            'name': 'cray',
+            'name': 'PrgEnv-cray',
             'modules': ['PrgEnv-cray'],
             'cc': 'cc',
             'cxx': 'CC',
@@ -43,7 +43,7 @@ site_configuration = {
             'target_systems': ['archer2']
         },
         {
-            'name': 'amd',
+            'name': 'PrgEnv-aocc',
             'modules': ['PrgEnv-aocc'],
             'cc': 'cc',
             'cxx': 'CC',
