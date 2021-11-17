@@ -11,7 +11,7 @@ site_configuration = {
                     'descr': 'Login nodes',
                     'scheduler': 'local',
                     'launcher': 'local',
-                    'environs': ['gnu','cray','amd'],
+                    'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                 },
                 {
                     'name': 'compute',
@@ -19,8 +19,14 @@ site_configuration = {
                     'scheduler': 'slurm',
                     'launcher': 'srun',
 #                    'access': ['--partition=standard','--qos=standard','--distribution=block:block'],
-                    'access': ['--hint=nomultithread','--distribution=block:block'],
-                    'environs': ['gnu', 'cray', 'amd'],
+                    'access': [
+                        '--hint=nomultithread',
+                        '--distribution=block:block',
+                        '--partition=standard',
+                        '--qos=short',
+                        '--reservation=shortqos'
+                    ],
+                    'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                     'max_jobs': 16
                 }
             ]
@@ -28,7 +34,7 @@ site_configuration = {
     ],
     'environments': [
         {
-            'name': 'gnu',
+            'name': 'PrgEnv-gnu',
             'modules': [
                 {
                     'name': '/etc/cray-pe.d/PrgEnv-gnu',
@@ -42,7 +48,7 @@ site_configuration = {
             'target_systems': ['archer2']
         },
         {
-            'name': 'cray',
+            'name': 'PrgEnv-cray',
             'modules': [
                 {
                     'name': '/etc/cray-pe.d/PrgEnv-cray',
@@ -56,7 +62,7 @@ site_configuration = {
             'target_systems': ['archer2']
         },
         {
-            'name': 'amd',
+            'name': 'PrgEnv-aocc',
             'modules': [
                 {
                     'name': '/etc/cray-pe.d/PrgEnv-aocc',
