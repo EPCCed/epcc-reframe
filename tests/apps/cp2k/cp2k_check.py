@@ -14,7 +14,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
         self.keep_files = [output_file]
 
-        energy = sn.extractsingle(r'ENERGY\| Total FORCE_EVAL \( QS \) energy \(a.u.\):'
+        energy = sn.extractsingle(r'ENERGY\| Total FORCE_EVAL \( QS \) energy \[a.u.\]:'
                                   r'\s+(?P<energy>\S+)',
                                   output_file, 'energy', float)
         energy_reference = -870.934788
