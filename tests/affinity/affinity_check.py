@@ -84,9 +84,9 @@ class AffinityMPITest(AffinityTestBase):
             },
             'fully_populated_smt': {
                 'ref_archer2:compute': 'archer2_fully_populated_smt.txt',
-                'runopts_archer2:compute': ['--hint=multithread', '--distribution=block:block'],
+                'runopts_archer2:compute': ['--ntasks=256', '--ntasks-per-node=256', '--hint=multithread', '--distribution=block:block'],
                 'num_tasks': 128,
-                'num_tasks_per_node': 256,
+                'num_tasks_per_node': 128,
                 'num_cpus_per_task': 1,
             },
             'single_process_per_numa': {
