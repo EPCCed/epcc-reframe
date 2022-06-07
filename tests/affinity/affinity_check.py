@@ -14,7 +14,7 @@ class AffinityTestBase(rfm.RegressionTest):
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
         self.tags = {'functionality','short'}
 
-    @rfm.run_before('sanity')
+    @run_before('sanity')
     def set_sanity(self):
 
         def parse_cpus(x):
@@ -54,8 +54,11 @@ class AffinityOMPTest(AffinityTestBase):
         self.num_tasks = self.cases[variant]['num_tasks']
         self.num_tasks_per_node = self.cases[variant]['num_tasks_per_node']
         self.num_cpus_per_task = self.cases[variant]['num_cpus_per_task']
+        self.extra_resources = {
+                'qos': {'qos': 'standard'}
+        }
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_tasks_per_core(self):
         partname = self.current_partition.fullname
         self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task_%s' % partname]
@@ -102,7 +105,7 @@ class AffinityMPITest(AffinityTestBase):
         self.num_tasks_per_node = self.cases[variant]['num_tasks_per_node']
         self.num_cpus_per_task = self.cases[variant]['num_cpus_per_task']
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_launcher(self):
         partname = self.current_partition.fullname
         self.job.launcher.options = self.cases[self.variant]['runopts_%s' % partname]

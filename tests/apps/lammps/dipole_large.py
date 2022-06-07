@@ -5,12 +5,12 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 
-class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
+class LAMMPSBaseCheck(rfm.RunOnlyRegressionTest):
     def __init__(self, output_file):
         super().__init__()
 
         self.valid_prog_environs = ['PrgEnv-gnu']
-        self.executable = 'castep.mpi'
+        self.executable = 'lmp'
 
         self.keep_files = [output_file]
 
@@ -24,11 +24,8 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
         ])
 
         self.perf_patterns = {
-            'runtime': sn.extractsingle(r'Total time\s+=\s+(?P<runtime>\S+)',
-                                     output_file, 'runtime', float),
-            
-            'calctime': sn.extractsingle(r'Calculation time\s+=\s+(?P<calctime>\S+)',
-                                     output_file, 'calctime', float)
+            'perf': sn.extractsingle(r'Performance:\s+(?P<perf>\S+)',
+                                     output_file, 'perf', float),
         }
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
@@ -37,32 +34,30 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
         self.extra_resources = {
                 'qos': {'qos': 'standard'}
         }
-        self.tags = {'applications','performance'}
+        self.tags = {'applications','performance','largescale'}
 
 @rfm.simple_test
-class CASTEPCPUCheck(CASTEPBaseCheck):
+class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
     def __init__(self):
-        super().__init__('al3x3.castep')
+        super().__init__('out.log')
 
         self.valid_systems = ['archer2:compute']
-        self.descr = 'CASTEP corrctness and performance test'
-        self.name = 'castep_cpu_check'
-        self.executable_opts = ['al3x3']
+        self.descr = 'LAMMPS large scale performance test'
+        self.name = 'LAMMPS_1024node_ARCHER2_test'
+        self.executable_opts = ['in_2048.dipole']
 
-        if (self.current_system.name in ['archer2']):
-           self.modules = ['castep']
-           self.num_tasks = 512
-           self.num_tasks_per_node = 128
-           self.num_cpus_per_task = 1
-           self.time_limit = '20m'
+        self.modules = ['lammps']
+        self.num_tasks = 131072
+        self.num_tasks_per_node = 128
+        self.num_cpus_per_task = 1
+        self.time_limit = '20m'
         self.variables = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
 
         self.reference = {
                 'archer2:compute': {
-                    'calctime': (126, -0.1, 0.1, 's'),
-                    'runtime': (132, -0.1, 0.1, 's')
+                    'perf': (190409.0, -0.1, 0.1, 'tau/day'),
                 }
         }
 

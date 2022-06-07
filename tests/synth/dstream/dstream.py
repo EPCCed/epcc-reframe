@@ -59,7 +59,7 @@ class StreamTest(rfm.RegressionTest):
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
         self.tags = {'performance','short'}
 
-    @rfm.run_before('run')
+    @run_before('run')
     def set_num_threads(self):
         num_tasks = self.ntasks.get(self.current_partition.fullname, 1)
         self.num_tasks = num_tasks
@@ -68,5 +68,8 @@ class StreamTest(rfm.RegressionTest):
         self.num_cpus_per_task = 1
         self.time_limit = '20m'
         args = self.args.get(self.current_partition.fullname, ['24000000','10000'])
+        self.extra_resources = {
+                'qos': {'qos': 'standard'}
+        }
         self.executable_opts = args
 

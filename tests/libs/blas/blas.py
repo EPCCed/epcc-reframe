@@ -33,5 +33,8 @@ class BlasTest(rfm.RegressionTest):
                 'archer2:login': {'normal': (16.75, -0.15, 0.15, 'FLOP/s'),
                                   'transpose': (16.75, -0.15, 0.15, 'FLOP/s')}
         }
+        self.extra_resources = {
+                'qos': {'qos': 'standard'}
+        }
         self.tags = {'performance','functionality','short'}
 

@@ -23,5 +23,8 @@ class UlimitCheck(rfm.RegressionTest):
         self.ntasks = 1
         self.ntasks_per_node = 1
         self.time_limit = '1m'
+        self.extra_resources = {
+                'qos': {'qos': 'standard'}
+        }
 
         self.tags = {'production', 'scs', 'craype'}

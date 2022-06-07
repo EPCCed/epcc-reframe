@@ -18,9 +18,15 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
-                    'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=standard'],
+                    'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard'],
                     'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
-                    'max_jobs': 16
+                    'max_jobs': 16,
+                    'resources': [
+                        {
+                            'name': 'qos',
+                            'options': ['--qos={qos}']
+                        }
+                    ]
                 }
             ]
         }

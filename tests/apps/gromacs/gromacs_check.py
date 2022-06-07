@@ -35,9 +35,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
         self.strict_check = False
         self.use_multithreading = False
         self.extra_resources = {
-            'switches': {
-                'num_switches': 1
-            }
+                'qos': {'qos': 'standard'}
         }
         self.tags = {'applications','performance'}
 

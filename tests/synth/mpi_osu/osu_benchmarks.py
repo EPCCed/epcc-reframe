@@ -19,6 +19,10 @@ class OSUBenchmarkTestBase(rfm.RunOnlyRegressionTest):
     num_tasks = 2
     num_tasks_per_node = 1
 
+    self.extra_resources = {
+        'qos': {'qos': 'standard'}
+    }
+
     @run_after('init')
     def set_dependencies(self):
         self.depends_on('OSUBuildTest', udeps.by_env)

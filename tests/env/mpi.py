@@ -63,6 +63,9 @@ class MpiInitTest(rfm.RegressionTest):
             sn.assert_eq(found_mpithread,
                          self.mpithread_version[required_thread])
         ])
+        self.extra_resources = {
+                'qos': {'qos': 'standard'}
+        }
         self.tags = {'production', 'craype'}
 
 
@@ -85,6 +88,6 @@ class MpiHelloTest(rfm.RegressionTest):
         self.tags = {'diagnostic', 'ops', 'craype'}
 
     @property
-    @sn.sanity_function
+    @sanity_function
     def num_tasks_assigned(self):
         return self.job.num_tasks

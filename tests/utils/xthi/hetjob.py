@@ -42,6 +42,10 @@ class SharedCommWorldTest(reframe.RunOnlyRegressionTest):
     num_tasks_per_node = 1
     variables = {"OMP_PLACES": "cores"}
 
+    self.extra_resources = {
+         'qos': {'qos': 'standard'}
+    }
+
     @sanity_function
     def sanity_check_run(self):
 
