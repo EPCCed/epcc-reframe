@@ -9,12 +9,15 @@ import reframe as rfm
 # This issue prevents the mpi_f08 interface being used. We expect GCC to potentially
 # be affected and other compilers to not be affected.
 
-@rfm.parameterized_test(['f90'])
+@rfm.simple_test
 class InterfaceBoundsTest(rfm.RegressionTest):
-    def __init__(self, lang):
+    
+    lang = parameter(['f90'])
+
+    def __init__(self):
         self.valid_systems = ['archer2:login']
         self.valid_prog_environs = ['*']
-        self.sourcepath = f'gcc-mpi_f08.{lang}'
+        self.sourcepath = f'gcc-mpi_f08.{self.lang}'
         self.sanity_patterns = sn.assert_not_found(r'F', self.stdout)
         self.tags = {'functionality','short','issues'}
         self.maintainers = ['a.turner@epcc.ed.ac.uk']

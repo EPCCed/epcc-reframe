@@ -13,15 +13,13 @@ import reframe.utility.udeps as udeps
 class OSUBenchmarkTestBase(rfm.RunOnlyRegressionTest):
     '''Base class of OSU benchmarks runtime tests'''
 
-    valid_systems = ['archer2:compute']
-    valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
-    sourcesdir = None
-    num_tasks = 2
-    num_tasks_per_node = 1
-
-    self.extra_resources = {
-        'qos': {'qos': 'standard'}
-    }
+    def __init__(self):
+        self.valid_systems = ['archer2:compute']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
+        self.sourcesdir = None
+        self.num_tasks = 2
+        self.num_tasks_per_node = 1
+        self.extra_resources = {'qos': {'qos': 'standard'}}
 
     @run_after('init')
     def set_dependencies(self):
@@ -34,7 +32,10 @@ class OSUBenchmarkTestBase(rfm.RunOnlyRegressionTest):
 
 @rfm.simple_test
 class OSULatencyTest(OSUBenchmarkTestBase):
-    descr = 'OSU latency test'
+    
+    def __init__(self):
+        super().__init__()
+        self.descr = 'OSU latency test'
 
     @require_deps
     def set_executable(self, OSUBuildTest):
@@ -51,7 +52,10 @@ class OSULatencyTest(OSUBenchmarkTestBase):
 
 @rfm.simple_test
 class OSUBandwidthTest(OSUBenchmarkTestBase):
-    descr = 'OSU bandwidth test'
+
+    def __init__(self):
+        super().__init__()
+        self.descr = 'OSU bandwidth test'
 
     @require_deps
     def set_executable(self, OSUBuildTest):
@@ -69,8 +73,12 @@ class OSUBandwidthTest(OSUBenchmarkTestBase):
 
 @rfm.simple_test
 class OSUAllreduceTest(OSUBenchmarkTestBase):
+    
     mpi_tasks = parameter(1 << i for i in range(1, 5))
-    descr = 'OSU Allreduce test'
+
+    def __init__(self):
+        super().__init__()
+        self.descr = 'OSU Allreduce test'
 
     @run_after('init')
     def set_num_tasks(self):
@@ -91,10 +99,12 @@ class OSUAllreduceTest(OSUBenchmarkTestBase):
 
 @rfm.simple_test
 class OSUBuildTest(rfm.CompileOnlyRegressionTest):
-    descr = 'OSU benchmarks build test (currently fails with  Cray)'
-    valid_systems = ['archer2:compute']
-    valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
-    build_system = 'Autotools'
+
+    def __init__(self):
+        self.descr = 'OSU benchmarks build test (currently fails with  Cray)'
+        self.valid_systems = ['archer2:compute']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
+        self.build_system = 'Autotools'
 
     @run_after('init')
     def inject_dependencies(self):
@@ -118,16 +128,18 @@ class OSUBuildTest(rfm.CompileOnlyRegressionTest):
 
 @rfm.simple_test
 class OSUDownloadTest(rfm.RunOnlyRegressionTest):
-    descr = 'OSU benchmarks download sources'
-    valid_systems = ['archer2:login']
-    valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
-    executable = 'wget'
-    executable_opts = [
-        'http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-5.6.2.tar.gz'  # noqa: E501
-    ]
-    postrun_cmds = [
-        'tar xzf osu-micro-benchmarks-5.6.2.tar.gz'
-    ]
+    
+    def __init__(self):
+        self.descr = 'OSU benchmarks download sources'
+        self.valid_systems = ['archer2:login']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
+        self.executable = 'wget'
+        self.executable_opts = [
+            'http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-5.6.2.tar.gz'  # noqa: E501
+            ]
+        self.postrun_cmds = [
+            'tar xzf osu-micro-benchmarks-5.6.2.tar.gz'
+            ]
 
     @sanity_function
     def validate_download(self):

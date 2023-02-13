@@ -46,7 +46,6 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
 
         self.valid_systems = ['archer2:compute']
         self.descr = 'CASTEP corrctness and performance test'
-        self.name = 'castep_cpu_check'
         self.executable_opts = ['al3x3']
 
         if (self.current_system.name in ['archer2']):
@@ -55,7 +54,7 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
            self.num_tasks_per_node = 128
            self.num_cpus_per_task = 1
            self.time_limit = '20m'
-        self.variables = {
+        self.env_vars= {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
 
