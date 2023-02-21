@@ -6,10 +6,9 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-
-@rfm.required_version('>=2.14')
-@rfm.parameterized_test(['single'], ['funneled'], ['serialized'], ['multiple'])
+@rfm.simple_test
 class MpiInitTest(rfm.RegressionTest):
+    required_thread = parameter(['single', 'funneled', 'serialized', 'multiple'])
     '''This test checks the value returned by calling MPI_Init_thread.
 
     Output should look the same for every prgenv
@@ -33,7 +32,7 @@ class MpiInitTest(rfm.RegressionTest):
 
     '''
 
-    def __init__(self, required_thread):
+    def __init__(self, require_version='>=2.14.0'):
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu',
                                     'PrgEnv-aocc']
@@ -45,7 +44,7 @@ class MpiInitTest(rfm.RegressionTest):
             'serialized': ['-D_MPI_THREAD_SERIALIZED'],
             'multiple':   ['-D_MPI_THREAD_MULTIPLE']
         }
-        self.build_system.cppflags = self.cppflags[required_thread]
+        self.build_system.cppflags = self.cppflags[self.required_thread]
         self.time_limit = '1m'
         found_mpithread = sn.extractsingle(
             r'^mpi_thread_required=\w+\s+mpi_thread_supported=\w+'
@@ -61,7 +60,7 @@ class MpiInitTest(rfm.RegressionTest):
             sn.assert_found(r'tid=0 out of 1 from rank 0 out of 1',
                             self.stdout),
             sn.assert_eq(found_mpithread,
-                         self.mpithread_version[required_thread])
+                         self.mpithread_version[self.required_thread])
         ])
         self.extra_resources = {
                 'qos': {'qos': 'standard'}
@@ -85,9 +84,10 @@ class MpiHelloTest(rfm.RegressionTest):
             self.stdout, 'nprocs', int)
         self.sanity_patterns = sn.assert_eq(num_processes,
                                             self.num_tasks_assigned-1)
+        self.extra_resources = {'qos': {'qos': 'standard'}}
         self.tags = {'diagnostic', 'ops', 'craype'}
 
     @property
-    @sanity_function
+    @deferrable
     def num_tasks_assigned(self):
         return self.job.num_tasks

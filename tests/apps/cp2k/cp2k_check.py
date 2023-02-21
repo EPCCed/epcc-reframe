@@ -46,7 +46,6 @@ class CP2KCPUCheck(CP2KBaseCheck):
 
         self.valid_systems = ['archer2:compute']
         self.descr = 'CP2K check'
-        self.name = 'cp2k_cpu_check'
         self.executable_opts = ('-i input_bulk_HFX_3.inp -o cp2k.out ').split()
 
         if (self.current_system.name in ['archer2']):
@@ -55,7 +54,7 @@ class CP2KCPUCheck(CP2KBaseCheck):
            self.num_tasks_per_node = 16
            self.num_cpus_per_task = 8
            self.time_limit = '1h'
-        self.variables = {
+        self.env_vars = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task),
             'OMP_PLACES': 'cores'
         }
@@ -65,7 +64,7 @@ class CP2KCPUCheck(CP2KBaseCheck):
                 }
             }
         
-    @rfm.run_before('run')
+    @run_before('run')
     def set_task_distribution(self):
         self.job.options = ['--distribution=block:block']
 

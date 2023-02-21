@@ -1,21 +1,23 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-@rfm.parameterized_test(['libsci'],['mkl'])
+@rfm.simple_test
 class BlasTest(rfm.RegressionTest):
-    def __init__(self, libname):
+    variant = parameter(['libsci', 'mkl'])
+    
+    def __init__(self):
         self.valid_systems = ['archer2']
         self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc']
 
-        if libname == 'mkl':
+        if self.variant == 'mkl':
             self.modules = ['mkl']
             self.prebuild_cmds = ['module load mkl']
         else:
             self.prebuild_cmds = []
         self.build_system = 'Make'
-        self.build_system.makefile = f'Makefile.{libname}'
+        self.build_system.makefile = f'Makefile.{self.variant}'
 
-        self.executable = f'./dgemv_{libname}.x'
+        self.executable = f'./dgemv_{self.variant}.x'
         self.executable_opts = ['3200','150','10000']
 
         self.sanity_patterns = sn.assert_found(r'Normal',

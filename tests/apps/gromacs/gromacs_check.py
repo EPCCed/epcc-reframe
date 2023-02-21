@@ -46,7 +46,6 @@ class GromacsCPUCheck(GromacsBaseCheck):
 
         self.valid_systems = ['archer2:compute']
         self.descr = 'GROMACS check'
-        self.name = 'gromacs_cpu_check'
         self.executable_opts = ('mdrun -noconfout -s gmx_1400k_atoms.tpr ').split()
 
         if (self.current_system.name in ['archer2']):
@@ -55,7 +54,7 @@ class GromacsCPUCheck(GromacsBaseCheck):
            self.num_tasks_per_node = 128
            self.num_cpus_per_task = 1
            self.time_limit = '1h'
-        self.variables = {
+        self.env_vars = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
 

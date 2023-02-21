@@ -43,7 +43,6 @@ class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
 
         self.valid_systems = ['archer2:compute']
         self.descr = 'LAMMPS large scale performance test'
-        self.name = 'LAMMPS_1024node_ARCHER2_test'
         self.executable_opts = ['in_2048.dipole']
 
         self.modules = ['lammps']
@@ -51,7 +50,7 @@ class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
         self.time_limit = '20m'
-        self.variables = {
+        self.env_vars = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
 

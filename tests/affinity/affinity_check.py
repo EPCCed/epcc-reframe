@@ -4,6 +4,7 @@ import reframe.utility.sanity as sn
 # Test process/thread affinity. Based on test from CSCS.
 
 class AffinityTestBase(rfm.RegressionTest):
+    
     def __init__(self, variant):
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['*']
@@ -35,10 +36,13 @@ class AffinityTestBase(rfm.RegressionTest):
         ])
 
 
-@rfm.parameterized_test(['omp_bind_threads'])
+@rfm.simple_test
 class AffinityOMPTest(AffinityTestBase):
-    def __init__(self, variant):
-        super().__init__(variant)
+    
+    variant = parameter(['omp_bind_threads'])
+    
+    def __init__(self):
+        super().__init__(self.variant)
         self.descr = 'Checking core affinity for OMP threads.'
         self.cases = {
             'omp_bind_threads': {
@@ -50,31 +54,29 @@ class AffinityOMPTest(AffinityTestBase):
                 'OMP_PLACES': 'cores',
             },
         }
-        self.variant = variant
-        self.num_tasks = self.cases[variant]['num_tasks']
-        self.num_tasks_per_node = self.cases[variant]['num_tasks_per_node']
-        self.num_cpus_per_task = self.cases[variant]['num_cpus_per_task']
-        self.extra_resources = {
-                'qos': {'qos': 'standard'}
-        }
+        self.num_tasks = self.cases[self.variant]['num_tasks']
+        self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
+        self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']
+        self.extra_resources = {'qos': {'qos': 'standard'}}
 
     @run_before('run')
     def set_tasks_per_core(self):
         partname = self.current_partition.fullname
         self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task_%s' % partname]
         self.num_tasks = 1
-        self.variables  = {
+        self.env_vars = {
             'OMP_NUM_THREADS': str(self.num_cpus_per_task),
             'OMP_PLACES': self.cases[self.variant]['OMP_PLACES']
         }
 
 
-@rfm.parameterized_test(['fully_populated_nosmt'],
-                        ['fully_populated_smt'],
-                        ['single_process_per_numa'])
+@rfm.simple_test
 class AffinityMPITest(AffinityTestBase):
-    def __init__(self, variant):
-        super().__init__(variant)
+
+    variant = parameter(['fully_populated_nosmt','fully_populated_smt','single_process_per_numa'])
+
+    def __init__(self):
+        super().__init__(self.variant)
         self.descr = 'Checking core affinity for MPI processes.'
         self.valid_systems = ['archer2:compute']
         self.cases = {
@@ -100,10 +102,10 @@ class AffinityMPITest(AffinityTestBase):
                 'num_cpus_per_task': 16,
             },
         }
-        self.variant = variant
-        self.num_tasks = self.cases[variant]['num_tasks']
-        self.num_tasks_per_node = self.cases[variant]['num_tasks_per_node']
-        self.num_cpus_per_task = self.cases[variant]['num_cpus_per_task']
+        self.num_tasks = self.cases[self.variant]['num_tasks']
+        self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
+        self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']
+        self.extra_resources = {'qos': {'qos': 'standard'}}
 
     @run_before('run')
     def set_launcher(self):

@@ -37,6 +37,6 @@ class EnvironmentCheck(rfm.RunOnlyRegressionTest):
         self.tags = {'production', 'craype'}
 
     @property
-    @sn.sanity_function
+    @deferrable
     def env_module_patt(self):
         return r'^%s' % self.current_environ.name
