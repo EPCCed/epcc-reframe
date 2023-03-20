@@ -24,9 +24,7 @@ dimension       3
 boundary        p p p
 
 lattice         sc 6.000
-variable        box_length equal ${Z_LENGTH}
-region          box block 0 ${box_length} 0 ${box_length} 0 ${box_length}
-region          start_box block 0 ${X_LENGTH} 0 ${Y_LENGTH} 0 ${Z_LENGTH}
+region          box block 0 ${X_LENGTH} 0 ${Y_LENGTH} 0 ${Z_LENGTH}
 create_box      6 box bond/types 5               &
                       angle/types 7              &
                       dihedral/types 4           &
@@ -35,7 +33,7 @@ create_box      6 box bond/types 5               &
                       extra/angle/per/atom 6     &
                       extra/dihedral/per/atom 9
 molecule        CH3CH2OH data.ethanol
-create_atoms    0 region start_box mol CH3CH2OH 6871
+create_atoms    0 region box mol CH3CH2OH 6871
 
 ######################################################
 # Coefficients for bonds, angles, diheadrals & pairs #
