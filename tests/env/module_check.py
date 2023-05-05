@@ -13,7 +13,7 @@ from reframe.core.runtime import runtime
 class DefaultPrgEnvCheck(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.descr = 'Ensure PrgEnv-cray is loaded by default'
-        self.valid_prog_environs = ['builtin']
+        self.valid_prog_environs = ['Default']
         self.valid_systems = ['archer2:login']
         self.executable = 'module'
         self.executable_opts = ['-t', 'list']
