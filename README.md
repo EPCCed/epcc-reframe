@@ -1,20 +1,20 @@
-# EPCC Reframe
+# EPCC ReFrame
 
-Repository for Reframe configuration and tests for EPCC systems
+Repository for ReFrame configuration and tests for EPCC systems.
 
 ## Structure
 
   - `configuration/`: configuration files for different EPCC systems
   - `tests/`: test library. All tests should, wherever possible, be configured so that they can run on all systems
   
-## Modifications to reframe source
+## Modifications to ReFrame source
 
 
-## Archer2 test execition
+## ARCHER2 test execution
 
 ### Run all tests
 
-To run the full suite of tests on Archer2 run the following commands:
+To run the full suite of tests on ARCHER2, run the following commands:
 
 ```
 module load reframe
@@ -23,14 +23,13 @@ module load epcc-reframe
 epcc-reframe -r
 ```
 
-The final command is jsut a wrapper around reframe to call all the tests and use the Archer2 config. The `-r` is the run flag in reframe.
+The last command is just a wrapper around ReFrame to call all the tests and use the ARCHER2 configuration. The `-r` is the run flag in ReFrame.
 
 ### Run specific tests
 
-
 Alternatively you may only wish to run a subset of tests.
 
-Again load the modules to enable reframe.
+Again load the modules to enable ReFrame.
 
 ```
 module load reframe
@@ -49,8 +48,7 @@ To run all tests in a directory:
 reframe -C ${EPCC_REFRAME_CONFIG} -c *path-to-a-test-directory* -R -r
 ```
 
-Where `EPCC_REFRAME_CONFIG` is set by the epcc-reframe module and is the path for the Archer2 configuration.
-
+Where `EPCC_REFRAME_CONFIG` is set by the `epcc-reframe` module and is the path for the ARCHER2 configuration.
 
 ### Cirrus support
 
