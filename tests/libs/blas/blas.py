@@ -3,19 +3,23 @@ import reframe.utility.sanity as sn
 
 @rfm.simple_test
 class BlasTest(rfm.RegressionTest):
-    variant = parameter(['libsci', 'mkl'])
-    
+    variant = parameter(['mkl'])
+
     def __init__(self):
-        self.valid_systems = ['archer2']
-        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc']
+        self.valid_systems = ['archer2','cirrus']
+        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc','gnu','intel','gnumpi','intelmpi']
 
         if self.variant == 'mkl':
-            self.modules = ['mkl']
-            self.prebuild_cmds = ['module load mkl']
+            self.modules = ['intel-20.4/cmkl']
+            self.prebuild_cmds = ['module load intel-20.4/cmkl']
         else:
             self.prebuild_cmds = []
         self.build_system = 'Make'
-        self.build_system.makefile = f'Makefile.{self.variant}'
+       
+        if self.valid_systems == 'cirrus':
+            self.build_system.makefile = f'Makefile.{self.variant}.cirrus'
+        else:
+            self.build_system.makefile = f'Makefile.{self.variant}'
 
         self.executable = f'./dgemv_{self.variant}.x'
         self.executable_opts = ['3200','150','10000']
