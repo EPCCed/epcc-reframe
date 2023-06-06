@@ -14,8 +14,8 @@ class OSUBenchmarkTestBase(rfm.RunOnlyRegressionTest):
     '''Base class of OSU benchmarks runtime tests'''
 
     def __init__(self):
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
+        self.valid_systems = ['archer2:compute', 'cirrus:compute']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gnu','intel']
         self.sourcesdir = None
         self.num_tasks = 2
         self.num_tasks_per_node = 1
@@ -32,7 +32,7 @@ class OSUBenchmarkTestBase(rfm.RunOnlyRegressionTest):
 
 @rfm.simple_test
 class OSULatencyTest(OSUBenchmarkTestBase):
-    
+
     def __init__(self):
         super().__init__()
         self.descr = 'OSU latency test'
@@ -73,7 +73,7 @@ class OSUBandwidthTest(OSUBenchmarkTestBase):
 
 @rfm.simple_test
 class OSUAllreduceTest(OSUBenchmarkTestBase):
-    
+
     mpi_tasks = parameter(1 << i for i in range(1, 5))
 
     def __init__(self):
@@ -102,8 +102,8 @@ class OSUBuildTest(rfm.CompileOnlyRegressionTest):
 
     def __init__(self):
         self.descr = 'OSU benchmarks build test (currently fails with  Cray)'
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
+        self.valid_systems = ['archer2:compute','cirrus:compute']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gnu','intel']
         self.build_system = 'Autotools'
 
     @run_after('init')
@@ -128,11 +128,11 @@ class OSUBuildTest(rfm.CompileOnlyRegressionTest):
 
 @rfm.simple_test
 class OSUDownloadTest(rfm.RunOnlyRegressionTest):
-    
+
     def __init__(self):
         self.descr = 'OSU benchmarks download sources'
-        self.valid_systems = ['archer2:login']
-        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc']
+        self.valid_systems = ['archer2:login','cirrus:login']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gnu','intel']
         self.executable = 'wget'
         self.executable_opts = [
             'http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-5.6.2.tar.gz'  # noqa: E501
