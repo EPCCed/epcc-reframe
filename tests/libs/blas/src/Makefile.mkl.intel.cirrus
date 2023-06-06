@@ -3,12 +3,12 @@ MF      = Makefile.libsci
 SRC	= dgemv_benchmark.f90
 
 
-FC      = mpif90
-PP      = 
+FC      = ifort
+PP      =
 
 LDFLAGS =  -lmkl
 FFLAGS  =  -O3 $(PP)
-LIBS    = 
+LIBS    =
 
 EXE	= dgemv_mkl.x
 
@@ -28,5 +28,3 @@ $(OBJ): $(MF)
 
 clean:
 	rm -fr $(TMP) $(OBJ) $(EXE) core
-
-

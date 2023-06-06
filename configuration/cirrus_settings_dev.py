@@ -11,7 +11,7 @@ site_configuration = {
                     'descr': 'Login nodes',
                     'scheduler': 'local',
                     'launcher': 'local',
-                    'environs': ['gnu','gnumpi','intel','intelmpi'],
+                    'environs': ['gnu','intel'],
                 },
                 {
                    'name': 'compute',
@@ -20,7 +20,7 @@ site_configuration = {
                    'launcher': 'srun',
                    'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard'],
                    'max_jobs': 16,
-                   'environs': ['gnu','gnumpi','intel','intelmpi'],
+                   'environs': ['gnu','intel'],
                    'resources': [
                        {
                            'name': 'qos',
@@ -33,15 +33,15 @@ site_configuration = {
     ],
     'environments': [
         {
-            'name': 'gnu',
-            'modules': ['gcc'],
-            'cc': 'gcc',
-            'cxx': 'g++',
-            'ftn': 'gfortran',
-            'target_systems': ['cirrus']
-        },
+        #     'name': 'gnu',
+        #     'modules': ['gcc'],
+        #     'cc': 'gcc',
+        #     'cxx': 'g++',
+        #     'ftn': 'gfortran',
+        #     'target_systems': ['cirrus']
+        # },
         {
-            'name': 'gnumpi',
+            'name': 'gnu',
             'modules': ['gcc','mpt'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',
@@ -50,15 +50,15 @@ site_configuration = {
         },
 
         {
-           'name': 'intel',
-           'modules': ['intel-20.4/compilers'],
-           'cc': 'icc',
-           'cxx': 'icpc',
-           'ftn': 'ifort',
-           'target_systems': ['cirrus']
-       },
+       #     'name': 'intel',
+       #     'modules': ['intel-20.4/compilers'],
+       #     'cc': 'icc',
+       #     'cxx': 'icpc',
+       #     'ftn': 'ifort',
+       #     'target_systems': ['cirrus']
+       # },
         {
-            'name': 'intelmpi',
+            'name': 'intel',
             'modules': ['mpt','intel-20.4/compilers'],
             'cc': 'mpicc',
             'cxx': 'mpicxx',

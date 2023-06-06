@@ -7,7 +7,7 @@ class BlasTest(rfm.RegressionTest):
 
     def __init__(self):
         self.valid_systems = ['archer2','cirrus']
-        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc','gnu','intel','gnumpi','intelmpi']
+        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc','gnu','intel']
 
         if self.variant == 'mkl':
             self.modules = ['intel-20.4/cmkl']
@@ -15,9 +15,9 @@ class BlasTest(rfm.RegressionTest):
         else:
             self.prebuild_cmds = []
         self.build_system = 'Make'
-       
+
         if self.valid_systems == 'cirrus':
-            self.build_system.makefile = f'Makefile.{self.variant}.cirrus'
+            self.build_system.makefile = f'Makefile.{self.variant}.{self.valid_prog_environs}.cirrus'
         else:
             self.build_system.makefile = f'Makefile.{self.variant}'
 
@@ -37,10 +37,14 @@ class BlasTest(rfm.RegressionTest):
                 'archer2:compute': {'normal': (16.75, -0.15, 0.15, 'FLOP/s'),
                                     'transpose': (16.75, -0.15, 0.15, 'FLOP/s')},
                 'archer2:login': {'normal': (16.75, -0.15, 0.15, 'FLOP/s'),
-                                  'transpose': (16.75, -0.15, 0.15, 'FLOP/s')}
+                                  'transpose': (16.75, -0.15, 0.15, 'FLOP/s')},
+                'cirrus:compute': {'normal': (7.00, -0.15, 0.15, 'FLOP/s'),
+                                    'transpose': (8.00, -0.15, 0.15, 'FLOP/s')},
+                'cirrus:login': {'normal': (7.00, -0.15, 0.15, 'FLOP/s'),
+                                  'transpose': (8.00, -0.15, 0.15, 'FLOP/s')}
+
         }
         self.extra_resources = {
                 'qos': {'qos': 'standard'}
         }
         self.tags = {'performance','functionality','short'}
-
