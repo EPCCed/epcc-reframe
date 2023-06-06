@@ -85,7 +85,8 @@ reframe -C ${EPCC_REFRAME_CONFIG} -c tests/compile -r -R
 # Run the entire test suite:
 bin/epcc-reframe -r
 
-# NOTE: currently, the entire test suite only runs the compile and libs tests. The BLAS test needs to have the references updated. 
+# NOTE: currently, the entire test suite only runs the compile, libs and synth tests.
+# The BLAS test needs to have the references updated.
 ```
 
 
