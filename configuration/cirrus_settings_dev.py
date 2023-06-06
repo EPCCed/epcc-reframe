@@ -32,7 +32,7 @@ site_configuration = {
         }
     ],
     'environments': [
-        {
+        #{
         #     'name': 'gnu',
         #     'modules': ['gcc'],
         #     'cc': 'gcc',
@@ -49,7 +49,7 @@ site_configuration = {
             'target_systems': ['cirrus']
         },
 
-        {
+       #{
        #     'name': 'intel',
        #     'modules': ['intel-20.4/compilers'],
        #     'cc': 'icc',
