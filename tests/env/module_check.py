@@ -23,6 +23,18 @@ class DefaultPrgEnvCheck(rfm.RunOnlyRegressionTest):
 
 
 @rfm.simple_test
+class DefaultModuleCheck(rfm.RunOnlyRegressionTest):
+    def __init__(self):
+        self.descr = 'Ensure epcc/setup-env is loaded by default'
+        self.valid_prog_environs = ['Default']
+        self.valid_systems = ['cirrus:login']
+        self.executable = 'module'
+        self.executable_opts = ['-t', 'list']
+        self.maintainers = ['Eleanor Broadway']
+        self.sanity_patterns = sn.assert_found('setup-env', self.stdout)
+
+
+@rfm.simple_test
 class EnvironmentCheck(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.descr = 'Ensure programming environment is loaded correctly'

@@ -38,7 +38,14 @@ class StreamTest(rfm.RegressionTest):
                 'Scale': (199000, -0.05, 0.05, 'MB/s'),
                 'Add':   (215700, -0.05, 0.05, 'MB/s'),
                 'Triad': (219400, -0.05, 0.05, 'MB/s')
+            },
+            'cirrus:compute': {
+                'Copy':  (208600, -0.05, 0.05, 'MB/s'),
+                'Scale': (199000, -0.05, 0.05, 'MB/s'),
+                'Add':   (215700, -0.05, 0.05, 'MB/s'),
+                'Triad': (219400, -0.05, 0.05, 'MB/s')
             }
+
         }
 
         # System specific settings

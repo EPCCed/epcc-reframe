@@ -66,5 +66,12 @@ site_configuration = {
             'target_systems': ['cirrus']
         },
 
+        {
+            'name': 'Default',
+            'cc': 'gcc',
+            'target_systems': ['cirrus']
+        },
+
+
     ],
 }
