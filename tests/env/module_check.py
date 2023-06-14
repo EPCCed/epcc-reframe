@@ -43,8 +43,7 @@ class EnvironmentCheck(rfm.RunOnlyRegressionTest):
 
         self.executable = 'module'
         self.executable_opts = ['-t', 'list']
-        self.sanity_patterns = sn.assert_found(self.env_module_patt,
-                                               self.stderr)
+        self.sanity_patterns = sn.assert_found(self.env_module_patt,self.stderr)
         self.maintainers = ['Andy Turner']
         self.tags = {'production', 'craype'}
 
@@ -52,3 +51,27 @@ class EnvironmentCheck(rfm.RunOnlyRegressionTest):
     @deferrable
     def env_module_patt(self):
         return r'^%s' % self.current_environ.name
+
+@rfm.simple_test
+class EnvironmentCheckCirrus1(rfm.RunOnlyRegressionTest):
+    def __init__(self):
+        self.descr = 'Ensure programming environment is loaded correctly'
+        self.valid_systems = ['cirrus:login']
+        self.valid_prog_environs = ['gnu']
+        self.executable = 'module'
+        self.executable_opts = ['-t', 'list']
+        self.sanity_patterns = sn.assert_found('gcc', self.stdout)
+        self.maintainers = ['Eleanor Broadway']
+        self.tags = {'production'}
+
+@rfm.simple_test
+class EnvironmentCheckCirrus2(rfm.RunOnlyRegressionTest):
+    def __init__(self):
+        self.descr = 'Ensure programming environment is loaded correctly'
+        self.valid_systems = ['cirrus:login']
+        self.valid_prog_environs = ['intel']
+        self.executable = 'module'
+        self.executable_opts = ['-t', 'list']
+        self.sanity_patterns = sn.assert_found('intel', self.stdout)
+        self.maintainers = ['Eleanor Broadway']
+        self.tags = {'production'}

@@ -33,9 +33,9 @@ class MpiInitTest(rfm.RegressionTest):
     '''
 
     def __init__(self, require_version='>=2.14.0'):
-        self.valid_systems = ['archer2:compute']
+        self.valid_systems = ['archer2:compute','cirrus:compute']
         self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu',
-                                    'PrgEnv-aocc']
+                                    'PrgEnv-aocc','gnu','intel']
         self.build_system = 'SingleSource'
         self.sourcepath = 'mpi_init_thread.cpp'
         self.cppflags = {
@@ -71,8 +71,8 @@ class MpiInitTest(rfm.RegressionTest):
 @rfm.simple_test
 class MpiHelloTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-cray','PrgEnv-gnu','PrgEnv-aocc']
+        self.valid_systems = ['archer2:compute','cirrus:compute']
+        self.valid_prog_environs = ['PrgEnv-cray','PrgEnv-gnu','PrgEnv-aocc','gnu','intel']
 
         self.descr = 'MPI Hello World'
         self.sourcepath = 'mpi_helloworld.c'

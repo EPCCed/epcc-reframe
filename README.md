@@ -85,10 +85,7 @@ reframe -C ${EPCC_REFRAME_CONFIG} -c tests/compile -r -R
 # Run the entire test suite:
 bin/epcc-reframe -r
 
-# NOTE: currently, the entire test suite runs the compile, libs, synth, default modules
-# and known-issues tests.
-# The BLAS test needs to have the references updated.
-# The dstream test needs to have the references updated.
+# NOTE: currently the DSTREAM test case fails due to the reference.
 ```
 
 
