@@ -20,8 +20,8 @@ class xthiCompilationTest(reframe.CompileOnlyRegressionTest):
     """
 
     descr = "xthi compilation test"
-    valid_systems = ["archer2:login"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_systems = ["archer2:login",'cirrus:login']
+    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc",'gnu','intel']
     build_system = "Make"
 
     @run_after("init")
@@ -52,9 +52,24 @@ class xthiDownLoadTest(reframe.RunOnlyRegressionTest):
     """
 
     descr = "xthi git clone"
-    valid_systems = ["archer2:login"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_systems = ["archer2:login",'cirrus:login']
+    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc",'gnu','intel']
     executable = "git"
+    executable_opts = ["clone", repoURL]
+
+    @sanity_function
+    def sanity_check_download(self):
+
+        return sanity.assert_true(os.path.exists("xthi"))
+
+
+@reframe.simple_test
+class xthiSmokeTest(reframe.RunOnlyRegressionTest):
+
+    descr = "xthi compute test"
+    valid_systems = ['cirrus:compute']
+    valid_prog_environs = ['gnu','intel']
+    executable = "xthi"
     executable_opts = ["clone", repoURL]
 
     @sanity_function

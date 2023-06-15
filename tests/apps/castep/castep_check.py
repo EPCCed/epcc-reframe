@@ -9,7 +9,7 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
     def __init__(self, output_file):
         super().__init__()
 
-        self.valid_prog_environs = ['PrgEnv-gnu']
+        self.valid_prog_environs = ['PrgEnv-gnu','intel']
         self.executable = 'castep.mpi'
 
         self.keep_files = [output_file]
@@ -26,7 +26,7 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
         self.perf_patterns = {
             'runtime': sn.extractsingle(r'Total time\s+=\s+(?P<runtime>\S+)',
                                      output_file, 'runtime', float),
-            
+
             'calctime': sn.extractsingle(r'Calculation time\s+=\s+(?P<calctime>\S+)',
                                      output_file, 'calctime', float)
         }
@@ -44,7 +44,7 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
     def __init__(self):
         super().__init__('al3x3.castep')
 
-        self.valid_systems = ['archer2:compute']
+        self.valid_systems = ['archer2:compute','cirrus:compute']
         self.descr = 'CASTEP corrctness and performance test'
         self.executable_opts = ['al3x3']
 
@@ -58,11 +58,19 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
             'OMP_NUM_THREADS': str(self.num_cpus_per_task)
         }
 
+        if (self.current_system.name in ['cirrus']):
+           self.modules = ['castep/22.1.1']
+           self.num_tasks = 216
+           self.num_tasks_per_node = 36
+           self.num_cpus_per_task = 1
+           self.time_limit = '20m'
+        self.env_vars= {
+            'OMP_NUM_THREADS': str(self.num_cpus_per_task)
+        }
+
         self.reference = {
                 'archer2:compute': {
                     'calctime': (126, -0.1, 0.1, 's'),
                     'runtime': (132, -0.1, 0.1, 's')
                 }
         }
-
-
