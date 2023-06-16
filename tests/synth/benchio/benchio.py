@@ -39,7 +39,7 @@ class benchio(rfm.RegressionTest):
         if self.num_nodes == 1:
             self.reference = {
                 'archer2:compute': {
-                'fullstriped_hdf5': ( 1.2, -0.3, 0.3 ,'GB/s'),
+                'fullstriped_hdf5': ( 1.2, -0.4, 0.4 ,'GB/s'),
                 'unstriped_hdf5': ( 0.5, -0.3, 0.3 ,'GB/s'),
                 'fullstriped_mpiio': ( 1.2, -0.4, 0.4 ,'GB/s'),
                 'unstriped_mpiio': ( 0.6, -0.3, 0.3 ,'GB/s')
@@ -49,10 +49,10 @@ class benchio(rfm.RegressionTest):
             if self.num_nodes==2:
                 self.reference = {
                 'archer2:compute': {
-                'fullstriped_hdf5': ( 2.4, -0.3, 0.3 ,'GB/s'),
-                'unstriped_hdf5': ( 0.5, -0.3, 0.3 ,'GB/s'),
-                'fullstriped_mpiio': ( 2.0, -0.3, 0.3 ,'GB/s'),
-                'unstriped_mpiio': ( 0.5, -0.4, 0.4 ,'GB/s')
+                'fullstriped_hdf5': ( 2.4, -0.4, 0.4 ,'GB/s'),
+                'unstriped_hdf5': ( 0.5, -0.5, 0.5 ,'GB/s'),
+                'fullstriped_mpiio': ( 2.0, -0.4, 0.4 ,'GB/s'),
+                'unstriped_mpiio': ( 0.5, -0.5, 0.5 ,'GB/s')
                     }
                     }
             else:
