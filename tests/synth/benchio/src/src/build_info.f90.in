@@ -1,0 +1,5 @@
+
+module build_info
+    integer, parameter :: max_path_length = 1280
+    character(max_path_length) :: benchio_install_dir = "@CMAKE_INSTALL_PREFIX@"
+end module
