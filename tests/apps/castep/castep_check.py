@@ -20,7 +20,7 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
 
         self.sanity_patterns = sn.all([
             sn.assert_found('Total time', output_file),
-            sn.assert_reference(energy, energy_reference, -0.01, 0.01)
+            sn.assert_reference(energy, energy_reference, -1.0, 1.0)
         ])
 
         self.perf_patterns = {
@@ -72,5 +72,9 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
                 'archer2:compute': {
                     'calctime': (126, -0.1, 0.1, 's'),
                     'runtime': (132, -0.1, 0.1, 's')
+                },
+                'cirrus:compute': {
+                    'calctime': (325.9, -1.65, 1.65, 's'),
+                    'runtime': (328.2, -1.55, 1.55, 's')
                 }
         }

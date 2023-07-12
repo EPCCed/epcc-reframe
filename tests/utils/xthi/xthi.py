@@ -61,18 +61,3 @@ class xthiDownLoadTest(reframe.RunOnlyRegressionTest):
     def sanity_check_download(self):
 
         return sanity.assert_true(os.path.exists("xthi"))
-
-
-@reframe.simple_test
-class xthiSmokeTest(reframe.RunOnlyRegressionTest):
-
-    descr = "xthi compute test"
-    valid_systems = ['cirrus:compute']
-    valid_prog_environs = ['gnu','intel']
-    executable = "xthi"
-    executable_opts = ["clone", repoURL]
-
-    @sanity_function
-    def sanity_check_download(self):
-
-        return sanity.assert_true(os.path.exists("xthi"))

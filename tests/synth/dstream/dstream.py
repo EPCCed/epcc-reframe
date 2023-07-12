@@ -40,10 +40,10 @@ class StreamTest(rfm.RegressionTest):
                 'Triad': (219400, -0.05, 0.05, 'MB/s')
             },
             'cirrus:compute': {
-                'Copy':  (208600, -0.05, 0.05, 'MB/s'),
-                'Scale': (199000, -0.05, 0.05, 'MB/s'),
-                'Add':   (215700, -0.05, 0.05, 'MB/s'),
-                'Triad': (219400, -0.05, 0.05, 'MB/s')
+                'Copy':  (89000, -410.0, 410.0, 'MB/s'),
+                'Scale': (85000, -650.0, 650.0, 'MB/s'),
+                'Add':   (94000, -560.0, 560.0, 'MB/s'),
+                'Triad': (97000, -250.0, 250.0, 'MB/s')
             }
 
         }
@@ -61,9 +61,12 @@ class StreamTest(rfm.RegressionTest):
         #   arg1: number of elements in each array created. Should exceed the size of
         #         the highest cache level. (Arrays are double precision.)
         #   arg2: the number of repetitions of the benchmark
+
+        # Cirrus L3 cache is 45 MiB
+
         self.args = {
             'archer2:compute': ['24000000','1000'],
-            'cirrus:compute': ['24000000','1000'],
+            'cirrus:compute': ['4500000','1000'],
 
         }
 

@@ -69,5 +69,7 @@ class GromacsCPUCheck(GromacsBaseCheck):
 
         self.reference = {
                 'archer2:compute': {'perf': (22.4, -0.1, 0.1, 'ns/day'),
+            },
+                'cirrus:compute': {'perf': (3.21, -0.01, 0.01, 'ns/day'),
             }
         }

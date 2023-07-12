@@ -84,16 +84,15 @@ class AffinityOMPTest(AffinityTestBase):
 
 
 @rfm.simple_test
-class AffinityMPITest(AffinityTestBase):
+class AffinityMPITestARCHER2(AffinityTestBase):
 
     variant = parameter(['fully_populated_nosmt','fully_populated_smt','single_process_per_numa'])
 
     def __init__(self):
         super().__init__(self.variant)
         self.descr = 'Checking core affinity for MPI processes.'
-        self.valid_systems = ['archer2:compute','cirrus:compute']
-        if (self.current_system.name in ['archer2']):
-            self.cases = {
+        self.valid_systems = ['archer2:compute']
+        self.cases = {
                 'fully_populated_nosmt': {
                     'ref_archer2:compute': 'archer2_fully_populated_nosmt.txt',
                     'runopts_archer2:compute': ['--hint=nomultithread', '--distribution=block:block'],
@@ -116,9 +115,27 @@ class AffinityMPITest(AffinityTestBase):
                     'num_cpus_per_task': 16,
                 },
             }
+        self.num_tasks = self.cases[self.variant]['num_tasks']
+        self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
+        self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']
+        self.extra_resources = {'qos': {'qos': 'standard'}}
 
-        if (self.current_system.name in ['cirrus']):
-            self.cases = {
+    @run_before('run')
+    def set_launcher(self):
+        partname = self.current_partition.fullname
+        self.job.launcher.options = self.cases[self.variant]['runopts_%s' % partname]
+
+
+@rfm.simple_test
+class AffinityMPITestCirrus(AffinityTestBase):
+
+    variant = parameter(['fully_populated_nosmt'])
+
+    def __init__(self):
+        super().__init__(self.variant)
+        self.descr = 'Checking core affinity for MPI processes.'
+        self.valid_systems = ['cirrus:compute']
+        self.cases = {
                 'fully_populated_nosmt': {
                     'ref_cirrus:compute': 'cirrus_fully_populated_nosmt.txt',
                     'runopts_cirrus:compute': ['--hint=nomultithread', '--distribution=block:block'],
@@ -127,7 +144,6 @@ class AffinityMPITest(AffinityTestBase):
                     'num_cpus_per_task': 1,
                 },
             }
-
         self.num_tasks = self.cases[self.variant]['num_tasks']
         self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
         self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']

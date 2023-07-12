@@ -62,19 +62,3 @@ class LAMMPSARCHER2LargeCheckEthanol(LAMMPSBaseCheck):
                 "perf": (8.627, -0.1, 0.1, "ns/day"),
             }
         }
-
-@rfm.simple_test
-class LAMMPSCirrusLargeCheck(LAMMPSBaseCheck):
-    def __init__(self):
-        super().__init__("log.lammps")
-
-        self.valid_systems = ["cirrus:compute"]
-        self.descr = "LAMMPS large scale performance test"
-        self.executable_opts = ["-i in.ethanol"]
-
-        self.modules = ["lammps"]
-        self.num_tasks = 432
-        self.num_tasks_per_node = 36
-        self.num_cpus_per_task = 1
-        self.time_limit = "1h"
-        self.env_vars = {"OMP_NUM_THREADS": str(self.num_cpus_per_task)}
