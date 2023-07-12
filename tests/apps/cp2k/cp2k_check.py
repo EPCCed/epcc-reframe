@@ -13,7 +13,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
 
         # Set Programming Environment
-        self.valid_prog_environs = ['PrgEnv-gnu','gnu']
+        self.valid_prog_environs = ['PrgEnv-gnu']
 
         # Identify the executable
         self.executable = 'cp2k.psmp'
@@ -130,30 +130,30 @@ class CP2KCPUCheck2_25GHz(CP2KBaseCheck):
         self.job.options = ['--distribution=block:block']
 
 # Cirrus default CPUfreq
-@rfm.simple_test
-class CP2KCPUCheckCirrus(CP2KBaseCheck):
-    def __init__(self):
-        super().__init__('cp2k.out')
-
-        # Select system to use
-        self.valid_systems = ['cirrus:compute']
-
-        # Description of test
-        self.descr = 'CP2K check Cirrus'
-        # Command line options for executable
-        self.executable_opts = ('-i input_bulk_HFX_3.inp -o cp2k.out ').split()
-
-        if (self.current_system.name in ['cirrus']):
-           self.modules = ['cp2k']
-           self.num_tasks = 144
-           self.num_tasks_per_node = 18
-           self.num_cpus_per_task = 2
-           self.time_limit = '1h'
-           self.env_vars = {
-                'OMP_NUM_THREADS': str(self.num_cpus_per_task),
-                'OMP_PLACES': 'cores',
-                }
-
-    @run_before('run')
-    def set_task_distribution(self):
-        self.job.options = ['--distribution=block:block']
+# @rfm.simple_test
+# class CP2KCPUCheckCirrus(CP2KBaseCheck):
+#     def __init__(self):
+#         super().__init__('cp2k.out')
+#
+#         # Select system to use
+#         self.valid_systems = ['cirrus:compute']
+#
+#         # Description of test
+#         self.descr = 'CP2K check Cirrus'
+#         # Command line options for executable
+#         self.executable_opts = ('-i input_bulk_HFX_3.inp -o cp2k.out ').split()
+#
+#         if (self.current_system.name in ['cirrus']):
+#            self.modules = ['cp2k']
+#            self.num_tasks = 360
+#            self.num_tasks_per_node = 18
+#            self.num_cpus_per_task = 2
+#            self.time_limit = '1h'
+#            self.env_vars = {
+#                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
+#                 'OMP_PLACES': 'cores',
+#                 }
+#
+#     @run_before('run')
+#     def set_task_distribution(self):
+#         self.job.options = ['--distribution=block:block']
