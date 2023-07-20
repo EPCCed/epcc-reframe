@@ -11,10 +11,10 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
         #self.cpufreq = rfm.core.builtins.parameter(['1500000','2000000','2250000'])
 
-        
-        # Set Programming Environment 
+
+        # Set Programming Environment
         self.valid_prog_environs = ['PrgEnv-gnu']
-        
+
         # Identify the executable
         self.executable = 'cp2k.psmp'
 
@@ -25,7 +25,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
         energy = sn.extractsingle(r'ENERGY\| Total FORCE_EVAL \( QS \) energy \[a.u.\]:'
                                   r'\s+(?P<energy>\S+)',
                                   output_file, 'energy', float)
-        
+
         # Reference value to validate run with
         energy_reference = -870.934788
 
@@ -63,7 +63,7 @@ class CP2KCPUCheck2GHz(CP2KBaseCheck):
 
         # Select system to use
         self.valid_systems = ['archer2:compute']
-        
+
         # Description of test
         self.descr = 'CP2K check 2Ghz check'
         # Command line options for executable
@@ -84,20 +84,20 @@ class CP2KCPUCheck2GHz(CP2KBaseCheck):
            self.env_vars = {
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
                 'OMP_PLACES': 'cores',
-                'SLURM_CPU_FREQ_REQ': '2000000' 
+                'SLURM_CPU_FREQ_REQ': '2000000'
                 }
         # Performance test reference values
         self.reference = {
                 'archer2:compute': {'perf': (335, 12, 'seconds'),
                 }
             }
-    
+
     # Additiona
     @run_before('run')
     def set_task_distribution(self):
         self.job.options = ['--distribution=block:block']
 
-# 2.25 Ghz test  
+# 2.25 Ghz test
 
 @rfm.simple_test
 class CP2KCPUCheck2_25GHz(CP2KBaseCheck):
@@ -129,3 +129,31 @@ class CP2KCPUCheck2_25GHz(CP2KBaseCheck):
     def set_task_distribution(self):
         self.job.options = ['--distribution=block:block']
 
+# Cirrus default CPUfreq
+# @rfm.simple_test
+# class CP2KCPUCheckCirrus(CP2KBaseCheck):
+#     def __init__(self):
+#         super().__init__('cp2k.out')
+#
+#         # Select system to use
+#         self.valid_systems = ['cirrus:compute']
+#
+#         # Description of test
+#         self.descr = 'CP2K check Cirrus'
+#         # Command line options for executable
+#         self.executable_opts = ('-i input_bulk_HFX_3.inp -o cp2k.out ').split()
+#
+#         if (self.current_system.name in ['cirrus']):
+#            self.modules = ['cp2k']
+#            self.num_tasks = 360
+#            self.num_tasks_per_node = 18
+#            self.num_cpus_per_task = 2
+#            self.time_limit = '1h'
+#            self.env_vars = {
+#                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
+#                 'OMP_PLACES': 'cores',
+#                 }
+#
+#     @run_before('run')
+#     def set_task_distribution(self):
+#         self.job.options = ['--distribution=block:block']

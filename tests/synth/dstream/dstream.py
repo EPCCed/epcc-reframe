@@ -2,9 +2,9 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 
-# Distributed STREAM 
+# Distributed STREAM
 #
-# Test that runs STREAM in parallel to measure memory performance of many-core 
+# Test that runs STREAM in parallel to measure memory performance of many-core
 # compute nodes. The code used is a modified version of DitributedStream from
 # https://github.com/adrianjhpc/DistributedStream which was originally written
 # by Adrian Jackson, EPCC. The modification removed the dependence on the MXML
@@ -15,7 +15,7 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class StreamTest(rfm.RegressionTest):
     def __init__(self):
-        self.valid_systems = ['archer2:compute']
+        self.valid_systems = ['archer2:compute','cirrus:compute']
         self.valid_prog_environs = ['*']
         self.build_system = 'Make'
         self.executable = 'distributed_streams'
@@ -38,22 +38,36 @@ class StreamTest(rfm.RegressionTest):
                 'Scale': (199000, -0.05, 0.05, 'MB/s'),
                 'Add':   (215700, -0.05, 0.05, 'MB/s'),
                 'Triad': (219400, -0.05, 0.05, 'MB/s')
+            },
+            'cirrus:compute': {
+                'Copy':  (88898, -0.05, 0.05, 'MB/s'),
+                'Scale': (84743, -0.05, 0.05, 'MB/s'),
+                'Add':   (93845, -0.05, 0.05, 'MB/s'),
+                'Triad': (97291, -0.05, 0.05, 'MB/s'),
             }
+
         }
 
         # System specific settings
         self.ntasks = {
-            'archer2:compute': 128
+            'archer2:compute': 128,
+            'cirrus:compute': 36
         }
         self.ntasks_per_node = {
-            'archer2:compute': 128
+            'archer2:compute': 128,
+            'cirrus:compute': 36
         }
         # These are the arguments to DistributedStream itself:
         #   arg1: number of elements in each array created. Should exceed the size of
         #         the highest cache level. (Arrays are double precision.)
         #   arg2: the number of repetitions of the benchmark
+
+        # Cirrus L3 cache is 45 MiB
+
         self.args = {
             'archer2:compute': ['24000000','1000'],
+            'cirrus:compute': ['4500000','1000'],
+
         }
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
@@ -72,4 +86,3 @@ class StreamTest(rfm.RegressionTest):
                 'qos': {'qos': 'standard'}
         }
         self.executable_opts = args
-

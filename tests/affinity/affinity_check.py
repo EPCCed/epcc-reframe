@@ -4,9 +4,9 @@ import reframe.utility.sanity as sn
 # Test process/thread affinity. Based on test from CSCS.
 
 class AffinityTestBase(rfm.RegressionTest):
-    
+
     def __init__(self, variant):
-        self.valid_systems = ['archer2:compute']
+        self.valid_systems = ['archer2:compute','cirrus:compute']
         self.valid_prog_environs = ['*']
         self.build_system = "SingleSource"
         self.build_system.cflags = ['-fopenmp']
@@ -38,22 +38,35 @@ class AffinityTestBase(rfm.RegressionTest):
 
 @rfm.simple_test
 class AffinityOMPTest(AffinityTestBase):
-    
+
     variant = parameter(['omp_bind_threads'])
-    
+
     def __init__(self):
         super().__init__(self.variant)
         self.descr = 'Checking core affinity for OMP threads.'
-        self.cases = {
-            'omp_bind_threads': {
-                'ref_archer2:compute': 'archer2_numa_omp.txt',
-                'num_cpus_per_task_archer2:compute': 16,
-                'num_tasks': 8,
-                'num_tasks_per_node': 8,
-                'num_cpus_per_task': 16,
-                'OMP_PLACES': 'cores',
-            },
-        }
+        if (self.current_system.name in ['archer2']):
+            self.cases = {
+                'omp_bind_threads': {
+                    'ref_archer2:compute': 'archer2_numa_omp.txt',
+                    'num_cpus_per_task_archer2:compute': 16,
+                    'num_tasks': 8,
+                    'num_tasks_per_node': 8,
+                    'num_cpus_per_task': 16,
+                    'OMP_PLACES': 'cores',
+                },
+            }
+        # Each 18-core processor is a single NUMA region.
+        if (self.current_system.name in ['cirrus']):
+            self.cases = {
+                'omp_bind_threads': {
+                    'ref_cirrus:compute': 'cirrus_numa_omp.txt',
+                    'num_cpus_per_task_cirrus:compute': 18,
+                    'num_tasks': 2,
+                    'num_tasks_per_node': 2,
+                    'num_cpus_per_task': 18,
+                    'OMP_PLACES': 'cores',
+                },
+            }
         self.num_tasks = self.cases[self.variant]['num_tasks']
         self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
         self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']
@@ -71,7 +84,7 @@ class AffinityOMPTest(AffinityTestBase):
 
 
 @rfm.simple_test
-class AffinityMPITest(AffinityTestBase):
+class AffinityMPITestARCHER2(AffinityTestBase):
 
     variant = parameter(['fully_populated_nosmt','fully_populated_smt','single_process_per_numa'])
 
@@ -80,28 +93,28 @@ class AffinityMPITest(AffinityTestBase):
         self.descr = 'Checking core affinity for MPI processes.'
         self.valid_systems = ['archer2:compute']
         self.cases = {
-            'fully_populated_nosmt': {
-                'ref_archer2:compute': 'archer2_fully_populated_nosmt.txt',
-                'runopts_archer2:compute': ['--hint=nomultithread', '--distribution=block:block'],
-                'num_tasks': 128,
-                'num_tasks_per_node': 128,
-                'num_cpus_per_task': 1,
-            },
-            'fully_populated_smt': {
-                'ref_archer2:compute': 'archer2_fully_populated_smt.txt',
-                'runopts_archer2:compute': ['--ntasks=256', '--ntasks-per-node=256', '--hint=multithread', '--distribution=block:block'],
-                'num_tasks': 128,
-                'num_tasks_per_node': 128,
-                'num_cpus_per_task': 1,
-            },
-            'single_process_per_numa': {
-                'ref_archer2:compute': 'archer2_single_process_per_numa.txt',
-                'runopts_archer2:compute': ['--hint=nomultithread', '--distribution=block:block'],
-                'num_tasks': 8,
-                'num_tasks_per_node': 8,
-                'num_cpus_per_task': 16,
-            },
-        }
+                'fully_populated_nosmt': {
+                    'ref_archer2:compute': 'archer2_fully_populated_nosmt.txt',
+                    'runopts_archer2:compute': ['--hint=nomultithread', '--distribution=block:block'],
+                    'num_tasks': 128,
+                    'num_tasks_per_node': 128,
+                    'num_cpus_per_task': 1,
+                },
+                'fully_populated_smt': {
+                    'ref_archer2:compute': 'archer2_fully_populated_smt.txt',
+                    'runopts_archer2:compute': ['--ntasks=256', '--ntasks-per-node=256', '--hint=multithread', '--distribution=block:block'],
+                    'num_tasks': 128,
+                    'num_tasks_per_node': 128,
+                    'num_cpus_per_task': 1,
+                },
+                'single_process_per_numa': {
+                    'ref_archer2:compute': 'archer2_single_process_per_numa.txt',
+                    'runopts_archer2:compute': ['--hint=nomultithread', '--distribution=block:block'],
+                    'num_tasks': 8,
+                    'num_tasks_per_node': 8,
+                    'num_cpus_per_task': 16,
+                },
+            }
         self.num_tasks = self.cases[self.variant]['num_tasks']
         self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
         self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']
@@ -112,3 +125,31 @@ class AffinityMPITest(AffinityTestBase):
         partname = self.current_partition.fullname
         self.job.launcher.options = self.cases[self.variant]['runopts_%s' % partname]
 
+
+@rfm.simple_test
+class AffinityMPITestCirrus(AffinityTestBase):
+
+    variant = parameter(['fully_populated_nosmt'])
+
+    def __init__(self):
+        super().__init__(self.variant)
+        self.descr = 'Checking core affinity for MPI processes.'
+        self.valid_systems = ['cirrus:compute']
+        self.cases = {
+                'fully_populated_nosmt': {
+                    'ref_cirrus:compute': 'cirrus_fully_populated_nosmt.txt',
+                    'runopts_cirrus:compute': ['--hint=nomultithread', '--distribution=block:block'],
+                    'num_tasks': 36,
+                    'num_tasks_per_node': 36,
+                    'num_cpus_per_task': 1,
+                },
+            }
+        self.num_tasks = self.cases[self.variant]['num_tasks']
+        self.num_tasks_per_node = self.cases[self.variant]['num_tasks_per_node']
+        self.num_cpus_per_task = self.cases[self.variant]['num_cpus_per_task']
+        self.extra_resources = {'qos': {'qos': 'standard'}}
+
+    @run_before('run')
+    def set_launcher(self):
+        partname = self.current_partition.fullname
+        self.job.launcher.options = self.cases[self.variant]['runopts_%s' % partname]

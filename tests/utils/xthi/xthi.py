@@ -20,8 +20,8 @@ class xthiCompilationTest(reframe.CompileOnlyRegressionTest):
     """
 
     descr = "xthi compilation test"
-    valid_systems = ["archer2:login"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_systems = ["archer2:login",'cirrus:login']
+    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc",'gnu','intel']
     build_system = "Make"
 
     @run_after("init")
@@ -52,8 +52,8 @@ class xthiDownLoadTest(reframe.RunOnlyRegressionTest):
     """
 
     descr = "xthi git clone"
-    valid_systems = ["archer2:login"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_systems = ["archer2:login",'cirrus:login']
+    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc",'gnu','intel']
     executable = "git"
     executable_opts = ["clone", repoURL]
 

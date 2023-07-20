@@ -7,7 +7,7 @@ class LAMMPSBaseCheck(rfm.RunOnlyRegressionTest):
     def __init__(self, output_file):
         super().__init__()
 
-        self.valid_prog_environs = ["PrgEnv-gnu"]
+        self.valid_prog_environs = ["PrgEnv-gnu",'intel']
         self.executable = "lmp"
 
         self.keep_files = [output_file]
@@ -40,9 +40,9 @@ class LAMMPSBaseCheck(rfm.RunOnlyRegressionTest):
         self.extra_resources = {"qos": {"qos": "standard"}}
         self.tags = {"applications", "performance", "largescale"}
 
-
+# Needed to be renamed as was conflicting with test of same name in dipole_large.py
 @rfm.simple_test
-class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
+class LAMMPSARCHER2LargeCheckEthanol(LAMMPSBaseCheck):
     def __init__(self):
         super().__init__("log.lammps")
 
