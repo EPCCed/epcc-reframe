@@ -38,7 +38,7 @@ class LAMMPSBaseCheck(rfm.RunOnlyRegressionTest):
         self.strict_check = False
         self.use_multithreading = False
         self.extra_resources = {"qos": {"qos": "standard"}}
-        self.tags = {"applications", "performance", "largescale"}
+        self.tags = {"applications", "performance"}
 
 # Needed to be renamed as was conflicting with test of same name in dipole_large.py
 @rfm.simple_test
