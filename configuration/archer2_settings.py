@@ -18,9 +18,10 @@ site_configuration = {
                     'descr': 'Compute nodes',
                     'scheduler': 'slurm',
                     'launcher': 'srun',
-                    'access': ['--cpu-freq=2250000','--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=short'],
+                    'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=short'],
                     'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
-                    'max_jobs': 16
+                    'max_jobs': 16,
+                    'env_vars': ['SLURM_CPU_FREQ_REQ','2250000']
                 }
             ]
         }
