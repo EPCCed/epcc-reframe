@@ -23,7 +23,7 @@ class benchioSmallTest(rfm.RegressionTest):
     valid_systems = ['archer2:compute']
     valid_prog_environs = ['PrgEnv-gnu']
 
-    self.tags = {'performance','short','io'}
+    tags = {'performance','short','io'}
 
     num_nodes = parameter( [1,2] )
 
