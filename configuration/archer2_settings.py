@@ -21,7 +21,6 @@ site_configuration = {
                     'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=short'],
                     'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                     'max_jobs': 16,
-                    'env_vars': ['SLURM_CPU_FREQ_REQ','2250000']
                 }
             ]
         }
