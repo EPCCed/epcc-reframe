@@ -13,7 +13,8 @@ import json
 Benchio Input/Output test
 
 The test is parameterized on the folder where to write with parameter 'write_dir_prefix'. You might want to choose a folder for each filesystem.
-Currently test data is beeing writted in the z19 shared directory on all 4 work filesystems.
+Currently test data is being written in the z19 shared directory on all 4 work filesystems so this test must be run by a member of the z19
+project on ARCHER2.
 '''
 
 @rfm.simple_test
@@ -70,6 +71,7 @@ class benchio(rfm.RegressionTest):
         self.env_vars = {"OMP_NUM_THREADS": str(self.num_cpus_per_task)}
 
         self.prerun_cmds  = ['source create_striped_dirs.sh']
+        self.postrun_cmds  = ['source delete_dirs.sh']
         self.time_limit = '9m'
         self.build_system = 'CMake'
         self.build_system.ftn="ftn"
@@ -90,9 +92,6 @@ class benchio(rfm.RegressionTest):
         self.set_references_per_node()
 
         
-
-    
-
     @run_before('run')
     def setup_run(self):
         stagedir_name=os.path.split( self.stagedir )[-1]
