@@ -18,11 +18,12 @@ project on ARCHER2.
 '''
 
 @rfm.simple_test
-class benchio(rfm.RegressionTest):
+class benchioSmallTest(rfm.RegressionTest):
 
-    lang = parameter(['cpp'])
     valid_systems = ['archer2:compute']
     valid_prog_environs = ['PrgEnv-gnu']
+
+    self.tags = {'performance','short','io'}
 
     num_nodes = parameter( [1,2] )
 
