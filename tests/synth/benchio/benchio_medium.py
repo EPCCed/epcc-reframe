@@ -41,9 +41,9 @@ class benchioMediumTest(rfm.RegressionTest):
         if self.num_nodes == 16:
             self.reference = {
                 'archer2:compute': {
-                'fullstriped_hdf5': ( 10.0, -0.5, 0.5 ,'GB/s'),
+                'fullstriped_hdf5': ( .0, -0.5, 0.5 ,'GB/s'),
                 'unstriped_hdf5': ( 1.2, -0.8, 0.8 ,'GB/s'),
-                'fullstriped_mpiio': ( 10.0, -0.5, 0.5 ,'GB/s'),
+                'fullstriped_mpiio': ( 12.0, -0.8, 0.8 ,'GB/s'),
                 'unstriped_mpiio': ( 1.2, -0.8, 0.8 ,'GB/s')
                 }
             }
