@@ -96,7 +96,7 @@ contains
 
   end subroutine initbenchnode
 
-  subroutine bossdelete(filename, comm)
+  subroutine bossdelete(filename, comm, serialio)
 
     use mpi
 
@@ -104,13 +104,14 @@ contains
 
     character *(*) :: filename
     integer :: comm
-    
+    logical :: serialio    
+
     integer, parameter :: iounit = 15
     integer :: rank, ierr, stat
 
     call MPI_Comm_rank(comm, rank, ierr)
 
-    if (rank == 0) then
+    if (serialio .or. rank == 0) then
 
        open(unit=iounit, iostat=stat, file=filename, status='old')
        if (stat.eq.0) close(unit=iounit, status='delete')
