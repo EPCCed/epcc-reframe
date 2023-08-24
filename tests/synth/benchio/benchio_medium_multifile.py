@@ -25,7 +25,7 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
 
     tags = {'performance','short','io'}
 
-    num_nodes = parameter( [16] )
+    num_nodes = parameter( [16,32] )
 
     write_dir_prefix = parameter(
         [
@@ -39,6 +39,12 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
     def set_references_per_node(self):
 
         if self.num_nodes == 16:
+            self.reference = {
+                'archer2:compute': {
+                'unstriped_file': ( 180.0, -0.2, 0.2 ,'GiB/s')
+                }
+            }
+        elif self.num_nodes == 32:
             self.reference = {
                 'archer2:compute': {
                 'unstriped_file': ( 180.0, -0.2, 0.2 ,'GiB/s')
