@@ -27,7 +27,7 @@ program benchio
   character*(maxlen), dimension(numstriping) :: stripestring
   character*(maxlen) :: argstring
 
-  logical :: ioflag, stripeflag, globalflag
+  logical :: ioflag, stripeflag, globalflag, serialio
   logical, dimension(numiolayer)  :: doio
   logical, dimension(numstriping) :: dostripe
 
@@ -56,6 +56,7 @@ program benchio
 
   logical :: reorder = .false.
   logical, dimension(ndim) :: periods = [.false., .false., .false.]
+  
 
   double precision :: t0, t1, time, iorate, gibdata
 
@@ -294,7 +295,7 @@ program benchio
   do iolayer = 1, numiolayer
 
      if (.not. doio(iolayer)) cycle
-
+     
      if (rank == 0) then
         write(*,*)
         write(*,*) "------"
@@ -316,6 +317,8 @@ program benchio
      do istriping = 1, numstriping
 
         if (.not. dostripe(istriping)) cycle
+
+        serialio = .false.
 
         filename = trim(stripestring(istriping))//"/"//trim(iolayername(iolayer))
         suffix = ""
@@ -348,6 +351,7 @@ program benchio
 
         case(1:3)
            call serialwrite(filename, iodata, n1, n2, n3, iocomm)
+           serialio = .true.
 
         case(4)
            call mpiiowrite(filename, iodata, n1, n2, n3, iocomm)
@@ -395,7 +399,7 @@ program benchio
           call MPI_Barrier(comm, ierr)
         
         else
-           call bossdelete(filename, iocomm)
+           call bossdelete(filename, iocomm, serialio)
         endif
         
      end do
