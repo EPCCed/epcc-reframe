@@ -21,6 +21,7 @@ class OpenSBLIBaseCheck(rfm.RunOnlyRegressionTest):
         }
 
         self.maintainers = ['a.turner@epcc.ed.ac.uk']
+        self.tags = {'applications','performance','largescale'}
         self.strict_check = False
         self.use_multithreading = False
         self.extra_resources = {
@@ -31,6 +32,7 @@ class OpenSBLIBaseCheck(rfm.RunOnlyRegressionTest):
 class OpenSBLIARCHER2LargeCheck(OpenSBLIBaseCheck):
     def __init__(self):
 
+        super().__init__()
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-cray']
         self.descr = 'OpenSBLI large scale performance test'
@@ -48,4 +50,3 @@ class OpenSBLIARCHER2LargeCheck(OpenSBLIBaseCheck):
                     'perf': (0.013, -0.3, 0.3, 's/iter'),
                 }
         }
-        self.tags = {'applications','performance','largescale'}
