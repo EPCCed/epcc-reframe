@@ -43,7 +43,7 @@ class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
 
         self.valid_systems = ['archer2:compute']
         self.descr = 'LAMMPS large scale performance test'
-        self.executable_opts = ['in_2048.dipole']
+        self.executable_opts = ['-i in_2048.dipole']
 
         self.modules = ['lammps']
         self.num_tasks = 128 * 1024

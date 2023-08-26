@@ -6,10 +6,10 @@ import reframe.utility.sanity as sn
 
 
 class OpenSBLIBaseCheck(rfm.RunOnlyRegressionTest):
-    def __init__(self, output_file):
+    def __init__(self):
         super().__init__()
 
-        self.executable = 'OpenSBLI_mpi_mp'
+        self.executable = './OpenSBLI_mpi_mp'
 
         self.sanity_patterns = sn.all([
             sn.assert_found('Time taken for 1 iteration', self.stdout),
