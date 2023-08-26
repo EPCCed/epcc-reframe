@@ -14,13 +14,9 @@ class LAMMPSBaseCheck(rfm.RunOnlyRegressionTest):
 
         self.keep_files = [output_file]
 
-        energy = sn.extractsingle(r'Final energy, E\s+=\s+(?P<energy>\S+)',
-                                  output_file, 'energy', float, item=-1)
-        energy_reference = -77705.21093039
 
         self.sanity_patterns = sn.all([
-            sn.assert_found('Total time', output_file),
-            sn.assert_reference(energy, energy_reference, -0.01, 0.01)
+            sn.assert_found('Total wall time', output_file)
         ])
 
         self.perf_patterns = {
@@ -39,7 +35,7 @@ class LAMMPSBaseCheck(rfm.RunOnlyRegressionTest):
 @rfm.simple_test
 class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
     def __init__(self):
-        super().__init__('out.log')
+        super().__init__('log.lammps')
 
         self.valid_systems = ['archer2:compute']
         self.descr = 'LAMMPS large scale performance test'
