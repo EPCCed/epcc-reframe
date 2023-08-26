@@ -56,6 +56,6 @@ class LAMMPSARCHER2LargeCheck(LAMMPSBaseCheck):
         
         self.reference = {
                 'archer2:compute': {
-                    'perf': (190409.0, -0.1, 0.1, 'tau/day'),
+                    'perf': (260000.0, -0.1, 0.1, 'tau/day'),
                 }
         }
