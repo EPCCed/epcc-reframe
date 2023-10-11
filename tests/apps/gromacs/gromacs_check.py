@@ -9,7 +9,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
     def __init__(self, output_file):
         super().__init__()
 
-        self.valid_prog_environs = ["PrgEnv-gnu", "gnu"]
+        self.valid_prog_environs = ["PrgEnv-gnu", "gnu", "nvidia-mpi"]
         self.executable = "gmx_mpi"
 
         self.keep_files = [output_file]
@@ -90,6 +90,7 @@ class GromacsGPUCheck(GromacsBaseCheck):
 
         self.valid_systems = ["cirrus:compute-gpu"]
         self.descr = "GROMACS check GPU"
+        self.extra_resources = {"qos": {"qos": "gpu"}}
         self.executable_opts = (
             "mdrun -noconfout -s gmx_1400k_atoms.tpr "
         ).split()
@@ -100,10 +101,10 @@ class GromacsGPUCheck(GromacsBaseCheck):
             self.num_tasks_per_node = 4
             self.num_cpus_per_task = 10
             self.time_limit = "1h"
-        self.env_vars = {"OMP_NUM_THREADS": str(self.num_cpus_per_task)}
+        self.env_vars = {"OMP_NUM_THREADS": 1}
 
         self.reference = {
-            "cirrus:compute": {
+            "cirrus:compute-gpu": {
                 "perf": (10.21, -0.01, 0.01, "ns/day"),
             },
         }

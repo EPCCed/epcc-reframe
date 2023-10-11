@@ -40,7 +40,7 @@ site_configuration = {
                         "--partition=gpu",
                     ],
                     "max_jobs": 4,
-                    "environs": ["nvidia"],
+                    "environs": ["nvidia-mpi"],
                     "resources": [
                         {"name": "qos", "options": ["--qos={gpu}"]},
                     ],
