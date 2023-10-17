@@ -1,4 +1,5 @@
 import reframe as rfm
+
 from gromacs_base import GromacsBaseCheck
 
 
@@ -9,7 +10,10 @@ class GromacsGPUCheck(GromacsBaseCheck):
 
         self.valid_systems = ["cirrus:compute-gpu"]
         self.descr = "GROMACS check GPU"
-        self.extra_resources = {"qos": {"qos_id": "gpu"}, "gpu": {"num_gpus_per_node": '4'}}
+        self.extra_resources = {
+            "qos": {"qos_id": "gpu"},
+            "gpu": {"num_gpus_per_node": "4"},
+        }
         self.executable_opts = (
             "mdrun -noconfout -s gmx_1400k_atoms.tpr "
         ).split()
@@ -20,7 +24,12 @@ class GromacsGPUCheck(GromacsBaseCheck):
             #  self.num_tasks_per_node = 40
             #  self.num_cpus_per_task = 10
             self.time_limit = "1h"
-        self.env_vars = {"OMP_NUM_THREADS": 1}
+        self.env_vars = {
+            "OMP_NUM_THREADS": 1,
+            "PARAMS": "--ntasks=40 --tasks-per-node=40",
+        }
+
+        self.job.launcher.options.append("${PARAMS}")
 
         self.reference = {
             "cirrus:compute-gpu": {
