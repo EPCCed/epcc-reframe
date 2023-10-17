@@ -29,10 +29,12 @@ class GromacsGPUCheck(GromacsBaseCheck):
             "PARAMS": "--ntasks=40 --tasks-per-node=40",
         }
 
-        self.job.launcher.options.append("${PARAMS}")
-
         self.reference = {
             "cirrus:compute-gpu": {
                 "perf": (10.21, -0.01, 0.01, "ns/day"),
             },
         }
+
+    @run_before("run")
+    def set_cpu_binding(self):
+        self.job.launcher.options.append("${PARAMS}")
