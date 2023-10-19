@@ -1,5 +1,7 @@
 import reframe as rfm
+
 from gromacs_base import GromacsBaseCheck
+
 
 @rfm.simple_test
 class GromacsCPUCheck(GromacsBaseCheck):

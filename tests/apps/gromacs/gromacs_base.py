@@ -39,10 +39,9 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     @performance_function("ns/day", perf_key="perf")
     def extract_perf(self):
-        return sn.extractsingle(r"Performance:\s+(?P<perf>\S+)",
-                                self.output_file,
-                                "perf",
-                                float,
-                                )
-
-
+        return sn.extractsingle(
+            r"Performance:\s+(?P<perf>\S+)",
+            self.output_file,
+            "perf",
+            float,
+        )
