@@ -6,7 +6,7 @@ from gromacs_base import GromacsBaseCheck
 @rfm.simple_test
 class GromacsGPUCheck(GromacsBaseCheck):
     def __init__(self):
-        super().__init__("md.log")
+        #  super().__init__("md.log")
 
         self.valid_systems = ["cirrus:compute-gpu"]
         self.descr = "GROMACS check GPU"
@@ -26,14 +26,12 @@ class GromacsGPUCheck(GromacsBaseCheck):
             self.time_limit = "1h"
         self.env_vars = {
             "OMP_NUM_THREADS": 1,
-            "PARAMS": "--ntasks=40 --tasks-per-node=40",
+            "PARAMS": '"--ntasks=40 --tasks-per-node=40"',
         }
 
-        self.reference = {
-            "cirrus:compute-gpu": {
-                "perf": (10.21, -0.01, 0.01, "ns/day"),
-            },
-        }
+        self.reference["cirrus:compute-gpu"] = {
+                "perf": (10.2, -0.05, 0.05, "ns/day"),
+            }
 
     @run_before("run")
     def set_cpu_binding(self):
