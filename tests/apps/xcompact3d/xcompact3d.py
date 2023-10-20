@@ -42,7 +42,7 @@ class xcompact3dLargeTest(rfm.RegressionTest):
         ])
 
         self.perf_patterns = {
-            'steptime': sn.extractsingle(r'Averaged time per step (s):\s+(?P<steptime>\S+)',
+            'steptime': sn.extractsingle(r'Averaged time per step \(s\):\s+(?P<steptime>\S+)',
                                      self.stdout, 'steptime', float)
         }
         
