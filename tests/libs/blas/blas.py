@@ -8,7 +8,7 @@ class ARCHER2BlasTest(rfm.RegressionTest):
 
     def __init__(self):
         self.valid_systems = ['archer2']
-        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc']
+        self.valid_prog_environs = ['PrgEnv-gnu','PrgEnv-aocc','PrgEnv-cray']
 
         if self.variant == 'mkl':
             self.modules = ['mkl']
@@ -30,12 +30,20 @@ class ARCHER2BlasTest(rfm.RegressionTest):
                 'transpose': sn.extractsingle(r'Transpose\s+=\s+(?P<transpose>\S+)',
                                      self.stdout, 'transpose', float)
         }
-        self.reference = {
+        if self.variant == 'mkl':
+           self.reference = {
+                'archer2:compute': {'normal': (14.00, -0.15, 0.15, 'FLOP/s'),
+                                    'transpose': (14.00, -0.15, 0.15, 'FLOP/s')},
+                'archer2:login': {'normal': (14.00, -0.15, 0.15, 'FLOP/s'),
+                                  'transpose': (14.00, -0.15, 0.15, 'FLOP/s')}
+           }
+        else:
+           self.reference = {
                 'archer2:compute': {'normal': (16.75, -0.15, 0.15, 'FLOP/s'),
                                     'transpose': (16.75, -0.15, 0.15, 'FLOP/s')},
                 'archer2:login': {'normal': (16.75, -0.15, 0.15, 'FLOP/s'),
                                   'transpose': (16.75, -0.15, 0.15, 'FLOP/s')}
-        }
+           }
         self.env_vars = {
                 'SLURM_CPU_FREQ_REQ': '2250000'
         }
