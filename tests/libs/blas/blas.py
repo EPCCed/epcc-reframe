@@ -36,6 +36,9 @@ class ARCHER2BlasTest(rfm.RegressionTest):
                 'archer2:login': {'normal': (16.75, -0.15, 0.15, 'FLOP/s'),
                                   'transpose': (16.75, -0.15, 0.15, 'FLOP/s')}
         }
+        self.env_vars = {
+                'SLURM_CPU_FREQ_REQ': '2250000'
+        }
         self.extra_resources = {
                 'qos': {'qos': 'standard'}
         }
