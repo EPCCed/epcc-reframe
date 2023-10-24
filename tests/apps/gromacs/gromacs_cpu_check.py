@@ -49,8 +49,8 @@ class Gromacs1400katomsCheck(GromacsBaseCheck):
     )
 
     @run_after("init")
-    def setup_resources(self):
-        """sets up different resources for different systems"""
+    def setup_gpu_options(self):
+        """sets up different resources for gpu systems"""
         self.num_tasks = self.n_nodes * self.cores.get(
             self.current_partition.fullname, 1
         )
@@ -63,3 +63,10 @@ class Gromacs1400katomsCheck(GromacsBaseCheck):
             # Cirrus slurm demands it be done this way.
             # Trying to add $PARAMS directly to job.launcher.options fails.
             self.job.launcher.options.append("${PARAMS}")
+
+    @run_after("setup")
+    def setup_resources(self):
+        """sets up number of tasks"""
+        self.num_tasks = self.n_nodes * self.cores.get(
+            self.current_partition.fullname, 1
+        )
