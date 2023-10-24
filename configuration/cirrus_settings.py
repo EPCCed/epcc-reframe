@@ -45,7 +45,7 @@ site_configuration = {
                     "max_jobs": 4,
                     "environs": ["nvidia-mpi"],
                     "resources": [
-                        {"name": "qos", "options": ["--qos={qos_id}"]},
+                        {"name": "qos", "options": ["--qos={qos}"]},
                         {
                             "name": "gpu",
                             "options": ["--gres=gpu:{num_gpus_per_node}"],
