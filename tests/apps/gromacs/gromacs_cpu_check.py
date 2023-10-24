@@ -15,7 +15,7 @@ class Gromacs1400katomsCheck(GromacsBaseCheck):
     n_nodes = 4
     num_cpus_per_task = 1
     time_limit = "1h"
-    valid_systems = ["archer2:compute", "cirrus:compute"]
+    valid_systems = ["archer2:compute", "cirrus:compute", "cirrus:compute-gpu"]
 
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
 
