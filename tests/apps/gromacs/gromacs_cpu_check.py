@@ -48,7 +48,7 @@ class Gromacs1400katomsCheck(GromacsBaseCheck):
         },
     )
 
-    @run_before("init")
+    @run_after("init")
     def setup_resources(self):
         """sets up different resources for different systems"""
         self.num_tasks = self.n_nodes * self.cores.get(
