@@ -30,8 +30,8 @@ class GromacsGPUCheck(GromacsBaseCheck):
         }
 
         self.reference["cirrus:compute-gpu"] = {
-                "perf": (10.2, -0.05, 0.05, "ns/day"),
-            }
+            "perf": (10.2, -0.05, 0.05, "ns/day"),
+        }
 
     @run_before("run")
     def set_cpu_binding(self):
