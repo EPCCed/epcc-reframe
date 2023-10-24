@@ -1,12 +1,12 @@
-"""GROMACS 1400k atoms test module"""
+"""GROMACS 1400k atoms GPU test module"""
 import reframe as rfm
 
 from gromacs_base import GromacsBaseCheck
 
 
 @rfm.simple_test
-class Gromacs1400katomsCheck(GromacsBaseCheck):
-    """GROMACS 1400k atoms regression test"""
+class Gromacs1400katomsCheckGPU(GromacsBaseCheck):
+    """GROMACS 1400k atoms GPU regression test"""
 
     descr = "GROMACS check CPU"
     modules = ["gromacs/2022.3-gpu"]

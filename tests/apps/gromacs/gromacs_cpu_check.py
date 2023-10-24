@@ -1,12 +1,12 @@
-"""GROMACS 1400k atoms test module"""
+"""GROMACS 1400k atoms CPU test module"""
 import reframe as rfm
 
 from gromacs_base import GromacsBaseCheck
 
 
 @rfm.simple_test
-class Gromacs1400katomsCheck(GromacsBaseCheck):
-    """GROMACS 1400k atoms regression test"""
+class Gromacs1400katomsCheckCPU(GromacsBaseCheck):
+    """GROMACS 1400k atoms CPU regression test"""
 
     descr = "GROMACS check CPU"
     modules = ["gromacs"]
@@ -46,8 +46,6 @@ class Gromacs1400katomsCheck(GromacsBaseCheck):
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        print(self.n_nodes)
-        print(self.cores)
         self.num_tasks = self.n_nodes * self.cores.get(
             self.current_partition.fullname, 1
         )
