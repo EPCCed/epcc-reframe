@@ -64,7 +64,7 @@ class Gromacs1400katomsCheck(GromacsBaseCheck):
             # Trying to add $PARAMS directly to job.launcher.options fails.
             self.job.launcher.options.append("${PARAMS}")
 
-    @run_after("setup")
+    @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
         self.num_tasks = self.n_nodes * self.cores.get(
