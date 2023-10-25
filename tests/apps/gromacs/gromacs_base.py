@@ -13,7 +13,6 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     maintainers = ["a.turner@epcc.ed.ac.uk"]
     strict_check = True
-    use_multithreading = False
     tags = {"applications", "performance"}
 
     @sanity_function

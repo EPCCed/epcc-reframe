@@ -12,6 +12,7 @@ class Gromacs1400katomsCheckCPU(GromacsBaseCheck):
     modules = ["gromacs"]
     executable_opts = ("mdrun -noconfout -s gmx_1400k_atoms.tpr ").split()
     extra_resources = {"qos": {"qos": "standard"}}
+    n_nodes = 4
     num_cpus_per_task = 1
     time_limit = "1h"
     valid_systems = ["archer2:compute", "cirrus:compute"]
@@ -46,9 +47,9 @@ class Gromacs1400katomsCheckCPU(GromacsBaseCheck):
     def setup_nnodes(self):
         """sets up number of nodes"""
         if self.current_system.name in ["archer2"]:
-            self.n_nodes = 4
+            self.num_tasks_per_node = 128
         elif self.current_system.name in ["cirrus"]:
-            self.n_nodes = 8
+            self.num_tasks_per_node = 36
 
     @run_before("run")
     def setup_resources(self):
