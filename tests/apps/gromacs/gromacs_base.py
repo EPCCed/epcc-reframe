@@ -23,7 +23,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     @performance_function("kJ/mol", perf_key="energy")
     def extract_energy(self):
-        """Extract value of system energy for performance check"""
+        """Extracts value of system energy for performance check"""
         return sn.extractsingle(
             r"\s+Potential\s+Kinetic En\.\s+Total Energy"
             r"\s+Conserved En\.\s+Temperature\n"
