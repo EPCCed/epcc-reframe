@@ -16,13 +16,12 @@ class Gromacs1400katomsCheckGPU(GromacsBaseCheck):
         "gpu": {"num_gpus_per_node": "4"},
     }
     n_nodes = 1
-    num_cpus_per_task = 1
     time_limit = "1h"
     valid_systems = ["cirrus:compute-gpu"]
     num_tasks = None
 
     env_vars = {
-        "OMP_NUM_THREADS": str(num_cpus_per_task),
+        "OMP_NUM_THREADS": "1",
         "PARAMS": '"--ntasks=40 --tasks-per-node=40"',
     }
 
@@ -30,7 +29,7 @@ class Gromacs1400katomsCheckGPU(GromacsBaseCheck):
 
     reference = {
         "cirrus:compute-gpu": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol"),
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
             "performance": (10.2, -0.05, 0.05, "ns/day"),
         },
     }

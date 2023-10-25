@@ -23,15 +23,15 @@ class Gromacs1400katomsCheckCPU(GromacsBaseCheck):
 
     reference = {
         "cirrus:compute": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol"),
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
             "performance": (3.21, -0.01, 0.01, "ns/day"),
         },
         "archer2:compute": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol"),
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
             "performance": (22.4, -0.1, 0.1, "ns/day"),
         },
         "archer2-tds:compute": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol"),
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
         },
     }
 
