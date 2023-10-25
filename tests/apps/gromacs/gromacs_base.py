@@ -11,7 +11,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     keep_files = ["md.log"]
 
-    maintainers = ["a.turner@epcc.ed.ac.uk"]
+    maintainers = ["r.apostolo@epcc.ed.ac.uk"]
     strict_check = True
     tags = {"applications", "performance"}
 
