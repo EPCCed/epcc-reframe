@@ -1,1 +1,7 @@
 __pycache__
+output/
+perflogs/
+reframe.log
+reframe.out
+reframe_perf.out
+stage
