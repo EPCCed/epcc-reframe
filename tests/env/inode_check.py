@@ -9,7 +9,7 @@ import reframe.utility.sanity as sn
 from reframe.core.runtime import runtime
 
 @rfm.simple_test
-class inodeCheck(rfm.RunOnlyRegressionTest):
+class inodeCheckARCHER2(rfm.RunOnlyRegressionTest):
 
     filesystem = parameter(
         [
@@ -54,3 +54,40 @@ class inodeCheck(rfm.RunOnlyRegressionTest):
         totinode = sn.extractsingle(r'\S+MDT0001\S+\s+(\S+)\s+.*', self.stdout, 1, int)
         usedinode = sn.extractsingle(r'\S+MDT0001\S+\s+\S+\s+(\S+)\s+.*', self.stdout, 1, int)
         return 100.0 * usedinode/totinode
+
+@rfm.simple_test
+class inodeCheckCirrus(rfm.RunOnlyRegressionTest):
+
+    filesystem = parameter(
+        [
+        '/mnt/lustre/indy2fs'
+        ]
+    )
+
+    reference = {
+        'cirrus': {
+            'MDT-0':  (75, None, 0.0, '% inodes'),
+        }
+    }
+
+    descr = 'Check number of free inodes'
+    valid_prog_environs = ['gnu']
+    valid_systems = ['cirrus:login']
+    maintainers = ['Andy Turner']
+    tags = {'production'}
+
+    def __init__(self,**kwds):
+
+        self.executable = 'lfs df -i'
+        self.executable_opts = [self.filesystem]
+
+    @sanity_function
+    def validate_test(self):
+        return sn.assert_found('MDT:0', self.stdout)
+
+    @performance_function('% inodes', perf_key='MDT-0')
+    def extract_MDT0(self):
+        totinode = sn.extractsingle(r'\S+MDT0000\S+\s+(\S+)\s+.*', self.stdout, 1, int)
+        usedinode = sn.extractsingle(r'\S+MDT0000\S+\s+\S+\s+(\S+)\s+.*', self.stdout, 1, int)
+        return 100.0 * usedinode/totinode
+
