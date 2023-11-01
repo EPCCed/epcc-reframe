@@ -32,6 +32,7 @@ class benchioMediumTest(rfm.RegressionTest):
         '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
         '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
         '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work4/work/z19/z19/shared',
         '/mnt/lustre/a2fs-nvme/work/z19/z19/shared'
         ]
     )
