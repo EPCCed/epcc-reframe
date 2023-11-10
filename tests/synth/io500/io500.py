@@ -25,8 +25,9 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-gnu']
         self.sourcesdir = 'src'
-        self.num_tasks = 80
-        self.num_tasks_per_node = 8
+        self.num_tasks = 1
+        self.num_tasks_per_node = 1
+        self.time_limit = '10m'
         # For now just run the debug ini.
         self.config_file = "config-debug-run.ini"
         self.executable_opts = [self.config_file]
@@ -41,11 +42,13 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     @require_deps
     def set_executable(self, IO500BuildTest):
         stagedir = IO500BuildTest().stagedir
-        self.executable = os.path.join(stagedir, 'io500.sh')
+        # self.executable = os.path.join(stagedir, 'io500.sh')
+        self.executable = './io500.sh'
         # Delete everything *before* the warning in io500.sh, then prepend
         # what remains with the contents of io500-prologue.sh which create
         # the work directories and set their striping.
-        self.prerun_cmds = ["sed -i -n -E -e '/YOU SHOULD NOT EDIT/,$ p' " + self.executable,
+        self.prerun_cmds = ["cp -r " + stagedir + "/* .",
+                            "sed -i -n -E -e '/YOU SHOULD NOT EDIT/,$ p' " + self.executable,
                             "cat io500-prologue.sh " + self.executable + " > io500-fixed.sh",
                             "cp io500-fixed.sh " + self.executable]
 
