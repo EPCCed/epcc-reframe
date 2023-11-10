@@ -1,6 +1,7 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 import reframe.utility.udeps as udeps
+import reframe.utility.osext as osext
 from reframe.core.backends import getlauncher
 import os
 
@@ -16,6 +17,7 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-gnu']
         self.sourcesdir = 'src'
+        self.keep_files = ['results'] # retain the results directory
 
     @run_after('init')
     def set_dependencies(self):
@@ -40,6 +42,22 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     @run_after('setup')
     def set_launcher(self):
         self.job.launcher = getlauncher('local')()
+
+    # If the job fails, there may be a huge data directory left. We will attempt to
+    # clean this up manually independently of the cleanup stage which follows the
+    # performance stage.
+    @run_after('performance')
+    def data_cleanup(self):
+        with osext.change_dir(self.stagedir):
+            try:
+                # Attempt to munlink datafiles. This should be more efficient than rm on Lustre.
+                osext.run_command("find -P ./datafiles -type f -print0 -o -type l -print0 | xargs -0 munlink")
+            except:
+                # If munlink failed, rm the entirety of datafiles the old-fashioned way.
+                osext.run_command("rm -rf ./datafiles")
+            else:
+                # If munlink succeeded, delete the empty directories.
+                osext.run_command("find -P ./datafiles -type d -empty -delete")
 
     # Consider the test successful if 'Bandwidth' is found in output.
     @sanity_function
