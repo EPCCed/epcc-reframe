@@ -1,11 +1,3 @@
-# INSTRUCTIONS:
-#
-# The only parts of the script that may need to be modified are:
-#  - setup() to configure the binary locations and MPI parameters
-# Please visit https://vi4io.org/io500-info-creator/ to help generate the
-# "system-information.txt" file, by pasting the output of the info-creator.
-# This file contains details of your system hardware for your submission.
-
 # This script takes its parameters from the same .ini file as io500 binary.
 io500_ini="$1"          # You can set the ini file here
 io500_mpirun="srun"
