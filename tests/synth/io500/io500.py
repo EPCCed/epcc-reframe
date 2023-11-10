@@ -6,48 +6,31 @@ import os
 
 # IO500 I/O benchmark - https://io500.org/
 
-# TODO
-# This won't run -- there's likely no clean way to get the benchmark
-# test to run in the benchmark staging directory, while the executables
-# live in the build staging directory, as io500.sh relies on $PWD in the
-# 'YOU SHOULD NOT EDIT' portion.
-# Path forward is to either combine the build and benchmark tests, so
-# the run takes place automatically in the same staging directory, or
-# to manipulate the benchmark test to use the same staging directory
-# as the build test.
-
+# Base class for the IO500 Benchmark.
 @rfm.simple_test
 class IO500Benchmark(rfm.RunOnlyRegressionTest):
-    '''Run the IO500 benchmark.'''
+    '''Base IO500 benchmark class.'''
 
     def __init__(self):
         self.descr = 'Run the IO500 benchmark.'
         self.valid_systems = ['archer2:compute']
         self.valid_prog_environs = ['PrgEnv-gnu']
         self.sourcesdir = 'src'
-        self.num_tasks = 1
-        self.num_tasks_per_node = 1
-        self.time_limit = '10m'
-        # For now just run the debug ini.
-        self.config_file = "config-debug-run.ini"
-        self.executable_opts = [self.config_file]
 
     @run_after('init')
     def set_dependencies(self):
         self.depends_on('IO500BuildTest', udeps.by_env)
 
-    # Set the location of the io500.sh script and fix it for our use.
-    # Ideally, I would like the ReFrame job to contain all of the fixed io500.sh
-    # in place of the srun launch, but at the moment I can't see how to do that.
+    # Use the io500.sh script as our executable. Before using it, we need
+    # to fix the preamble to correctly create and stripe the run directories.
     @require_deps
     def set_executable(self, IO500BuildTest):
-        stagedir = IO500BuildTest().stagedir
-        # self.executable = os.path.join(stagedir, 'io500.sh')
         self.executable = './io500.sh'
-        # Delete everything *before* the warning in io500.sh, then prepend
-        # what remains with the contents of io500-prologue.sh which create
-        # the work directories and set their striping.
-        self.prerun_cmds = ["cp -r " + stagedir + "/* .",
+        # Copy the full contents of the build directory to the test stage
+        # directory. Then delete everything *before* the warning in io500.sh
+        # and prepend what remains with the contents of io500-prologue.sh
+        # which create the work directories and set their striping.
+        self.prerun_cmds = ["cp -r " + IO500BuildTest().stagedir + "/* .",
                             "sed -i -n -E -e '/YOU SHOULD NOT EDIT/,$ p' " + self.executable,
                             "cat io500-prologue.sh " + self.executable + " > io500-fixed.sh",
                             "cp io500-fixed.sh " + self.executable]
@@ -63,6 +46,30 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     def assert_io500(self):
         return sn.assert_found(r'Bandwidth', self.stdout)
 
+# Test a simple debug run. This should complete in a few minutes.
+@rfm.simple_test
+class IO500RunDebug(IO500Benchmark):
+    '''Run a small, fast IO500 debug test.'''
+    def __init__(self):
+        super().__init__()
+        self.num_tasks = 1
+        self.num_tasks_per_node = 1
+        self.time_limit = '10m'
+        self.executable_opts = ['config-debug-run.ini']
+
+# Test a large run that should be valid for submission to the IO500 list.
+@rfm.simple_test
+class IO500RunValid(IO500Benchmark):
+    '''Run a large scale IO500 test.'''
+    def __init__(self):
+        super().__init__()
+        self.num_tasks = 80
+        self.num_tasks_per_node = 8
+        self.time_limit = '10m'
+        self.executable_opts = ['config-valid.ini']
+
+# Build the IO500 benchmark from source.
+# This is a dependency of the run tests above.
 @rfm.simple_test
 class IO500BuildTest(rfm.CompileOnlyRegressionTest):
     '''Clone and build the IO500 source code.'''
