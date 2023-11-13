@@ -96,6 +96,7 @@ class IO500RunDebug(IO500Benchmark):
         self.executable_opts = ['config-debug-run.ini']
 
 # Test a large run that should be valid for submission to the IO500 list.
+# If the file system is under heavy load, this may take up to ~10 hours.
 @rfm.simple_test
 class IO500RunValid(IO500Benchmark):
     '''Run a large scale IO500 test.'''
@@ -103,5 +104,6 @@ class IO500RunValid(IO500Benchmark):
         super().__init__()
         self.num_tasks = 80
         self.num_tasks_per_node = 8
-        self.time_limit = '10m'
+        self.num_cpus_per_task = 16
+        self.time_limit = '10h'
         self.executable_opts = ['config-valid.ini']
