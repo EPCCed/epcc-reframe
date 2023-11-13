@@ -7,7 +7,26 @@ import os
 
 # IO500 I/O benchmark - https://io500.org/
 
-# Base class for the IO500 Benchmark.
+# Build the IO500 application from source.
+# This is a dependency of the run tests below.
+@rfm.simple_test
+class IO500BuildTest(rfm.CompileOnlyRegressionTest):
+    '''Clone and build the IO500 source code.'''
+
+    def __init__(self):
+        self.descr = 'Clone and build the IO500 benchmark.'
+        self.lang = ['c']
+        self.valid_systems = ['archer2:compute']
+        self.valid_prog_environs = ['PrgEnv-gnu']
+        self.build_system = 'CustomBuild'
+        self.sourcesdir = 'https://github.com/IO500/io500.git'
+        self.build_system.commands = ['./prepare.sh']
+
+    @sanity_function
+    def validate_build(self):
+        return sn.assert_not_found('error', self.stderr)
+
+# Base class for the IO500 Benchmark runs.
 @rfm.simple_test
 class IO500Benchmark(rfm.RunOnlyRegressionTest):
     '''Base IO500 benchmark class.'''
@@ -44,8 +63,8 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
         self.job.launcher = getlauncher('local')()
 
     # If the job fails, there may be a huge data directory left. We will attempt to
-    # clean this up manually independently of the cleanup stage which follows the
-    # performance stage.
+    # clean this up manually and independently of the cleanup stage which follows the
+    # performance stage (i.e. if the cleanup stage is not run).
     @run_after('performance')
     def data_cleanup(self):
         with osext.change_dir(self.stagedir):
@@ -64,7 +83,8 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     def assert_io500(self):
         return sn.assert_found(r'Bandwidth', self.stdout)
 
-# Test a simple debug run. This should complete in a few minutes.
+# Test a simple debug run with one task on one node.
+# This should complete in a few minutes.
 @rfm.simple_test
 class IO500RunDebug(IO500Benchmark):
     '''Run a small, fast IO500 debug test.'''
@@ -85,22 +105,3 @@ class IO500RunValid(IO500Benchmark):
         self.num_tasks_per_node = 8
         self.time_limit = '10m'
         self.executable_opts = ['config-valid.ini']
-
-# Build the IO500 benchmark from source.
-# This is a dependency of the run tests above.
-@rfm.simple_test
-class IO500BuildTest(rfm.CompileOnlyRegressionTest):
-    '''Clone and build the IO500 source code.'''
-
-    def __init__(self):
-        self.descr = 'Clone and build the IO500 benchmark.'
-        self.lang = ['c']
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu']
-        self.build_system = 'CustomBuild'
-        self.sourcesdir = 'https://github.com/IO500/io500.git'
-        self.build_system.commands = ['./prepare.sh']
-
-    @sanity_function
-    def validate_build(self):
-        return sn.assert_not_found('error', self.stderr)
