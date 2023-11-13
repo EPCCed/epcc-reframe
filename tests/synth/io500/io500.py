@@ -13,18 +13,21 @@ import os
 class IO500BuildTest(rfm.CompileOnlyRegressionTest):
     '''Clone and build the IO500 source code.'''
 
-    def __init__(self):
-        self.descr = 'Clone and build the IO500 benchmark.'
-        self.lang = ['c']
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu']
-        self.build_system = 'CustomBuild'
-        self.sourcesdir = 'https://github.com/IO500/io500.git'
+    descr = 'Clone and build the IO500 benchmark.'
+    lang = ['c']
+    valid_systems = ['archer2:compute']
+    valid_prog_environs = ['PrgEnv-gnu']
+    build_system = 'CustomBuild'
+    sourcesdir = 'https://github.com/IO500/io500.git'
+
+    @run_before('compile')
+    def set_build_command(self):
         self.build_system.commands = ['./prepare.sh']
 
     @sanity_function
     def validate_build(self):
         return sn.assert_not_found('error', self.stderr)
+
 
 # Base class for the IO500 Benchmark runs.
 @rfm.simple_test
