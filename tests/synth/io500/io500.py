@@ -98,12 +98,57 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     def assert_io500(self):
         return sn.assert_found(r'Bandwidth', self.stdout)
 
+    # Extract kIOPS performance for a single test.
+    @performance_function('kIOPS')
+    def extract_test_iops(self, kind='ior-easy-write'):
+        return sn.extractsingle(r'\[RESULT\]\s+' + kind + r'\s+(\d+\.?\d*)\s+', self.stdout, 1, float)
+
+    # Extract bandwidth performance for a single test.
+    @performance_function('GiB/s')
+    def extract_test_bw(self, kind='mdtest-easy-write'):
+        return sn.extractsingle(r'\[RESULT\]\s+' + kind + r'\s+(\d+\.?\d*)\s+', self.stdout, 1, float)
+
+    # Extract the final bandwidth score
+    @performance_function('GiB/s')
+    def extract_score_bw(self):
+        return sn.extractsingle(r'\[SCORE\s\]\s+Bandwidth\s+(\d+\.?\d*)\s+', self.stdout, 1, float)
+
+    # Extract the final IOPS score
+    @performance_function('kIOPS')
+    def extract_score_iops(self):
+        return sn.extractsingle(r'\[SCORE\s\].+IOPS\s+(\d+\.?\d*)\s+', self.stdout, 1, float)
+
+    # Extract the overall IO500 score.
+    @performance_function('')
+    def extract_score_total(self):
+        return sn.extractsingle(r'\[SCORE\s\].+TOTAL\s+(\d+\.?\d*)\s+', self.stdout, 1, float)
+
+    # Set the performance metrics we want to recover.
+    @run_before('performance')
+    def set_perf_variables(self):
+        self.perf_variables = {
+            'ior-easy-write': self.extract_test_bw('ior-easy-write'),
+            'mdtest-easy-write': self.extract_test_iops('mdtest-easy-write'),
+            'ior-hard-write': self.extract_test_bw('ior-hard-write'),
+            'mdtest-hard-write': self.extract_test_iops('mdtest-hard-write'),
+            'ior-easy-read': self.extract_test_bw('ior-easy-read'),
+            'mdtest-easy-stat': self.extract_test_iops('mdtest-easy-stat'),
+            'ior-hard-read': self.extract_test_bw('ior-hard-read'),
+            'mdtest-hard-stat': self.extract_test_iops('mdtest-hard-stat'),
+            'mdtest-easy-delete': self.extract_test_iops('mdtest-easy-delete'),
+            'mdtest-hard-read': self.extract_test_iops('mdtest-hard-read'),
+            'mdtest-hard-delete': self.extract_test_iops('mdtest-hard-delete'),
+            'BANDWIDTH': self.extract_score_bw(),
+            'IOPS': self.extract_score_iops(),
+            'TOTAL': self.extract_score_total()
+        }
+
 # Test a simple debug run with one task on one node.
 # This should complete in a few minutes.
 @rfm.simple_test
 class IO500RunDebug(IO500Benchmark):
     '''Run a small, fast IO500 debug test.'''
-    fs = parameter(['work2','work4'])
+    fs = parameter(['work4'])
 
     def __init__(self):
         super().__init__()
