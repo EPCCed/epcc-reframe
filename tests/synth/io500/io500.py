@@ -34,12 +34,11 @@ class IO500BuildTest(rfm.CompileOnlyRegressionTest):
 class IO500Benchmark(rfm.RunOnlyRegressionTest):
     '''Base IO500 benchmark class.'''
 
-    def __init__(self):
-        self.descr = 'Run the IO500 benchmark.'
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu']
-        self.sourcesdir = 'src'
-        self.keep_files = ['results'] # retain the results directory
+    descr = 'Run the IO500 benchmark.'
+    valid_systems = ['archer2:compute']
+    valid_prog_environs = ['PrgEnv-gnu']
+    sourcesdir = 'src'
+    keep_files = ['results'] # retain the results directory
 
     @run_after('init')
     def set_dependencies(self):
