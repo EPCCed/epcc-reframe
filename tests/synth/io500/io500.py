@@ -39,6 +39,12 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     valid_prog_environs = ['PrgEnv-gnu']
     sourcesdir = 'src'
     keep_files = ['results'] # retain the results directory
+    datadir = {'cwd':   './datafiles',
+               'work1': '/mnt/lustre/a2fs-work1/work/z19/z19/shared/io500-datafiles',
+               'work2': '/mnt/lustre/a2fs-work2/work/z19/z19/shared/io500-datafiles',
+               'work3': '/mnt/lustre/a2fs-work3/work/z19/z19/shared/io500-datafiles',
+               'work4': '/mnt/lustre/a2fs-work4/work/z19/z19/shared/io500-datafiles'}
+    fs = parameter(['work4'])
 
     @run_after('init')
     def set_dependencies(self):
@@ -58,6 +64,13 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
                             "cat io500-prologue.sh " + self.executable + " > io500-fixed.sh",
                             "cp io500-fixed.sh " + self.executable]
 
+    # Fix the path to the data directory in the .ini. The config is
+    # only staged during the run phase, so we make it a task to complete
+    # at the start of the job itself.
+    @run_before('run')
+    def fix_datadir(self):
+        self.prerun_cmds.append("sed -i 's+./datafiles+" + self.datadir[self.fs] + "+' " + self.executable_opts[0])
+
     # Override the job launch. We don't want to run srun within the job script.
     # Instead just run io500.sh which will do the parallel launch internally.
     @run_after('setup')
@@ -72,13 +85,13 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
         with osext.change_dir(self.stagedir):
             try:
                 # Attempt to munlink datafiles. This should be more efficient than rm on Lustre.
-                osext.run_command("find -P ./datafiles -type f -print0 -o -type l -print0 | xargs -0 munlink")
+                osext.run_command("find -P " + self.datadir[self.fs] + " -type f -print0 -o -type l -print0 | xargs -0 munlink")
             except:
                 # If munlink failed, rm the entirety of datafiles the old-fashioned way.
-                osext.run_command("rm -rf ./datafiles")
+                osext.run_command("rm -rf " + self.datadir[self.fs])
             else:
                 # If munlink succeeded, delete the empty directories.
-                osext.run_command("find -P ./datafiles -type d -empty -delete")
+                osext.run_command("find -P " + self.datadir[self.fs] + " -type d -empty -delete")
 
     # Consider the test successful if 'Bandwidth' is found in output.
     @sanity_function
@@ -90,6 +103,8 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
 @rfm.simple_test
 class IO500RunDebug(IO500Benchmark):
     '''Run a small, fast IO500 debug test.'''
+    fs = parameter(['work2','work4'])
+
     def __init__(self):
         super().__init__()
         self.num_tasks = 1
