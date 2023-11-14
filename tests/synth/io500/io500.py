@@ -117,6 +117,8 @@ class IO500RunDebug(IO500Benchmark):
 @rfm.simple_test
 class IO500RunValid(IO500Benchmark):
     '''Run a large scale IO500 test.'''
+    fs = parameter(['work4'])
+
     def __init__(self):
         super().__init__()
         self.num_tasks = 80
