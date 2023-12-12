@@ -40,10 +40,10 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     sourcesdir = 'src'
     keep_files = ['results'] # retain the results directory
     datadir = {'cwd':   './datafiles',
-               'work1': '/mnt/lustre/a2fs-work1/work/z19/z19/shared/io500-datafiles',
-               'work2': '/mnt/lustre/a2fs-work2/work/z19/z19/shared/io500-datafiles',
-               'work3': '/mnt/lustre/a2fs-work3/work/z19/z19/shared/io500-datafiles',
-               'work4': '/mnt/lustre/a2fs-work4/work/z19/z19/shared/io500-datafiles'}
+               'work1': '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
+               'work2': '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
+               'work3': '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
+               'work4': '/mnt/lustre/a2fs-work4/work/z19/z19/shared'}
     fs = parameter(['work4'])
 
     @run_after('init')
@@ -69,7 +69,9 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     # at the start of the job itself.
     @run_before('run')
     def fix_datadir(self):
-        self.prerun_cmds.append("sed -i 's+./datafiles+" + self.datadir[self.fs] + "+' " + self.executable_opts[0])
+        stagedir_name = os.path.split( self.stagedir )[-1]
+        rundir = os.path.join(self.datadir[self.fs],stagedir_name)
+        self.prerun_cmds.append("sed -i 's+./datafiles+" + rundir + "+' " + self.executable_opts[0])
 
     # Override the job launch. We don't want to run srun within the job script.
     # Instead just run io500.sh which will do the parallel launch internally.
