@@ -158,6 +158,7 @@ class IO500RunDebug(IO500Benchmark):
         self.num_tasks_per_node = 1
         self.time_limit = '10m'
         self.executable_opts = ['config-debug-run.ini']
+        self.tags = {'performance'}
 
 # Test a large run that should be valid for submission to the IO500 list.
 # If the file system is under heavy load, this may take up to ~10 hours.
@@ -173,6 +174,7 @@ class IO500RunValid(IO500Benchmark):
         self.num_cpus_per_task = 16
         self.time_limit = '10h'
         self.executable_opts = ['config-valid.ini']
+        self.tags = {'performance','largescale'}
 
 # Test a small run that should still indicate file system performance
 @rfm.simple_test
@@ -187,4 +189,5 @@ class IO500RunValid(IO500Benchmark):
         self.num_cpus_per_task = 16
         self.time_limit = '1h'
         self.executable_opts = ['config-small.ini']
+        self.tags = {'performance'}
 
