@@ -52,6 +52,24 @@ site_configuration = {
                         },
                     ],
                 },
+                {
+                    "name": "compute-gpu-default",
+                    "descr": "Compute nodes with GPUs but doesn't load nvcc compilers or mpi",
+                    "scheduler": "slurm",
+                    "launcher": "srun",
+                    "access": [
+                        "--partition=gpu",
+                    ],
+                    "max_jobs": 4,
+                    "environs": ["Default"],
+                    "resources": [
+                        {"name": "qos", "options": ["--qos={qos}"]},
+                        {
+                            "name": "gpu",
+                            "options": ["--gres=gpu:{num_gpus_per_node}"],
+                        },
+                    ],
+                },
             ],
         }
     ],
