@@ -178,7 +178,7 @@ class IO500RunValid(IO500Benchmark):
 
 # Test a small run that should still indicate file system performance
 @rfm.simple_test
-class IO500RunValid(IO500Benchmark):
+class IO500RunSmall(IO500Benchmark):
     '''Run a large scale IO500 test.'''
     fs = parameter(['work4'])
 

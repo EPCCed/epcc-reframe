@@ -47,7 +47,7 @@ class FileSystemMountCheckWork3(rfm.RunOnlyRegressionTest):
         self.sanity_patterns = sn.assert_found(r'^work3-test', self.stdout)
 
 @rfm.simple_test
-class FileSystemMountCheckWork3(rfm.RunOnlyRegressionTest):
+class FileSystemMountCheckWork4(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.descr = 'Ensure ARCHER2 work4 file system mounted'
         self.valid_prog_environs = ['PrgEnv-cray']
