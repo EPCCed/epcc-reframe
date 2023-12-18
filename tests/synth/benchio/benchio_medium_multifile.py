@@ -23,7 +23,7 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
     valid_systems = ['archer2:compute']
     valid_prog_environs = ['PrgEnv-gnu']
 
-    tags = {'performance','short','io'}
+    tags = {'performance','io'}
 
     num_nodes = parameter( [16,32] )
 
@@ -42,25 +42,25 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
         if self.num_nodes == 16:
             self.reference = {
                 'archer2:compute': {
-                'unstriped_file': ( 180.0, -0.2, 0.2 ,'GiB/s')
+                'unstriped_file': ( 50.0, -0.2, 0.2 ,'GiB/s')
                 }
             }
         elif self.num_nodes == 32:
             self.reference = {
                 'archer2:compute': {
-                'unstriped_file': ( 180.0, -0.2, 0.2 ,'GiB/s')
+                'unstriped_file': ( 50.0, -0.2, 0.2 ,'GiB/s')
                 }
             }
         else:
-            raise Exception("References are defined for calculations with 16 nodes")
+            raise Exception("References are defined for calculations with 16 or 32 nodes")
 
 
     def __init__(self,**kwds):
 
         super().__init__()
-        self.executable_opts = ('2048 2048 2048 global proc unstriped').split()
-        self.num_tasks = 128 * self.num_nodes
-        self.num_tasks_per_node = 128
+        self.executable_opts = ('8196 8196 8196 global proc unstriped').split()
+        self.num_tasks = 64 * self.num_nodes
+        self.num_tasks_per_node = 64
         self.num_cpus_per_task = 1
 
         self.env_vars = {
@@ -69,10 +69,10 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
 
         self.prerun_cmds  = ['source create_striped_dirs.sh']
         self.postrun_cmds  = ['source delete_dirs.sh']
-        self.time_limit = '20m'
+        self.time_limit = '3h'
         self.build_system = 'CMake'
         self.build_system.ftn="ftn"
-        self.modules = [  "cray-hdf5-parallel", "craype-network-ucx", "cray-mpich-ucx" ]
+        self.modules = [ "cray-hdf5-parallel" ]
         
 
         self.perf_patterns = {
