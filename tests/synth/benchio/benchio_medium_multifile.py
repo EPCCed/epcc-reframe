@@ -25,8 +25,6 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
 
     tags = {'performance','io'}
 
-    num_nodes = parameter( [16,32] )
-
     write_dir_prefix = parameter(
         [
         '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
@@ -36,51 +34,6 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
         '/mnt/lustre/a2fs-nvme/work/z19/z19/shared'
         ]
     )
-
-    def set_references_per_node(self):
-
-        if self.num_nodes == 16:
-            self.reference = {
-                'archer2:compute': {
-                'unstriped_file': ( 50.0, -0.2, 0.2 ,'GiB/s')
-                }
-            }
-        elif self.num_nodes == 32:
-            self.reference = {
-                'archer2:compute': {
-                'unstriped_file': ( 50.0, -0.2, 0.2 ,'GiB/s')
-                }
-            }
-        else:
-            raise Exception("References are defined for calculations with 16 or 32 nodes")
-
-
-    def __init__(self,**kwds):
-
-        super().__init__()
-        self.executable_opts = ('8196 8196 8196 global proc unstriped').split()
-        self.num_tasks = 64 * self.num_nodes
-        self.num_tasks_per_node = 64
-        self.num_cpus_per_task = 1
-
-        self.env_vars = {
-            "OMP_NUM_THREADS": str(self.num_cpus_per_task),
-        }
-
-        self.prerun_cmds  = ['source create_striped_dirs.sh']
-        self.postrun_cmds  = ['source delete_dirs.sh']
-        self.time_limit = '3h'
-        self.build_system = 'CMake'
-        self.build_system.ftn="ftn"
-        self.modules = [ "cray-hdf5-parallel" ]
-        
-
-        self.perf_patterns = {
-            'unstriped_file': sn.extractsingle(r'Writing to unstriped/proc000000\.dat\W*\n\W*time\W*=\W*\d+.\d*\W*,\W*rate\W*=\W*(\d+.\d*)', self.stdout, 1, float)
-        }
-
-        self.set_references_per_node()
-
         
     @run_before('run')
     def setup_run(self):
@@ -96,3 +49,78 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
     @sanity_function
     def assert_benchio(self):
         return sn.assert_found(r'Finished', self.stdout)
+
+    @performance_function('GiB/s')
+    def extract_write_bw(self):
+        return sn.extractsingle(r'Writing to unstriped/proc000000\.dat\W*\n\W*time\W*=\W*\d+.\d*\W*,\W*rate\W*=\W*(\d+.\d*)', self.stdout, 1, float)
+
+    @run_before('performance')
+    def set_perf_variables(self):
+        self.perf_variables = {
+            'unstriped_file': self.extract_write_bw('unstriped_file')
+        }
+
+@rfm.simple_test
+class BenchioFPP16Nodes(benchioMediumTestMultiFile):
+
+    def __init__(self):
+        super().__init__()
+
+        self.prerun_cmds  = ['source create_striped_dirs.sh']
+        self.postrun_cmds  = ['source delete_dirs.sh']
+        self.build_system = 'CMake'
+        self.build_system.ftn="ftn"
+        self.modules = [ "cray-hdf5-parallel" ]
+
+        self.num_nodes = 16
+        self.num_tasks = 2048
+        self.num_tasks_per_node = 128
+        self.num_cpus_per_task = 1
+        self.time_limit = '20m'
+
+        self.env_vars = {
+            "OMP_NUM_THREADS": str(self.num_cpus_per_task),
+        }
+
+        self.executable_opts = ('2048 2048 2048 global proc unstriped').split()
+        
+        self.tags = {'performance'}
+
+        self.reference = {
+            'archer2:compute': {
+            'unstriped_file': ( 150.0, -0.2, 0.2 ,'GiB/s')
+            }
+        }
+
+@rfm.simple_test
+class BenchioFPP32Nodes(benchioMediumTestMultiFile):
+
+    def __init__(self):
+        super().__init__()
+
+        self.prerun_cmds  = ['source create_striped_dirs.sh']
+        self.postrun_cmds  = ['source delete_dirs.sh']
+        self.build_system = 'CMake'
+        self.build_system.ftn="ftn"
+        self.modules = [ "cray-hdf5-parallel" ]
+
+        self.num_nodes = 32
+        self.num_tasks = 2048
+        self.num_tasks_per_node = 64
+        self.num_cpus_per_task = 2
+        self.time_limit = '20m'
+
+        self.env_vars = {
+            "OMP_NUM_THREADS": "1",
+            "SRUN_CPUS_PER_TASK": "2"
+        }
+
+        self.executable_opts = ('8192 8192 8192 global proc unstriped').split()
+        
+        self.tags = {'performance'}
+
+        self.reference = {
+            'archer2:compute': {
+            'unstriped_file': ( 50.0, -0.2, 0.2 ,'GiB/s')
+            }
+        }
