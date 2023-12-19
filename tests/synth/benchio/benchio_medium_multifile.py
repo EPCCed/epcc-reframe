@@ -25,11 +25,10 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
 
     tags = {'performance','io'}
 
-    prerun_cmds  = ['source create_striped_dirs.sh']
-    postrun_cmds  = ['source delete_dirs.sh']
-    build_system = 'CMake'
-    build_system.ftn="ftn"
-    modules = [ "cray-hdf5-parallel" ]
+    self.prerun_cmds  = ['source create_striped_dirs.sh']
+    self.postrun_cmds  = ['source delete_dirs.sh']
+    self.build_system = 'CMake'
+    self.modules = [ "cray-hdf5-parallel" ]
         
     @run_before('run')
     def setup_run(self):
