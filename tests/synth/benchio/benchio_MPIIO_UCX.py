@@ -18,7 +18,7 @@ project on ARCHER2.
 '''
 
 @rfm.simple_test
-class benchioMediumTestMultiFile(rfm.RegressionTest):
+class benchioMPIIOUCXBase(rfm.RegressionTest):
 
     valid_systems = ['archer2:compute']
     valid_prog_environs = ['PrgEnv-gnu']
@@ -46,17 +46,19 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
         return sn.assert_found(r'Finished', self.stdout)
 
     @performance_function('GiB/s')
-    def extract_write_bw(self):
-        return sn.extractsingle(r'Writing to unstriped/proc000000\.dat\W*\n\W*time\W*=\W*\d+.\d*\W*,\W*rate\W*=\W*(\d+.\d*)', self.stdout, 1, float)
+    def extract_write_bw(self, type='mpiio', striping='fullstriped'):
+        return sn.extractsingle(r'Writing to ' + striping + '/' + type + r'\.dat\W*\n\W*time\W*=\W*\d+.\d*\W*,\W*rate\W*=\W*(\d+.\d*)',
+                                self.stdout, 1, float)
 
     @run_before('performance')
     def set_perf_variables(self):
         self.perf_variables = {
-            'unstriped_file': self.extract_write_bw()
+            'fullstriped_mpiio': self.extract_write_bw(type='mpiio', striping='fullstriped')
+            'fullstriped_hdf5': self.extract_write_bw(type='hdf5', striping='fullstriped')
         }
 
 @rfm.simple_test
-class BenchioFPP16Nodes(benchioMediumTestMultiFile):
+class BenchioMPIIO16Nodes(benchioMPIIOUCXBase):
 
     write_dir_prefix = parameter(
         [
@@ -81,18 +83,13 @@ class BenchioFPP16Nodes(benchioMediumTestMultiFile):
             "OMP_NUM_THREADS": str(self.num_cpus_per_task),
         }
 
-        self.executable_opts = ('2048 2048 2048 global proc unstriped').split()
+        self.executable_opts = ('2048 2048 2048 global mpiio hdf5 fullstriped').split()
         
-        self.tags = {'performance'}
+        self.tags = {'performance', 'io'}
 
-        self.reference = {
-            'archer2:compute': {
-            'unstriped_file': ( 150.0, -0.2, 0.2 ,'GiB/s')
-            }
-        }
 
 @rfm.simple_test
-class BenchioFPP32Nodes(benchioMediumTestMultiFile):
+class BenchioMPIIO32Nodes(benchioMPIIOUCXBase):
 
     write_dir_prefix = parameter(
         [
@@ -111,19 +108,14 @@ class BenchioFPP32Nodes(benchioMediumTestMultiFile):
         self.num_tasks = 2048
         self.num_tasks_per_node = 64
         self.num_cpus_per_task = 2
-        self.time_limit = '20m'
+        self.time_limit = '2h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": "1",
             "SRUN_CPUS_PER_TASK": "2"
         }
 
-        self.executable_opts = ('8192 8192 8192 global proc unstriped').split()
+        self.executable_opts = ('8192 8192 8192 global mpiio hdf5 fullstriped').split()
         
-        self.tags = {'performance'}
+        self.tags = {'performance', 'io'}
 
-        self.reference = {
-            'archer2:compute': {
-            'unstriped_file': ( 50.0, -0.2, 0.2 ,'GiB/s')
-            }
-        }
