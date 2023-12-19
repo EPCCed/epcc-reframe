@@ -53,7 +53,7 @@ class benchioMPIIOUCXBase(rfm.RegressionTest):
     @run_before('performance')
     def set_perf_variables(self):
         self.perf_variables = {
-            'fullstriped_mpiio': self.extract_write_bw(type='mpiio', striping='fullstriped')
+            'fullstriped_mpiio': self.extract_write_bw(type='mpiio', striping='fullstriped'),
             'fullstriped_hdf5': self.extract_write_bw(type='hdf5', striping='fullstriped')
         }
 
