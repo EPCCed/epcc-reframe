@@ -25,15 +25,11 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
 
     tags = {'performance','io'}
 
-    write_dir_prefix = parameter(
-        [
-        '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
-        '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
-        '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
-        '/mnt/lustre/a2fs-work4/work/z19/z19/shared',
-        '/mnt/lustre/a2fs-nvme/work/z19/z19/shared'
-        ]
-    )
+    prerun_cmds  = ['source create_striped_dirs.sh']
+    postrun_cmds  = ['source delete_dirs.sh']
+    build_system = 'CMake'
+    build_system.ftn="ftn"
+    modules = [ "cray-hdf5-parallel" ]
         
     @run_before('run')
     def setup_run(self):
@@ -57,20 +53,24 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
     @run_before('performance')
     def set_perf_variables(self):
         self.perf_variables = {
-            'unstriped_file': self.extract_write_bw('unstriped_file')
+            'unstriped_file': self.extract_write_bw()
         }
 
 @rfm.simple_test
 class BenchioFPP16Nodes(benchioMediumTestMultiFile):
 
+    write_dir_prefix = parameter(
+        [
+        '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work4/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-nvme/work/z19/z19/shared'
+        ]
+    )
+
     def __init__(self):
         super().__init__()
-
-        self.prerun_cmds  = ['source create_striped_dirs.sh']
-        self.postrun_cmds  = ['source delete_dirs.sh']
-        self.build_system = 'CMake'
-        self.build_system.ftn="ftn"
-        self.modules = [ "cray-hdf5-parallel" ]
 
         self.num_nodes = 16
         self.num_tasks = 2048
@@ -95,14 +95,18 @@ class BenchioFPP16Nodes(benchioMediumTestMultiFile):
 @rfm.simple_test
 class BenchioFPP32Nodes(benchioMediumTestMultiFile):
 
+    write_dir_prefix = parameter(
+        [
+        '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work4/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-nvme/work/z19/z19/shared'
+        ]
+    )
+
     def __init__(self):
         super().__init__()
-
-        self.prerun_cmds  = ['source create_striped_dirs.sh']
-        self.postrun_cmds  = ['source delete_dirs.sh']
-        self.build_system = 'CMake'
-        self.build_system.ftn="ftn"
-        self.modules = [ "cray-hdf5-parallel" ]
 
         self.num_nodes = 32
         self.num_tasks = 2048
