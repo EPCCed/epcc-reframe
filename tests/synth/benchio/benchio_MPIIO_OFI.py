@@ -94,7 +94,7 @@ class BenchioMPIIOOFI16Nodes(benchioMPIIOOFIBase):
         self.tags = {'performance', 'io'}
 
 @rfm.simple_test
-class BenchioMPIIOUCXOpt16Nodes(benchioMPIIOUCXBase):
+class BenchioMPIIOOFIOpt16Nodes(benchioMPIIOOFIBase):
 
     write_dir_prefix = parameter(
         [
