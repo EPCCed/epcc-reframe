@@ -50,13 +50,14 @@ class benchioMediumTestMultiFile(rfm.RegressionTest):
         return sn.extractsingle(r'Writing to unstriped/proc000000\.dat\W*\n\W*time\W*=\W*\d+.\d*\W*,\W*rate\W*=\W*(\d+.\d*)', self.stdout, 1, float)
 
     @performance_function('s')
-    def extract_write_bw(self):
+    def extract_write_time(self):
         return sn.extractsingle(r'Writing to unstriped/proc000000\.dat\W*\n\W*time\W*=\W*(\d+.\d*)\W*,\W*rate\W*=\W*\d+.\d*', self.stdout, 1, float)
 
     @run_before('performance')
     def set_perf_variables(self):
         self.perf_variables = {
-            'unstriped_file': self.extract_write_bw()
+            'unstriped_file_bw': self.extract_write_bw(),
+            'unstriped_file_time': self.extract_write_time()
         }
 
 @rfm.simple_test

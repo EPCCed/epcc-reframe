@@ -51,15 +51,17 @@ class benchioMPIIOUCXBase(rfm.RegressionTest):
                                 self.stdout, 1, float)
 
     @performance_function('s')
-    def extract_write_bw(self, type='mpiio', striping='fullstriped'):
+    def extract_write_time(self, type='mpiio', striping='fullstriped'):
         return sn.extractsingle(r'Writing to ' + striping + '/' + type + r'\.dat\W*\n\W*time\W*=\W*(\d+.\d*)\W*,\W*rate\W*=\W*\d+.\d*',
                                 self.stdout, 1, float)
 
     @run_before('performance')
     def set_perf_variables(self):
         self.perf_variables = {
-            'fullstriped_mpiio': self.extract_write_bw(type='mpiio', striping='fullstriped'),
-            'fullstriped_hdf5': self.extract_write_bw(type='hdf5', striping='fullstriped')
+            'fullstriped_mpiio_bw': self.extract_write_bw(type='mpiio', striping='fullstriped'),
+            'fullstriped_mpiio_time': self.extract_write_time(type='mpiio', striping='fullstriped'),
+            'fullstriped_hdf5_bw': self.extract_write_bw(type='hdf5', striping='fullstriped'),
+            'fullstriped_hdf5_time': self.extract_write_time(type='hdf5', striping='fullstriped'),
         }
 
 @rfm.simple_test
