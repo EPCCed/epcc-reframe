@@ -45,6 +45,8 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
                'work3': '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
                'work4': '/mnt/lustre/a2fs-work4/work/z19/z19/shared'}
 
+    modules = [ "craype-network-ucx", "cray-mpich-ucx" ]
+
     @run_after('init')
     def set_dependencies(self):
         self.depends_on('IO500BuildTest', udeps.by_env)
@@ -156,7 +158,16 @@ class IO500RunDebug(IO500Benchmark):
         self.num_tasks = 1
         self.num_tasks_per_node = 1
         self.time_limit = '10m'
+
+        self.env_vars = {
+            "OMP_NUM_THREADS": "1",
+            "SRUN_CPUS_PER_TASK": "16",
+            "FI_OFI_RXM_SAR_LIMIT": "64K",
+            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4"
+        }
+
         self.executable_opts = ['config-debug-run.ini']
+
         self.tags = {'performance'}
 
 # Test a large run that should be valid for submission to the IO500 list.
@@ -172,7 +183,16 @@ class IO500RunValid(IO500Benchmark):
         self.num_tasks_per_node = 8
         self.num_cpus_per_task = 16
         self.time_limit = '10h'
+
+        self.env_vars = {
+            "OMP_NUM_THREADS": "1",
+            "SRUN_CPUS_PER_TASK": "16",
+            "FI_OFI_RXM_SAR_LIMIT": "64K",
+            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4"
+        }
+
         self.executable_opts = ['config-valid.ini']
+        
         self.tags = {'performance','largescale'}
 
 # Test a small run that should still indicate file system performance
@@ -187,6 +207,15 @@ class IO500RunSmall(IO500Benchmark):
         self.num_tasks_per_node = 8
         self.num_cpus_per_task = 16
         self.time_limit = '6h'
+
+        self.env_vars = {
+            "OMP_NUM_THREADS": "1",
+            "SRUN_CPUS_PER_TASK": "16",
+            "FI_OFI_RXM_SAR_LIMIT": "64K",
+            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4"
+        }
+
         self.executable_opts = ['config-small.ini']
+        
         self.tags = {'performance'}
 
