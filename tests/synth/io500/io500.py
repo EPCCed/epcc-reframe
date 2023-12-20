@@ -203,7 +203,7 @@ class IO500RunSmall(IO500Benchmark):
 
     def __init__(self):
         super().__init__()
-        self.num_tasks = 80
+        self.num_tasks = 40
         self.num_tasks_per_node = 8
         self.num_cpus_per_task = 16
         self.time_limit = '6h'
