@@ -186,7 +186,7 @@ class IO500RunSmall(IO500Benchmark):
         self.num_tasks = 80
         self.num_tasks_per_node = 8
         self.num_cpus_per_task = 16
-        self.time_limit = '1h'
+        self.time_limit = '6h'
         self.executable_opts = ['config-small.ini']
         self.tags = {'performance'}
 
