@@ -44,7 +44,6 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
                'work2': '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
                'work3': '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
                'work4': '/mnt/lustre/a2fs-work4/work/z19/z19/shared'}
-    fs = parameter(['work4'])
 
     @run_after('init')
     def set_dependencies(self):
@@ -180,7 +179,7 @@ class IO500RunValid(IO500Benchmark):
 @rfm.simple_test
 class IO500RunSmall(IO500Benchmark):
     '''Run a large scale IO500 test.'''
-    fs = parameter(['work4'])
+    fs = parameter(['work2'])
 
     def __init__(self):
         super().__init__()
