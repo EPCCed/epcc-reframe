@@ -72,7 +72,7 @@ class benchioSmallTest(rfm.RegressionTest):
 
         self.env_vars = {"OMP_NUM_THREADS": str(self.num_cpus_per_task)}
 
-        self.prerun_cmds  = ['source create_striped_dirs.sh']
+        self.prerun_cmds  = ['source create_striped_dirs.sh', 'module remove darshan']
         self.postrun_cmds  = ['source delete_dirs.sh']
         self.time_limit = '9m'
         self.build_system = 'CMake'

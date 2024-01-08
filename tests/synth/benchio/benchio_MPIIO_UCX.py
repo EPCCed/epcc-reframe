@@ -25,7 +25,7 @@ class benchioMPIIOUCXBase(rfm.RegressionTest):
 
     tags = {'performance','io'}
 
-    prerun_cmds  = ['source create_striped_dirs.sh']
+    prerun_cmds  = ['source create_striped_dirs.sh', 'module remove darshan']
     postrun_cmds  = ['source delete_dirs.sh']
     build_system = 'CMake'
     modules = [ "cray-hdf5-parallel", "craype-network-ucx", "cray-mpich-ucx" ]
