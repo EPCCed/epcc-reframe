@@ -193,7 +193,7 @@ class IO500RunValid(IO500Benchmark):
 
         self.executable_opts = ['config-valid.ini']
         
-        self.tags = {'performance','largescale'}
+        self.tags = {'performance','largeio'}
 
 # Test a small run that should still indicate file system performance
 @rfm.simple_test
