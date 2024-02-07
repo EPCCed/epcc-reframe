@@ -27,9 +27,9 @@ base_k8s_pod = {
                 "args": [
                     "---ADD-ARGS---"
                 ],
-                "envs": [
-                    {"name": "OMP_NUM_THREADS", "value": "4"},
-                ]
+                "env": [
+                    {"name": "OMP_NUM_THREADS", "value": "4"}
+                ],
                 "resources": {
                     "requests": {
                         "cpu": 16,
@@ -93,7 +93,7 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     @run_after("init")
     def executable_setup(self):
         random.seed(f"{self.num_gpus}-{self.node_type}")
-        self.job_name = f"mlperf-resnet-{self.num_gpus}-{self.node_type}-{''.join(random.choices(string.ascii_lowercase, k=4))}-"
+        self.job_name = f"mlperf-resnet-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=4))}-"
         pod_info = base_k8s_pod
         pod_info["metadata"]["generateName"] = self.job_name
         pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1] # remove '...-' at the end of str

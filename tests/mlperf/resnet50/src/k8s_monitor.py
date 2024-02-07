@@ -35,7 +35,6 @@ def main(base_pod_name, namespace, pod_yaml):
                     time.sleep(60)
                     continue
             break
-                
         
         pods = v1.list_namespaced_pod(namespace)
         pod_names = [pod.metadata.name for pod in pods.items]

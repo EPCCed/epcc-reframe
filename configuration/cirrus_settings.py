@@ -141,6 +141,7 @@ site_configuration = {
     "logging": [
         {
             "level": "debug",
+            "perflog_compat": True,
             "handlers": [
                 {
                     "type": "stream",

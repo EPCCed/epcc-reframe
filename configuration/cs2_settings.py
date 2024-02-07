@@ -13,7 +13,12 @@ site_configuration = {
                     "launcher": "local",
                     "max_jobs": 1,
                     "environs": ["Default"],
-                    "access": ["--gres=cs:1"]
+                    "resources": [
+                        {
+                            "name": "cs",
+                            "options": ["--gres=cs:{num_csx}"],
+                        },
+                    ],
                 }
             ],
         }
