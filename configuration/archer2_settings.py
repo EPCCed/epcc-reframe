@@ -21,6 +21,21 @@ site_configuration = {
                     'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=standard'],
                     'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                     'max_jobs': 16,
+                },
+                {
+                    "name": "compute-gpu",
+                    "descr": "Compute nodes with AMD GPUs",
+                    "scheduler": "slurm",
+                    'launcher': 'srun',
+                    'access': ['--hint=nomultithread','--distribution=block:block','--partition=gpu'],
+                    'environs': ['rocm-PrgEnv-gnu','rocm-PrgEnv-cray','rocm-PrgEnv-aocc'],
+                    "resources": [
+                        {"name": "qos", "options": ["--qos={qos}"]},
+                        {
+                            "name": "gpu",
+                            "options": ["--gres=gpu:{num_gpus_per_node}"],
+                        },
+                    ],
                 }
             ]
         }
@@ -44,6 +59,30 @@ site_configuration = {
         },
         {
             'name': 'PrgEnv-aocc',
+            'modules': ['PrgEnv-aocc'],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'rocm-PrgEnv-gnu',
+            'modules': ['PrgEnv-gnu', "rocm", "craype-accel-amd-gfx90a", "craype-x86-milan"],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'rocm-PrgEnv-cray',
+            'modules': ['PrgEnv-cray'],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'rocm-PrgEnv-aocc',
             'modules': ['PrgEnv-aocc'],
             'cc': 'cc',
             'cxx': 'CC',

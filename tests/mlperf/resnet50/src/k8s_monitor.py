@@ -34,6 +34,8 @@ def main(base_pod_name, namespace, pod_yaml):
                     print("Maximum Quota Resources In Use Trying Again In 60s")
                     time.sleep(60)
                     continue
+                else:
+                    raise e
             break
         
         pods = v1.list_namespaced_pod(namespace)
