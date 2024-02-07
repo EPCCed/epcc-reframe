@@ -11,7 +11,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     num_tasks = None
     num_gpus = variable(int, value=4)  # parameter(1 << pow for pow in range(7))
     
-    time_limit = "6h"
+    time_limit = "1h"
     executable = 'python'
     executable_opts = ["/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py",
                                 "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/cirrusbenchmark_config.yaml",
