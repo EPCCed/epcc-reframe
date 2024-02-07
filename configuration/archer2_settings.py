@@ -27,7 +27,7 @@ site_configuration = {
                     "descr": "Compute nodes with AMD GPUs",
                     "scheduler": "slurm",
                     'launcher': 'srun',
-                    'access': ['--hint=nomultithread','--distribution=block:block','--partition=gpu'],
+                    'access': ['--partition=gpu'],
                     'environs': ['rocm-PrgEnv-gnu','rocm-PrgEnv-cray','rocm-PrgEnv-aocc'],
                     "resources": [
                         {"name": "qos", "options": ["--qos={qos}"]},

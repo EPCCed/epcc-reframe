@@ -12,11 +12,6 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     num_gpus = variable(int, value=4)  # parameter(1 << pow for pow in range(7))
     
     time_limit = "6h"
-    env_vars = {
-            'OMP_NUM_THREADS': "5",
-            "SRUN_CPUS_PER_TASK" : "5",
-            "OMPI_MCA_mpi_warn_on_fork": "0",
-        }
     executable = 'python'
     executable_opts = ["/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py",
                                 "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/cirrusbenchmark_config.yaml",
@@ -40,7 +35,11 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
             }
             self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', 
                             "conda activate mlperf-torch-rocm", 
-            ]   
+            ]  
+            self.env_vars = {
+                'OMP_NUM_THREADS': "8",
+            }
+        
         elif self.current_system.name in ["cirrus"]:
             self.extra_resources = {
             "qos": {"qos": "gpu"},
@@ -48,7 +47,12 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
             self.modules = ["openmpi/4.1.5-cuda-11.6"]
             self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', 
                             "conda activate mlperf-torch", 
-            ] 
+            ]
+            self.env_vars = {
+                'OMP_NUM_THREADS': "5",
+                "SRUN_CPUS_PER_TASK" : "5",
+                "OMPI_MCA_mpi_warn_on_fork": "0",
+            }
     
     @run_before('run')
     def set_task_distribution(self):
