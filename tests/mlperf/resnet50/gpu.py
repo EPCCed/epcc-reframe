@@ -14,8 +14,9 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     time_limit = "1h"
     executable = 'python'
     executable_opts = ["/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py",
-                                "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/cirrusbenchmark_config.yaml",
+                                "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/archer2benchmark_config.yaml",
                                 "--device", "cuda",
+                                "-lbs", "16",
                                 "--t_subset_size", "1024",
                                 "--v_subset_size", "256"  
         ]
