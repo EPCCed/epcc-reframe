@@ -39,6 +39,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
             ]  
             self.env_vars = {
                 'OMP_NUM_THREADS': "8",
+                "MPICH_GPU_SUPPORT_ENABLED":"1"
             }
         
         elif self.current_system.name in ["cirrus"]:
