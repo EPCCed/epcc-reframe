@@ -39,6 +39,9 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
             ]  
             self.env_vars = {
                 'OMP_NUM_THREADS': "8",
+                "LD_LIBRARY_PATH":"$CRAY_MPICH_ROOTDIR/gtl/lib/:$LD_LIBRARY_PATH",
+                "LD_PRELOAD":"$CRAY_MPICH_ROOTDIR/gtl/lib/libmpi_gtl_hsa.so:$LD_PRELOAD",
+                "HOME":"$PWD"
             }
         
         elif self.current_system.name in ["cirrus"]:
