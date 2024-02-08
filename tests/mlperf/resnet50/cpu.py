@@ -25,7 +25,7 @@ class ResNet50CPUCheck(ResNet50BaseCheck):
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
                 "SRUN_CPUS_PER_TASK" : str(self.num_cpus_per_task)
             }
-            self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', "conda activate mlperf-torch-rocm"]
+            self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', "conda activate mlperf-torch-cpu"]
             self.executable_opts = ["/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py"
                                     " --config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/archer2benchmark_config.yaml"
                                     ]

@@ -20,7 +20,7 @@ class CosmoFlowCPUCheck(CosmoFlowBaseCheck):
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
                 "SRUN_CPUS_PER_TASK" : str(self.num_cpus_per_task)
             }
-            self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', "conda activate mlperf-torch-rocm"]
+            self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', "conda activate mlperf-torch-cpu"]
             self.executable_opts = ["/work/z043/shared/chris-ml-intern/ML_HPC/CosmoFlow/Torch/train.py", 
                                     " --config", "/work/z04/shared/chris-ml-intern/ML_HPC/CosmoFlow/Torch/configs/archer2_config.yaml"
                                     ]
