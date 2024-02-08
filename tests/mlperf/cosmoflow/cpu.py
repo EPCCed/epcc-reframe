@@ -22,7 +22,7 @@ class CosmoFlowCPUCheck(CosmoFlowBaseCheck):
             }
             self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', "conda activate mlperf-torch-cpu"]
             self.executable_opts = ["/work/z043/shared/chris-ml-intern/ML_HPC/CosmoFlow/Torch/train.py", 
-                                    " --config", "/work/z04/shared/chris-ml-intern/ML_HPC/CosmoFlow/Torch/configs/archer2_config.yaml"
+                                    " --config", "/work/z043/shared/chris-ml-intern/ML_HPC/CosmoFlow/Torch/configs/archer2_config.yaml"
                                     ]
 
             #self.reference = {"archer2:compute": {"Throughput": (200, -0.05, 0.10, "images/s"),
