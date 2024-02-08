@@ -22,3 +22,12 @@ class CosmoFlowBaseCheck(rfm.RunOnlyRegressionTest):
     @sanity_function
     def assert_target_met(self):
         return sn.assert_found(r'Processing Speed', filename=self.stdout)
+    
+    @run_before("performance")
+    def set_perf_variables(self):
+        self.perf_variables = {
+            "Throughput": self.extract_throughput(),
+            "Epoch Length": self.extract_epoch_length(),
+            "Communication Time": self.extract_communication(),
+            "Total IO Time": self.extract_IO()
+        }
