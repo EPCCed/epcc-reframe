@@ -9,26 +9,22 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     descr = "ResNet50 GPU Benchmark"
     
     num_tasks = None
-    num_gpus = variable(int, value=4)  # parameter(1 << pow for pow in range(7))
+    num_gpus = parameter([4])  # parameter(1 << pow for pow in range(7))
+    lbs = parameter([8,16,32,64])
     
     time_limit = "1h"
     executable = 'python'
-    executable_opts = ["/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py",
-                                "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/archer2benchmark_config.yaml",
-                                "--device", "cuda",
-                                "-lbs", "16",
-                                "--t_subset_size", "1024",
-                                "--v_subset_size", "256"  
-        ]
-    reference = {"cirrus:compute-gpu-default": {"Throughput": (1000, -0.05, 0.05, "images/s"),
-                                     "Communication Time": (68, -0.1, 0.1, "s"),
-                                     "Epoch Length": (100, -0.05, 0.05, "s"),
-                                     "Total IO Time": (2, -0.5, 0.5, "s")  # Is supposed to be 50% not 5%
-                                    }
-                }
 
     @run_after("init")
     def setup_systems(self):
+        
+        self.executable_opts = ["/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py",
+                                "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/archer2benchmark_config.yaml",
+                                "--device", "cuda",
+                                "-lbs", f"{self.lbs}",
+                                "--t_subset_size", "1024",
+                                "--v_subset_size", "256"  
+            ]
         if self.current_system.name in ["archer2"]:
             self.extra_resources = {
             "qos": {"qos": "gpu-exc"},

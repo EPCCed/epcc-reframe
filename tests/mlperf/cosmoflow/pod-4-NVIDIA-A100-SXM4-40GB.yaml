@@ -8,7 +8,7 @@ spec:
     - --nproc_per_node=4
     - train.py
     - -lbs
-    - '16'
+    - '64'
     - -c
     - /workspace/ML_HPC/CosmoFlow/Torch/config.yaml
     command:

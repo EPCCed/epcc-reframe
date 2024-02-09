@@ -51,6 +51,7 @@ def main(base_pod_name, namespace, pod_yaml):
                     break
             else:
                 # Allow 2 minutes 
+                
                 if count == 12:
                     raise ValueError(f"Pod:{base_pod_name} not found in available pods {pod_names}")
                 click.echo(f"Pod:{base_pod_name} not found in available pods {pod_names}")

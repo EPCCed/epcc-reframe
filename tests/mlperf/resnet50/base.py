@@ -2,8 +2,12 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 class ResNet50BaseCheck(rfm.RunOnlyRegressionTest):
-
-    @performance_function("images/s", perf_key="Throughput")
+    
+    @performance_function("", perf_key="Delta Loss")
+    def extract_delta_loss(self):
+        return sn.extractsingle(r"Change In Train Loss at Epoch: (.*)", self.stdout, tag= 1, conv=float)
+    
+    @performance_function("inputs/s", perf_key="Throughput")
     def extract_throughput(self):
         return sn.extractsingle(r"Processing Speed: (.*)", self.stdout, tag= 1, conv=float)
     
@@ -28,6 +32,7 @@ class ResNet50BaseCheck(rfm.RunOnlyRegressionTest):
         self.perf_variables = {
             "Throughput": self.extract_throughput(),
             "Epoch Length": self.extract_epoch_length(),
+            "Delta Loss": self.extract_delta_loss(),
             "Communication Time": self.extract_communication(),
             "Total IO Time": self.extract_IO()
         }

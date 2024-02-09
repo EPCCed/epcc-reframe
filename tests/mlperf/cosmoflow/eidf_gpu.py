@@ -84,8 +84,9 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
     executable = 'python'
     
     # num_gpus = parameter(1 << pow for pow in range(3))
-    num_gpus = variable(int, value=4) 
-    #num_gpus = parameter([8,4,2])
+    #num_gpus = variable(int, value=4) 
+    num_gpus = parameter([4])
+    lbs = parameter([64])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
     node_type = variable(str, value="NVIDIA-A100-SXM4-40GB") 
@@ -102,7 +103,7 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}", 
             "train.py", 
-            "-lbs", "16",
+            "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML_HPC/CosmoFlow/Torch/config.yaml",
         ]
         

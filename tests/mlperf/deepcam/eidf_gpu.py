@@ -85,15 +85,15 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     
     # num_gpus = parameter(1 << pow for pow in range(3))
     #num_gpus = variable(int, value=4) 
-    num_gpus = parameter([8,4,2])
+    num_gpus = parameter([4])
+    lbs = parameter([64])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
     node_type = variable(str, value="NVIDIA-A100-SXM4-40GB") 
 
     @run_after("init")
     def executable_setup(self):
-        random.seed(f"{self.num_gpus}-{self.node_type}")
-        self.job_name = f"mlperf-deepcam-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=4))}-"
+        self.job_name = f"mlperf-deepcam-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=8))}-"
         pod_info = base_k8s_pod
         pod_info["metadata"]["generateName"] = self.job_name
         pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1] # remove '...-' at the end of str
@@ -102,10 +102,10 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}", 
             "train.py", 
-            "-lbs", "64",
+            "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML_HPC/DeepCAM/Torch/config.yaml",
-            "--t_subset_size", "512",
-            "--v_subset_size", "256"  
+            "--t_subset_size", "65536",
+            "--v_subset_size", "8192"  
         ]
         
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus

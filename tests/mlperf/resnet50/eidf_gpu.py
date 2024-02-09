@@ -85,34 +85,34 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     
     # num_gpus = parameter(1 << pow for pow in range(3))
     #num_gpus = variable(int, value=4) 
-    num_gpus = parameter([8,4,2])
+    num_gpus = parameter([4])
+    lbs = parameter([8,16,32,64])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
-    node_type = variable(str, value="NVIDIA-A100-SXM4-40GB") 
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
 
     @run_after("init")
     def executable_setup(self):
-        random.seed(f"{self.num_gpus}-{self.node_type}")
-        self.job_name = f"mlperf-resnet-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=4))}-"
+        jobname = f"mlperf-resnet-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=8))}-"
         pod_info = base_k8s_pod
-        pod_info["metadata"]["generateName"] = self.job_name
-        pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1] # remove '...-' at the end of str
+        pod_info["metadata"]["generateName"] = jobname
+        pod_info["spec"]["containers"][0]["name"] = jobname[:-1] # remove '...-' at the end of str
         pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML/ResNet50/Torch"
         pod_info["spec"]["containers"][0]["command"] = ["torchrun"]
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}", 
             "train.py", 
-            "-lbs", "64",
+            "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML/ResNet50/Torch/config.yaml",
-            "--t_subset_size", "512",
-            "--v_subset_size", "256"  
+            "--t_subset_size", "131072",
+            "--v_subset_size", "16384"  
         ]
         
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
         pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "imagenet-pv"
         
-        self.file = f"pod-{self.num_gpus}-{pod_info['spec']['nodeSelector']['nvidia.com/gpu.product']}.yaml"
+        self.file = f"pod-{jobname}.yaml"
         with open(os.path.join(os.getcwd(), self.file), "w+") as stream:
             yaml.safe_dump(pod_info, stream)
         
@@ -122,7 +122,7 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
         
         self.executable_opts = [
             f"{os.path.join(os.path.dirname(__file__), 'src', 'k8s_monitor.py')}",
-            "--base_pod_name", self.job_name,
+            "--base_pod_name", jobname,
             "--namespace", "eidf095ns",
             "--pod_yaml", os.path.join(os.getcwd(), self.file)
         ]
@@ -140,10 +140,12 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
         self.perf_variables = {
             "Throughput": self.extract_throughput(),
             "Epoch Length": self.extract_epoch_length(),
+            "Delta Loss": self.extract_delta_loss(),
             "Communication Time": self.extract_communication(),
             "Avg GPU Power Draw": self.extract_gpu_power_draw(),
             "Total IO Time": self.extract_IO()
         }
+
         
         
         
