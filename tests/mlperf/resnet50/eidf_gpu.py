@@ -2,101 +2,35 @@ import os
 import random
 import string
 import yaml
+import copy
 
 import reframe as rfm
 import reframe.utility.sanity as sn
 
 from base import ResNet50BaseCheck
 
-base_k8s_pod = {
-    "apiVersion": "v1",
-    "kind": "Pod",
-    "metadata": {
-        "generateName": "---CHANGE-NAME---"
-    },
-    "spec": {
-        "restartPolicy": "Never",
-        "containers": [
-            {
-                "name": "---CHANGE-NAME---",
-                "image": "bigballoon8/mlperf-epcc",
-                "workingDir": "---PATH-WORKDIR---",
-                "command": [
-                    "---ADD-CMDs---"
-                ],
-                "args": [
-                    "---ADD-ARGS---"
-                ],
-                "env": [
-                    {"name": "OMP_NUM_THREADS", "value": "4"}
-                ],
-                "resources": {
-                    "requests": {
-                        "cpu": 16,
-                        "memory": "16Gi"
-                    },
-                    "limits": {
-                        "cpu": 16,
-                        "memory": "32Gi",
-                        "nvidia.com/gpu": "---CHANGE INT--"
-                    }
-                },
-                "volumeMounts": [
-                    {
-                        "mountPath": "/mnt/ceph_rbd",
-                        "name": "volume"
-                    },
-                    {
-                        "mountPath": "/dev/shm",
-                        "name": "devshm"
-                    }
-                ]
-            }
-        ],
-        "nodeSelector": {
-            "nvidia.com/gpu.product": "---CHANGE-NAME---"
-        },
-        "volumes": [
-            {
-                "name": "volume",
-                "persistentVolumeClaim": {
-                    "claimName": "---CHANGE-NAME---"
-                }
-            },
-            {
-                "name": "devshm",
-                "emptyDir": {
-                    "medium": "Memory"
-                }
-            }
-        ]
-    }
-}
-
 @rfm.simple_test
 class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     valid_prog_environs = ["*"]
-    valid_systems = ['*']
-    env_vars = {
-        "KUBECONFIG":"/kubernetes/config"
-    }
-    
-    executable = 'python'
-    
+    valid_systems = ['eidf:gpu-service']
     # num_gpus = parameter(1 << pow for pow in range(3))
     #num_gpus = variable(int, value=4) 
     num_gpus = parameter([4])
-    lbs = parameter([8,16,32,64])
+    lbs = parameter([8])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"]) 
+
+    #pod_config="/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/pod-mlperf-resnet-.yaml"
+    pod_config = "test"
 
     @run_after("init")
     def executable_setup(self):
-        jobname = f"mlperf-resnet-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=8))}-"
-        pod_info = base_k8s_pod
+        jobname = f"mlperf-resnet"
+        with open("/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/resnet50/base_pod.yaml", "r") as stream:
+            pod_info = yaml.safe_load(stream)
         pod_info["metadata"]["generateName"] = jobname
-        pod_info["spec"]["containers"][0]["name"] = jobname[:-1] # remove '...-' at the end of str
+        pod_info["spec"]["containers"][0]["name"] = jobname # remove '...-' at the end of str
         pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML/ResNet50/Torch"
         pod_info["spec"]["containers"][0]["command"] = ["torchrun"]
         pod_info["spec"]["containers"][0]["args"] = [
@@ -104,32 +38,15 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
             "train.py", 
             "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML/ResNet50/Torch/config.yaml",
-            "--t_subset_size", "131072",
-            "--v_subset_size", "16384"  
+            "--t_subset_size", "0",
+            "--v_subset_size", "0"  
         ]
-        
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
         pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "imagenet-pv"
         
         self.file = f"pod-{jobname}.yaml"
-        with open(os.path.join(os.getcwd(), self.file), "w+") as stream:
-            yaml.safe_dump(pod_info, stream)
-        
-        self.prerun_cmds = [
-            'eval "$(/home/eidf095/eidf095/crae-ml/miniconda3/bin/conda shell.bash hook)"', 
-        ]
-        
-        self.executable_opts = [
-            f"{os.path.join(os.path.dirname(__file__), 'src', 'k8s_monitor.py')}",
-            "--base_pod_name", jobname,
-            "--namespace", "eidf095ns",
-            "--pod_yaml", os.path.join(os.getcwd(), self.file)
-        ]
-    
-    @run_before("cleanup")
-    def cleanup_pod_yaml(self):
-        os.remove(os.path.join(os.getcwd(), "resnet50", self.file))
+        self.pod_config = pod_info
     
     @performance_function("W", perf_key="Avg GPU Power Draw:")
     def extract_gpu_power_draw(self):
@@ -146,13 +63,4 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
             "Total IO Time": self.extract_IO()
         }
 
-        
-        
-        
-        
-
-    
-    
-    
-    
     

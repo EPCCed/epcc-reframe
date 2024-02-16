@@ -1,16 +1,33 @@
+import socket
+
 site_configuration = {
     "systems": [
         {
-            "name": "gpu-service",
-            "descr": "Edinburgh International Data Facility GPU-Service",
-            "hostnames": ["gpu-service"],
+            "name": "eidf",
+            "descr": "Edinburgh International Data Facility",
+            "hostnames": [socket.gethostname()],
+            "modules_system": "nomod",
             "partitions": [
                 {
                     "name": "gpu-service",
                     "descr": "Edinburgh International Data Facility GPU-Service",
-                    "scheduler": "local",
-                    "launcher": "local",
+                    "scheduler": "k8s",
+                    "launcher": "k8s",
                     "environs": ["Default"],
+                },
+                {
+                    "name": "cs2",
+                    "descr": "Cerebras Wafer-Scale cluster",
+                    "scheduler": "slurm",
+                    "launcher": "local",
+                    "max_jobs": 1,
+                    "environs": ["Default"],
+                    "resources": [
+                        {
+                            "name": "cs",
+                            "options": ["--gres=cs:{num_csx}"],
+                        },
+                    ],
                 }
             ],
         }

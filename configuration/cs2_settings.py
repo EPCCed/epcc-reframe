@@ -1,10 +1,10 @@
+import socket
 site_configuration = {
     "systems": [
         {
             "name": "CS-2",
             "descr": "Cerebras Wafer-Scale cluster",
-            "hostnames": ["cs2"],
-            "modules_system": "tmod4",
+            "hostnames": [socket.gethostname()],
             "partitions": [
                 {
                     "name": "cs2",

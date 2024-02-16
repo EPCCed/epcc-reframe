@@ -36,7 +36,7 @@ base_k8s_pod = {
                         "memory": "16Gi"
                     },
                     "limits": {
-                        "cpu": 16,
+                        "cpu": 32,
                         "memory": "32Gi",
                         "nvidia.com/gpu": "---CHANGE INT--"
                     }
@@ -76,7 +76,7 @@ base_k8s_pod = {
 @rfm.simple_test
 class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     valid_prog_environs = ["*"]
-    valid_systems = ['*']
+    valid_systems = ['eidf:gpu-service']
     env_vars = {
         "KUBECONFIG":"/kubernetes/config"
     }
@@ -93,7 +93,7 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
 
     @run_after("init")
     def executable_setup(self):
-        self.job_name = f"mlperf-deepcam-{self.num_gpus}-{self.node_type.lower()}-{''.join(random.choices(string.ascii_lowercase, k=8))}-"
+        self.job_name = f"mlperf-deepcam-{self.num_gpus}-{self.node_type.lower()}-"
         pod_info = base_k8s_pod
         pod_info["metadata"]["generateName"] = self.job_name
         pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1] # remove '...-' at the end of str
@@ -112,24 +112,8 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
         pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "deepcam-pv"
         
-        self.file = f"pod-{self.num_gpus}-{pod_info['spec']['nodeSelector']['nvidia.com/gpu.product']}.yaml"
-        with open(os.path.join(os.getcwd(), self.file), "w+") as stream:
-            yaml.safe_dump(pod_info, stream)
-        
-        self.prerun_cmds = [
-            'eval "$(/home/eidf095/eidf095/crae-ml/miniconda3/bin/conda shell.bash hook)"', 
-        ]
-        
-        self.executable_opts = [
-            f"{os.path.join(os.path.dirname(__file__), 'src', 'k8s_monitor.py')}",
-            "--base_pod_name", self.job_name,
-            "--namespace", "eidf095ns",
-            "--pod_yaml", os.path.join(os.getcwd(), self.file)
-        ]
-    
-    @run_before("cleanup")
-    def cleanup_pod_yaml(self):
-        os.remove(os.path.join(os.getcwd(), "deepcam", self.file))
+        self.pod_config = pod_info
+
     
     @performance_function("W", perf_key="Avg GPU Power Draw:")
     def extract_gpu_power_draw(self):
