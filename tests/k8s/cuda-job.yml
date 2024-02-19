@@ -3,9 +3,10 @@ kind: Job
 metadata:
     generateName: jobtest-
     labels:
-        kueue.x-k8s.io/queue-name:  namespace-user-queue
+        kueue.x-k8s.io/queue-name:  eidf095ns-user-queue
 spec:
-    completions: 1
+    completions: 3
+    parallelism: 2
     template:
         metadata:
             name: job-test

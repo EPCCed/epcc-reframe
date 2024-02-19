@@ -7,6 +7,14 @@ class CudaPodTest(rfm.RunOnlyRegressionTest):
     valid_prog_environs = ["*"]
     pod_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
     
+    reference = {
+        "eidf:gpu-service": {
+            "Interactions per second": (250, -0.1, 0.1, "Iters/s"),
+            "Flops": (7440, -0.1, 0.1, "GLOP/s"),
+        }
+    }
+    
+    
     @performance_function("Iters/s", perf_key="Interactions per second")
     def extract_interactions_per_second(self):
         return sn.extractsingle(r"= (\d+\.\d+) billion interactions per second", self.stdout, tag= 1, conv=float)

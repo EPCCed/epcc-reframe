@@ -36,7 +36,7 @@ base_k8s_pod = {
                         "memory": "16Gi"
                     },
                     "limits": {
-                        "cpu": 32,
+                        "cpu": 16,
                         "memory": "32Gi",
                         "nvidia.com/gpu": "---CHANGE INT--"
                     }
@@ -77,23 +77,18 @@ base_k8s_pod = {
 class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     valid_prog_environs = ["*"]
     valid_systems = ['eidf:gpu-service']
-    env_vars = {
-        "KUBECONFIG":"/kubernetes/config"
-    }
-    
-    executable = 'python'
     
     # num_gpus = parameter(1 << pow for pow in range(3))
     #num_gpus = variable(int, value=4) 
     num_gpus = parameter([4])
-    lbs = parameter([64])
+    lbs = parameter([4])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
-    node_type = variable(str, value="NVIDIA-A100-SXM4-40GB") 
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
 
     @run_after("init")
     def executable_setup(self):
-        self.job_name = f"mlperf-deepcam-{self.num_gpus}-{self.node_type.lower()}-"
+        self.job_name = f"mlperf-deepcam-"
         pod_info = base_k8s_pod
         pod_info["metadata"]["generateName"] = self.job_name
         pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1] # remove '...-' at the end of str
@@ -101,16 +96,17 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
         pod_info["spec"]["containers"][0]["command"] = ["torchrun"]
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}", 
-            "train.py", 
+            "train.py",
+            "--data-dir", "/deepcam/mini"
             "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML_HPC/DeepCAM/Torch/config.yaml",
-            "--t_subset_size", "65536",
-            "--v_subset_size", "8192"  
+            "--t_subset_size", "0",
+            "--v_subset_size", "0"  
         ]
         
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
-        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "deepcam-pv"
+        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "deepcam-data-pvc"
         
         self.pod_config = pod_info
 

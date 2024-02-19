@@ -2,10 +2,17 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 @rfm.simple_test
-class CudaPodTest(rfm.RunOnlyRegressionTest):
+class CudaJodTest(rfm.RunOnlyRegressionTest):
     valid_systems = ['eidf:gpu-service']
     valid_prog_environs = ["*"]
-    pod_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
+    pod_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-job.yml"
+    
+    reference = {
+        "eidf:gpu-service": {
+            "Interactions per second": (250, -0.1, 0.1, "Iters/s"),
+            "Flops": (7440, -0.1, 0.1, "GLOP/s"),
+        }
+    }
     
     @performance_function("Iters/s", perf_key="Interactions per second")
     def extract_interactions_per_second(self):
@@ -17,7 +24,8 @@ class CudaPodTest(rfm.RunOnlyRegressionTest):
     
     @sanity_function
     def assert_sanity(self):
-        return sn.assert_found(r'double-precision GFLOP/s', filename=self.stdout)
+        num_messages = sn.len(sn.findall(r'double-precision GFLOP/s', filename=self.stdout))
+        return sn.assert_eq(num_messages, 3)    
     
     @run_before("performance")
     def set_perf_variables(self):
