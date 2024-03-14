@@ -1,0 +1,42 @@
+apiVersion: graphcore.ai/v1alpha1
+kind: IPUJob
+metadata:
+  generateName: cosmoflow-training-
+spec:
+  # jobInstances defines the number of job instances.
+  # More than 1 job instance is usually useful for inference jobs only.
+  jobInstances: 1
+  # ipusPerJobInstance refers to the number of IPUs required per job instance.
+  # A separate IPU partition of this size will be created by the IPU Operator
+  # for each job instance.
+  ipusPerJobInstance: "8"
+  workers:
+    template:
+      spec:
+        containers:
+        - name: mnist-training
+          image: bigballoon8/mlperf-epcc-gc
+          command: [/bin/bash, -c, --]
+          args:
+            - |
+              sleep infinity
+              cd /ML/ResNet50/Torch 
+              python train.py -c /ML/ResNet50/Torch/config.yaml
+          resources:
+            limits:
+              cpu: 32
+              memory: 200Gi
+          securityContext:
+            capabilities:
+              add:
+              - IPC_LOCK
+          volumeMounts:
+          - mountPath: /dev/shm
+            name: devshm
+        restartPolicy: Never
+        hostIPC: true
+        volumes:
+        - emptyDir:
+            medium: Memory
+            sizeLimit: 10Gi
+          name: devshm

@@ -46,7 +46,7 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
         pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "imagenet-pv"
         
         self.file = f"pod-{jobname}.yaml"
-        self.pod_config = pod_info
+        self.k8s_config = pod_info
     
     @performance_function("W", perf_key="Avg GPU Power Draw:")
     def extract_gpu_power_draw(self):

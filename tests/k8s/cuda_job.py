@@ -5,7 +5,7 @@ import reframe.utility.sanity as sn
 class CudaJodTest(rfm.RunOnlyRegressionTest):
     valid_systems = ['eidf:gpu-service']
     valid_prog_environs = ["*"]
-    pod_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-job.yml"
+    k8s_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-job.yml"
     
     reference = {
         "eidf:gpu-service": {

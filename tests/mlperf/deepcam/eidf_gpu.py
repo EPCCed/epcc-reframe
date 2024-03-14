@@ -2,6 +2,7 @@ import os
 import random
 import string
 import yaml
+import copy
 
 import reframe as rfm
 import reframe.utility.sanity as sn
@@ -28,16 +29,16 @@ base_k8s_pod = {
                     "---ADD-ARGS---"
                 ],
                 "env": [
-                    {"name": "OMP_NUM_THREADS", "value": "4"}
+                    {"name": "OMP_NUM_THREADS", "value": "8"}
                 ],
                 "resources": {
                     "requests": {
-                        "cpu": 16,
-                        "memory": "16Gi"
+                        "cpu": 32,
+                        "memory": "64Gi"
                     },
                     "limits": {
-                        "cpu": 16,
-                        "memory": "32Gi",
+                        "cpu": 32,
+                        "memory": "64Gi",
                         "nvidia.com/gpu": "---CHANGE INT--"
                     }
                 },
@@ -82,14 +83,23 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     #num_gpus = variable(int, value=4) 
     num_gpus = parameter([4])
     lbs = parameter([4])
+    dataset = parameter(["mini"])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB"])  
 
     @run_after("init")
     def executable_setup(self):
-        self.job_name = f"mlperf-deepcam-"
-        pod_info = base_k8s_pod
+        self.job_name = f"mlperf-deepcam"
+        if self.dataset == "mini":
+            dset_path = "/mnt/ceph_rbd/deepcam/mini/deepcam-data-n512"
+            pvc = "deepcam-mini"
+        elif self.dataset == "full":
+            dset_path = "/mnt/ceph_rbd/gridftp-save/deepcam/All-Hist"
+            pvc = "deepcam-pvc"
+        else:
+            raise ValueError(f"Dataset type '{self.dataset}' is not supported please select full|mini")
+        pod_info = copy.deepcopy(base_k8s_pod)
         pod_info["metadata"]["generateName"] = self.job_name
         pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1] # remove '...-' at the end of str
         pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML_HPC/DeepCAM/Torch"
@@ -97,18 +107,17 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}", 
             "train.py",
-            "--data-dir", "/deepcam/mini"
             "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML_HPC/DeepCAM/Torch/config.yaml",
-            "--t_subset_size", "0",
-            "--v_subset_size", "0"  
+            "--data_dir", dset_path #"/mnt/ceph_rbd/deepcam/mini/deepcam-data-n512" #"/mnt/ceph_rbd/gridftp-save/deepcam/All-Hist", 
         ]
+        print(" ".join(pod_info["spec"]["containers"][0]["args"]))
         
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
-        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "deepcam-data-pvc"
+        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = pvc
         
-        self.pod_config = pod_info
+        self.k8s_config = pod_info
 
     
     @performance_function("W", perf_key="Avg GPU Power Draw:")

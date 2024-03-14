@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  generateName: 'cuda-test-pod'
+  generateName: 'cuda-test-pod-'
   labels:
     kueue.x-k8s.io/queue-name:  eidf095ns-user-queue
 spec:

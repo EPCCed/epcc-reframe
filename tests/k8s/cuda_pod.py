@@ -5,7 +5,7 @@ import reframe.utility.sanity as sn
 class CudaPodTest(rfm.RunOnlyRegressionTest):
     valid_systems = ['eidf:gpu-service']
     valid_prog_environs = ["*"]
-    pod_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
+    k8s_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
     
     reference = {
         "eidf:gpu-service": {
@@ -13,7 +13,6 @@ class CudaPodTest(rfm.RunOnlyRegressionTest):
             "Flops": (7440, -0.1, 0.1, "GLOP/s"),
         }
     }
-    
     
     @performance_function("Iters/s", perf_key="Interactions per second")
     def extract_interactions_per_second(self):

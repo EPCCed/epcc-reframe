@@ -16,6 +16,13 @@ site_configuration = {
                     "environs": ["Default"],
                 },
                 {
+                    "name": "graphcore",
+                    "descr": "Edinburgh International Data Facility Graphcore Bow Pod64",
+                    "scheduler": "k8s",
+                    "launcher": "k8s",
+                    "environs": ["Default"],
+                },
+                {
                     "name": "cs2",
                     "descr": "Cerebras Wafer-Scale cluster",
                     "scheduler": "slurm",

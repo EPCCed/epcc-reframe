@@ -2,7 +2,7 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 class CosmoFlowBaseCheck(rfm.RunOnlyRegressionTest):
-
+    
     @performance_function("", perf_key="Delta Loss")
     def extract_delta_loss(self):
         return sn.extractsingle(r"Change In Train Loss at Epoch: (.*)", self.stdout, tag= 1, conv=float)

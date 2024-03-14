@@ -18,6 +18,7 @@ class DeepCamBaseCheck(rfm.RunOnlyRegressionTest):
     def extract_IO(self):
         return sn.extractsingle(r"Total IO Time: (.*)", self.stdout, tag= 1, conv=float)
 
+
     @sanity_function
     def assert_target_met(self):
         return sn.assert_found(r'Processing Speed', filename=self.stdout)

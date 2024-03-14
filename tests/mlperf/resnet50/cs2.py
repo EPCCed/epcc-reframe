@@ -5,7 +5,7 @@ from base import ResNet50BaseCheck
 @rfm.simple_test
 class ResNet50CSXBenchmark(ResNet50BaseCheck):
     valid_prog_environs = ["Default"]
-    valid_systems = ['CS-2:cs2']
+    valid_systems = ['eidf:cs2']
     descr = "ResNet50 Cerebras WSE Benchmark"
     cpus_per_task=16
     num_csx = 1
