@@ -24,8 +24,8 @@ spec:
               python train.py -c /ML/ResNet50/Torch/config.yaml
           resources:
             limits:
-              cpu: 128
-              memory: 400Gi
+              cpu: 190
+              memory: 490Gi
           securityContext:
             capabilities:
               add:

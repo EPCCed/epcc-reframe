@@ -83,14 +83,14 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     #num_gpus = variable(int, value=4) 
     num_gpus = parameter([4])
     lbs = parameter([4])
-    dataset = parameter(["mini"])
+    dataset = parameter(["full"])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
     node_type = parameter(["NVIDIA-A100-SXM4-40GB"])  
 
     @run_after("init")
     def executable_setup(self):
-        self.job_name = f"mlperf-deepcam"
+        self.job_name = f"mlperf-deepcam-"
         if self.dataset == "mini":
             dset_path = "/mnt/ceph_rbd/deepcam/mini/deepcam-data-n512"
             pvc = "deepcam-mini"

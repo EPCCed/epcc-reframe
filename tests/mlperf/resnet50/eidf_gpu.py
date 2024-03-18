@@ -19,7 +19,7 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     lbs = parameter([8])
     
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"]) 
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
 
     #pod_config="/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/pod-mlperf-resnet-.yaml"
     pod_config = "test"
@@ -38,8 +38,8 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
             "train.py", 
             "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML/ResNet50/Torch/config.yaml",
-            "--t_subset_size", "0",
-            "--v_subset_size", "0"  
+            "--t_subset_size", "2048",
+            "--v_subset_size", "1024"  
         ]
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
