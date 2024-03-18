@@ -7,4 +7,6 @@ from base import ResNet50BaseCheck
 class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     valid_prog_environs = ["*"]
     valid_systems = ['eidf:graphcore']
+    context = "graphcore"
+    
     

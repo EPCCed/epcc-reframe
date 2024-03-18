@@ -33,6 +33,8 @@ spec:
           volumeMounts:
           - mountPath: /dev/shm
             name: devshm
+          - mountPath: /mnt/ceph_rbd
+            name: volume
         restartPolicy: Never
         hostIPC: true
         volumes:
@@ -40,3 +42,6 @@ spec:
             medium: Memory
             sizeLimit: 10Gi
           name: devshm
+        - name: volume
+          persistentVolumeClaim:
+            claimName: 'imagenet-pv'

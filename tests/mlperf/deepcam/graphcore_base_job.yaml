@@ -14,13 +14,13 @@ spec:
     template:
       spec:
         containers:
-        - name: mnist-training
+        - name: deepcam-training
           image: bigballoon8/mlperf-epcc-gc
           command: [/bin/bash, -c, --]
           args:
             - |
               sleep infinity
-              cd /ML/ResNet50/Torch 
+              cd /ML/ResNet50/Torch
               python train.py -c /ML/ResNet50/Torch/config.yaml
           resources:
             limits:

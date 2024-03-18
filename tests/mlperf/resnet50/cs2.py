@@ -9,11 +9,11 @@ class ResNet50CSXBenchmark(ResNet50BaseCheck):
     descr = "ResNet50 Cerebras WSE Benchmark"
     cpus_per_task=16
     num_csx = 1
-    time_limit = "2h"
+    time_limit = "12h"
 
     prerun_cmds = [
-        'eval "$(/home/z043/z043/crae-cs1/mlperf_cs2_pt/bin/conda shell.bash hook)"',
-        "cd /home/z043/z043/crae-cs1/chris-ml-intern/cs2/ML/ResNet50"
+        'source /home/z043/z043/crae-cs1/mlperf_cs2_pt/bin/activate',
+        "cd /home/z043/z043/crae-cs1/chris-ml-intern/cs2/ML/ResNet50/"
     ]
     executable = 'python'
     executable_opts = ["train.py"]
