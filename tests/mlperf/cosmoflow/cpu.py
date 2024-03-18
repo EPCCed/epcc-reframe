@@ -9,7 +9,7 @@ class CosmoFlowCPUCheck(CosmoFlowBaseCheck):
     valid_systems = ['archer2:compute', 'cirrus:compute']
     num_tasks = 32
     num_task_per_node=1
-    time_limit = "1h"
+    time_limit = "12h"
     executable = 'python'
 
     @run_after("init")

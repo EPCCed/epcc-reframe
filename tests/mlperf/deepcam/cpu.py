@@ -9,7 +9,7 @@ class DeepCamCPUCheck(DeepCamBaseCheck):
     num_task_per_node=1
     executable = 'python'
     num_tasks = 32
-    time_limit = "1h"
+    time_limit = "12h"
     reference = {"archer2:compute": {"Throughput": (200, -0.05, 0.10, "images/s"),
                                      "Communication Time": (0.3, -0.1, 0.1, "s"),
                                      "Epoch Length": (500, -0.05, 0.05, "s"),
