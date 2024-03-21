@@ -13,7 +13,6 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     lbs = parameter([8,16,32,64])
     
     time_limit = "1h"
-    executable = 'python'
 
     @run_after("init")
     def setup_systems(self):
@@ -26,6 +25,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
                                 "--v_subset_size", "256"  
             ]
         if self.current_system.name in ["archer2"]:
+            self.executable = ''
             self.extra_resources = {
             "qos": {"qos": "gpu-exc"},
             "gpu": {"num_gpus_per_node": str(self.num_gpus)}
@@ -41,6 +41,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
             }
         
         elif self.current_system.name in ["cirrus"]:
+            self.executable = 'python'
             self.extra_resources = {
             "qos": {"qos": "gpu"},
             }
@@ -77,8 +78,6 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
         """sets up different resources for gpu systems"""
         if self.current_system.name in ["cirrus"]:
             self.job.launcher.options.append(f'--ntasks={self.num_gpus} --tasks-per-node={self.num_gpus if self.num_gpus <= 4 else 4}')
-        elif self.current_system.name in ["archer2"]:
-            self.job.launcher.options.append(f'--ntasks={self.num_gpus} --cpus-per-task=8 --hint=nomultithread --distribution=block:block')
 
         
         

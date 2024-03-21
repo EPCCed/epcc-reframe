@@ -6,6 +6,7 @@ class CudaPodTest(rfm.RunOnlyRegressionTest):
     valid_systems = ['eidf:gpu-service']
     valid_prog_environs = ["*"]
     k8s_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
+    k8s_resource  = "grapcore"
     
     reference = {
         "eidf:gpu-service": {

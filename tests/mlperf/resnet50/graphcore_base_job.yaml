@@ -24,8 +24,8 @@ spec:
               python train.py -c /ML/ResNet50/Torch/config.yaml
           resources:
             limits:
-              cpu: 32
-              memory: 200Gi
+              cpu: 128
+              memory: 400Gi
           securityContext:
             capabilities:
               add:
@@ -40,8 +40,8 @@ spec:
         volumes:
         - emptyDir:
             medium: Memory
-            sizeLimit: 10Gi
           name: devshm
         - name: volume
           persistentVolumeClaim:
-            claimName: 'imagenet-pv'
+            claimName: 'imagenet-pvc'
+        

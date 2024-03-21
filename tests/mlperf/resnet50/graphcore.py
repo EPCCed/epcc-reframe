@@ -8,5 +8,6 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     valid_prog_environs = ["*"]
     valid_systems = ['eidf:graphcore']
     context = "graphcore"
+    k8s_resource = "ipujob"
     
     

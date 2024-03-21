@@ -18,7 +18,7 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     num_gpus = parameter([8])
     lbs = parameter([4])
     
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-AH00-SXM4-80GB"])
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
 
     #pod_config="/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/pod-mlperf-resnet-.yaml"

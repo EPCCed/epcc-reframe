@@ -10,7 +10,7 @@ class K8sPVCTest(rfm.RunOnlyRegressionTest):
     #k8s_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/pvc_test.yml"
     
     bs = parameter(["4096K"])
-    count = parameter([f"{1000}"])  # file_size = bs*count
+    count = parameter([f"{100}"])  # file_size = bs*count
     
     conversion ={
         "KB/s": 1e-6,

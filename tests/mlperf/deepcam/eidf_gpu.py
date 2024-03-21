@@ -81,12 +81,12 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     
     # num_gpus = parameter(1 << pow for pow in range(3))
     #num_gpus = variable(int, value=4) 
-    num_gpus = parameter([4])
+    num_gpus = parameter([8])
     lbs = parameter([4])
     dataset = parameter(["full"])
     
-    #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB"])  
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-A100-SXM4-80GB"])
+    #node_type = parameter(["NVIDIA-A100-SXM4-40GB"])  
 
     @run_after("init")
     def executable_setup(self):
