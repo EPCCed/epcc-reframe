@@ -5,7 +5,7 @@ from reframe.core.launchers import JobLauncher
 @register_launcher('torchrun')
 class TorchRunLauncher(JobLauncher):
     def command(self, job):
-        return ['torchrun', '--nproc_per_node', str(job.num_tasks)]
+        return ['torchrun', f'--nproc_per_node={job.num_tasks}']
 
 site_configuration = {
     'systems': [
@@ -35,7 +35,7 @@ site_configuration = {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with AMD GPUs",
                     "scheduler": "slurm",
-                    'launcher': 'srun',
+                    'launcher': 'torchrun',
                     'access': ['--partition=gpu'],
                     'environs': ['rocm-PrgEnv-gnu','rocm-PrgEnv-cray','rocm-PrgEnv-aocc'],
                     "resources": [

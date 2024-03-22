@@ -4,12 +4,16 @@ from base import DeepCamBaseCheck
 
 @rfm.simple_test
 class DeepCamGPUBenchmark(DeepCamBaseCheck):
-    valid_prog_environs = ["Default"]
-    valid_systems = ['cirrus:compute-gpu-default']
-    descr = "DeepCam GPU Benchmark"
-    modules = ["openmpi/4.1.5-cuda-11.6"]
+    valid_prog_environs = ["Default", "rocm-PrgEnv-gnu"]
+    valid_systems = ['cirrus:compute-gpu-default', "archer2:compute-gpu"]
+    descr = "DeepCAM GPU Benchmark"
+    
     num_tasks = None
-    num_gpus = parameter(1 << pow for pow in range(7))
+    num_gpus = parameter([4])  # parameter(1 << pow for pow in range(7))
+    lbs = parameter([8])
+    
+    time_limit = "1h"
+
     extra_resources = {
             "qos": {"qos": "gpu"},
         }

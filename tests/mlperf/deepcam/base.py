@@ -5,6 +5,7 @@ class DeepCamBaseCheck(rfm.RunOnlyRegressionTest):
     @performance_function("inputs/s", perf_key="Throughput")
     def extract_throughput(self):
         speeds = sn.extractall(r"Processing Speed: (.*)", self.stdout, tag= 1, conv=float)
+        print(len(list(speeds)))
         return sum(map(float, speeds))/len(list(speeds))
     
     @performance_function("s", perf_key="Communication Time")

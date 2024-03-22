@@ -15,10 +15,10 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     valid_systems = ['eidf:gpu-service']
     # num_gpus = parameter(1 << pow for pow in range(3))
     #num_gpus = variable(int, value=4) 
-    num_gpus = parameter([8])
-    lbs = parameter([4])
+    num_gpus = parameter([4])
+    lbs = parameter([8])
     
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-AH00-SXM4-80GB"])
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"])
     #node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
 
     #pod_config="/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/pod-mlperf-resnet-.yaml"

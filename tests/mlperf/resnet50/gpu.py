@@ -10,7 +10,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     
     num_tasks = None
     num_gpus = parameter([4])  # parameter(1 << pow for pow in range(7))
-    lbs = parameter([8,16,32,64])
+    lbs = parameter([8])
     
     time_limit = "1h"
 
@@ -64,6 +64,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
                 self.num_nodes = self.num_gpus//4
             else:
                 self.num_nodes = self.num_nodes//4 + 1
+        self.num_tasks = self.num_nodes
         
         if self.current_system.name in ["cirrus"]:
             self.job.options = [f"--nodes={self.num_nodes}", "--exclusive", f"--gres=gpu:{self.num_gpus if self.num_gpus <= 4 else 4}"]  # make sure you change ntasks in PARAMS
