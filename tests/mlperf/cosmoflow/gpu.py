@@ -7,7 +7,7 @@ class CosmoFlowGPUBenchmark(CosmoFlowBaseCheck):
     valid_prog_environs = ["Default"]
     valid_systems = ['cirrus:compute-gpu-default']
     descr = "CosmoFlow GPU Benchmark"
-    modules = ["openmpi/4.1.5-cuda-11.6"]
+    modules = ["openmpi/4.1.6-cuda-11.6"]
     num_tasks = None
     num_gpus = variable(int, value=32) #parameter(1 << pow for pow in range(7))
     

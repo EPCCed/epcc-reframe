@@ -7,6 +7,7 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
     valid_prog_environs = ["Default", "rocm-PrgEnv-gnu"]
     valid_systems = ['cirrus:compute-gpu-default', "archer2:compute-gpu"]
     descr = "DeepCAM GPU Benchmark"
+    modules = ["openmpi/4.1.6-cuda-11.6"]
     
     num_tasks = None
     num_gpus = parameter([4])  # parameter(1 << pow for pow in range(7))
