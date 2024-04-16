@@ -127,6 +127,38 @@ class BenchioMPIIOUCXOpt16Nodes(benchioMPIIOUCXBase):
         self.tags = {'performance', 'io'}
 
 @rfm.simple_test
+class BenchioMPIIOUCXOpt16NodesAllstripe(benchioMPIIOUCXBase):
+
+    write_dir_prefix = parameter(
+        [
+        '/mnt/lustre/a2fs-work1/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work2/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work3/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-work4/work/z19/z19/shared',
+        '/mnt/lustre/a2fs-nvme/work/z19/z19/shared'
+        ]
+    )
+
+    def __init__(self):
+        super().__init__()
+
+        self.num_nodes = 16
+        self.num_tasks = 2048
+        self.num_tasks_per_node = 128
+        self.num_cpus_per_task = 1
+        self.time_limit = '20m'
+
+        self.env_vars = {
+            "OMP_NUM_THREADS": str(self.num_cpus_per_task),
+            "FI_OFI_RXM_SAR_LIMIT": "64K",
+            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4"
+        }
+
+        self.executable_opts = ('2048 2048 2048 global mpiio hdf5').split()
+        
+        self.tags = {'performance', 'io'}
+
+@rfm.simple_test
 class BenchioMPIIOUCX32Nodes(benchioMPIIOUCXBase):
 
     write_dir_prefix = parameter(
