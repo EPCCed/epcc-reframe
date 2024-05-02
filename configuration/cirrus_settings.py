@@ -35,7 +35,7 @@ site_configuration = {
                 {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with GPUs",
-                    "features": "gpu",
+                    "features": ["gpu"],
                     "scheduler": "slurm",
                     "launcher": "srun",
                     "access": [
@@ -74,10 +74,11 @@ site_configuration = {
         {
             "name": "nvidia-mpi",
             "modules": ["nvidia/nvhpc-nompi/22.2", "openmpi/4.1.6-cuda-11.8"],
+            "features": ["gpu"],
             "cc": "nvcc",
             "cxx": "nvcc",
             "ftn": "nvfortran",
-            "target_systems": ["cirrus"],
+            "target_systems": ["cirrus:compute-gpu"],
         },
         {
             "name": "Default",
