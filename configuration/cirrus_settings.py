@@ -35,11 +35,10 @@ site_configuration = {
                 {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with GPUs",
+                    "features": "gpu",
                     "scheduler": "slurm",
                     "launcher": "srun",
                     "access": [
-                        "--hint=nomultithread",
-                        "--distribution=block:block",
                         "--partition=gpu",
                     ],
                     "max_jobs": 4,
@@ -74,7 +73,7 @@ site_configuration = {
         },
         {
             "name": "nvidia-mpi",
-            "modules": ["nvidia/nvhpc-nompi/22.2", "openmpi/4.1.2-cuda-11.6"],
+            "modules": ["nvidia/nvhpc-nompi/22.2", "openmpi/4.1.6-cuda-11.8"],
             "cc": "nvcc",
             "cxx": "nvcc",
             "ftn": "nvfortran",
