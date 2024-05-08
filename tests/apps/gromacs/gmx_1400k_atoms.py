@@ -25,16 +25,16 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
 
     reference = {
         "archer2:compute": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol")
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
         },
         "archer2-tds:compute": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol")
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
         },
         "cirrus:compute": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol"),
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
         },
         "cirrus:compute-gpu": {
-            "energy": (energy_reference, 0.01, 0.01, "kJ/mol")
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
         },
     }
 
@@ -63,7 +63,7 @@ class GromacsCPUCheck(Gromacs1400kAtomsBase):
         "ns/day",
     )
     reference["cirrus:compute"]["performance"] = (
-        3.21,
+        5.50,
         -0.1,
         0.1,
         "ns/day",
@@ -84,7 +84,7 @@ class GromacsGPUCheck(Gromacs1400kAtomsBase):
     modules = ["gromacs/2023.4-gpu"]
     descr = Gromacs1400kAtomsBase.descr + " -- GPU"
     extra_resources = {
-        "qos": {"qos": "gpu"},
+        "qos": {"qos": "short"},
         "gpu": {"num_gpus_per_node": "4"},
     }
     env_vars = {
@@ -96,8 +96,8 @@ class GromacsGPUCheck(Gromacs1400kAtomsBase):
     num_tasks = None
     num_cpus_per_tasks = None
 
-    reference["cirrus:compute-gpu"]["perf"] = (
-        10.2,
+    reference["cirrus:compute-gpu"]["performance"] = (
+        11.5,
         -0.05,
         0.05,
         "ns/day",
