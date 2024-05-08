@@ -69,19 +69,13 @@ class GromacsCPUCheck(Gromacs1400kAtomsBase):
         "ns/day",
     )
 
-    @run_after("init")
-    def setup_nnodes(self):
-        """sets up number of tasks per node"""
-        self.num_tasks_per_node = self.cores.get(
-            self.current_partition.fullname, 1
-        )
-
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks = self.n_nodes * self.cores.get(
+        self.num_tasks_per_node = self.core.get(
             self.current_partition.fullname, 1
         )
+        self.num_tasks = self.n_nodes * self.num_tasks_per_node
 
 
 @rfm.simple_test
