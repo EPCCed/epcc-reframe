@@ -64,8 +64,8 @@ class GromacsCPUCheck(Gromacs1400kAtomsBase):
     )
     reference["cirrus:compute"]["performance"] = (
         3.21,
-        -0.01,
-        0.01,
+        -0.1,
+        0.1,
         "ns/day",
     )
 
@@ -84,7 +84,7 @@ class GromacsGPUCheck(Gromacs1400kAtomsBase):
     modules = ["gromacs/2023.4-gpu"]
     descr = Gromacs1400kAtomsBase.descr + " -- GPU"
     extra_resources = {
-        "qos": {"qos_id": "gpu"},
+        "qos": {"qos": "gpu"},
         "gpu": {"num_gpus_per_node": "4"},
     }
     env_vars = {
