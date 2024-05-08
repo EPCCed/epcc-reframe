@@ -72,7 +72,7 @@ class GromacsCPUCheck(Gromacs1400kAtomsBase):
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks_per_node = self.core.get(
+        self.num_tasks_per_node = self.cores.get(
             self.current_partition.fullname, 1
         )
         self.num_tasks = self.n_nodes * self.num_tasks_per_node
@@ -81,7 +81,7 @@ class GromacsCPUCheck(Gromacs1400kAtomsBase):
 @rfm.simple_test
 class GromacsGPUCheck(Gromacs1400kAtomsBase):
     valid_systems = ["cirrus:compute-gpu"]
-    modules = ["gromacs/2022.3-gpu"]
+    modules = ["gromacs/2023.4-gpu"]
     descr = Gromacs1400kAtomsBase.descr + " -- GPU"
     extra_resources = {
         "qos": {"qos_id": "gpu"},
