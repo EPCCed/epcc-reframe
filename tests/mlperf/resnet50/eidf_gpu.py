@@ -18,28 +18,27 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     num_gpus = parameter([4])
     lbs = parameter([8])
     
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"])
-    #node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
+    #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"])
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB"]) 
 
     #pod_config="/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/pod-mlperf-resnet-.yaml"
     pod_config = "test"
 
     @run_after("init")
     def executable_setup(self):
-        jobname = f"mlperf-resnet"
+        jobname = f"mlperf-resnet-"
         with open("/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/resnet50/base_pod.yaml", "r") as stream:
             pod_info = yaml.safe_load(stream)
         pod_info["metadata"]["generateName"] = jobname
-        pod_info["spec"]["containers"][0]["name"] = jobname # remove '...-' at the end of str
-        pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML/ResNet50/Torch"
-        pod_info["spec"]["containers"][0]["command"] = ["torchrun"]
+        pod_info["spec"]["containers"][0]["name"] = jobname[:-1] # remove '...-' at the end of str
+        pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML"
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}", 
-            "train.py", 
+            "/workspace/ML/ResNet50/Torch/train.py", 
             "-lbs", f"{self.lbs}",
             "-c", "/workspace/ML/ResNet50/Torch/config.yaml",
-            "--t_subset_size", "0",
-            "--v_subset_size", "0"  
+            "--t_subset_size", "2048",
+            "--v_subset_size", "512"  
         ]
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type

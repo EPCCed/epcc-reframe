@@ -1,3 +1,4 @@
+import yaml
 import reframe as rfm
 import reframe.utility.sanity as sn
 
@@ -5,15 +6,21 @@ import reframe.utility.sanity as sn
 class CudaPodTest(rfm.RunOnlyRegressionTest):
     valid_systems = ['eidf:gpu-service']
     valid_prog_environs = ["*"]
-    k8s_config = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
-    
-    reference = {
-        "eidf:gpu-service": {
-            "Interactions per second": (250, -0.1, 0.1, "Iters/s"),
-            "Flops": (7440, -0.1, 0.1, "GLOP/s"),
-        }
-    }
-    
+    n_bodies = parameter([512000, 512000*2])
+
+    @run_after("init")
+    def k8s_setup(self):
+        k8s_config_path = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
+        with open(k8s_config_path, "r") as stream:
+            pod_info = yaml.safe_load(stream)
+        pod_info["spec"]["containers"][0]["args"] = [
+            "-benchmark", 
+            f"-numbodies={self.n_bodies}", 
+            "-fp64", 
+            "-fullscreen"]
+        self.k8s_config = pod_info
+
+
     @performance_function("Iters/s", perf_key="Interactions per second")
     def extract_interactions_per_second(self):
         return sn.extractsingle(r"= (\d+\.\d+) billion interactions per second", self.stdout, tag= 1, conv=float)

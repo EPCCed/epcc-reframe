@@ -11,7 +11,7 @@ spec:
       image: bigballoon8/mlperf-epcc
       workingDir: '---PATH-WORKDIR---'
       command:
-        - '---ADD-CMDs---'
+        - torchrun
       args:
         - '---ADD-ARGS---'
       env:

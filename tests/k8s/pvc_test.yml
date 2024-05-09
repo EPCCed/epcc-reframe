@@ -18,11 +18,14 @@ spec:
           limits:
             cpu: 16
             memory: 32Gi
+            nvidia.com/gpu: 1
         volumeMounts:
         - mountPath: "/mnt/pv"
           name: test-volume
       volumes:
       - name: test-volume
         persistentVolumeClaim:
-          claimName: deepcam-mini
+          claimName: cosmoflow-pvc
       restartPolicy: Never
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB

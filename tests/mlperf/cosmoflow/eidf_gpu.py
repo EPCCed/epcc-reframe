@@ -89,8 +89,8 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
     num_gpus = parameter([4])
     lbs = parameter([8])
     
-    node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"])
-    #node_type = parameter(["NVIDIA-A100-SXM4-40GB"])  
+    #node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"])
+    node_type = parameter(["NVIDIA-A100-SXM4-40GB"])  
 
     @run_before("setup")
     def executable_setup(self):
@@ -110,7 +110,7 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
         
         pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
         pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
-        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "cosmoflow-pvc-clone"
+        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "cosmoflow-pvc"
         
         self.k8s_config = pod_info
         self.namespace = "eidf095ns"
