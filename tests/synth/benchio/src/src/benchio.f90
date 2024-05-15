@@ -150,11 +150,11 @@ program benchio
      end do
 
 ! Check if we are explicity syncing data (to avoid caching)
-     if ('fsync' == argstring) then
+     if (argstring == "fsync") then
         dofsync = .true.
      end if
 
-     if (.not.ioflag .and. .not.stripeflag) then
+     if (.not.ioflag .and. .not.stripeflag .and. .not.dofsync) then
         
         write(*,*) "Illegal argument: ", argstring
 
