@@ -47,7 +47,7 @@ subroutine serialwrite(filename, iodata, n1, n2, n3, comm, dofsync)
         write(unit=iounit) iodata(1:n1, 1:n2, 1:n3)
      end do
 
-     if (dofsync)
+     if (dofsync) then
         flush(iounit)
         ierr = fsync(fnum(iounit))
      end if

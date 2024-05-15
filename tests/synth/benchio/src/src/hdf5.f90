@@ -121,7 +121,7 @@ subroutine hdf5write(filename, iodata, n1, n2, n3, cartcomm, dofsync)
   CALL h5pclose_f(plist_id, ierr)
 
   ! Close the file.
-  if (dofsync)
+  if (dofsync) then
      CALL h5fflush_f( file_id , H5F_SCOPE_GLOBAL_F,ierr )
   end if
   CALL h5fclose_f(file_id, ierr)

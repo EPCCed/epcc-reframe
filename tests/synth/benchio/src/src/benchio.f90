@@ -232,7 +232,7 @@ program benchio
      write(*,*) "----------------------------"
      write(*,*)
      write(*,*) "Running on ", size, " process(es)"
-     if (dofsync)
+     if (dofsync) then
         write(*,*) "Includes fsync (no client caching)"
      else
         write(*,*) "No fsync (client caching possible)"

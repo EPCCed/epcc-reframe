@@ -105,7 +105,7 @@ subroutine mpiiowrite(filename, iodata, n1, n2, n3, cartcomm, dofsync)
 !
 !  Close file
 !
-  if (dofsync)
+  if (dofsync) then
      call MPI_File_sync(fh,ierr)
   end if
   call MPI_File_close(fh, ierr)
