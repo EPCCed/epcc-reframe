@@ -65,7 +65,7 @@ class benchioSmallTest(rfm.RegressionTest):
     def __init__(self,**kwds):
 
         super().__init__()
-        self.executable_opts = ('1260 1260 1260 global mpiio hdf5').split()
+        self.executable_opts = ('1260 1260 1260 global mpiio hdf5 fsync').split()
         self.num_tasks = 128 * self.num_nodes
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1

@@ -7,7 +7,7 @@ module iohdf5
 
 contains
 
-subroutine hdf5write(filename, iodata, n1, n2, n3, cartcomm)
+subroutine hdf5write(filename, iodata, n1, n2, n3, cartcomm, dofsync)
 
   integer, parameter :: ndim = 3
 
@@ -15,6 +15,8 @@ subroutine hdf5write(filename, iodata, n1, n2, n3, cartcomm)
   
   integer :: n1, n2, n3
   double precision, dimension(0:n1+1,0:n2+1,0:n3+1) :: iodata
+
+  logical :: dofsync
 
   integer :: info = MPI_INFO_NULL
   integer(hsize_t), dimension(ndim) :: dimsf  ! dataset dimensions.
@@ -119,6 +121,9 @@ subroutine hdf5write(filename, iodata, n1, n2, n3, cartcomm)
   CALL h5pclose_f(plist_id, ierr)
 
   ! Close the file.
+  if (dofsync)
+     CALL h5fflush_f( file_id , H5F_SCOPE_GLOBAL_F,ierr )
+  end if
   CALL h5fclose_f(file_id, ierr)
 
   ! Close FORTRAN predefined datatypes.

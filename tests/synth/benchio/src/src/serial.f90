@@ -11,12 +11,21 @@ module ioserial
 
   contains
 
-subroutine serialwrite(filename, iodata, n1, n2, n3, comm)
+! Declare the POSIX fsync function
+function fsync (fd) bind(c,name="fsync")
+  use iso_c_binding, only: c_int
+  integer(c_int), value :: fd
+  integer(c_int) :: fsync
+end function fsync
+
+subroutine serialwrite(filename, iodata, n1, n2, n3, comm, dofsync)
 
   character*(*) :: filename
   
   integer :: n1, n2, n3
   double precision, dimension(0:n1+1,0:n2+1,0:n3+1) :: iodata
+
+  logical :: dofsync
 
   integer :: comm, ierr, rank, size
   integer, parameter :: iounit = 10
@@ -38,6 +47,10 @@ subroutine serialwrite(filename, iodata, n1, n2, n3, comm)
         write(unit=iounit) iodata(1:n1, 1:n2, 1:n3)
      end do
 
+     if (dofsync)
+        flush(iounit)
+        ierr = fsync(fnum(iounit))
+     end if
      close(iounit)
 
   end if

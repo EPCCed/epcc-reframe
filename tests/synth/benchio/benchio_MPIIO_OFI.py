@@ -89,7 +89,7 @@ class BenchioMPIIOOFI16Nodes(benchioMPIIOOFIBase):
             "OMP_NUM_THREADS": str(self.num_cpus_per_task)
         }
 
-        self.executable_opts = ('2048 2048 2048 global mpiio hdf5 fullstriped').split()
+        self.executable_opts = ('2048 2048 2048 global mpiio hdf5 fullstriped fsync').split()
         
         self.tags = {'performance', 'io'}
 
@@ -121,7 +121,7 @@ class BenchioMPIIOOFIOpt16Nodes(benchioMPIIOOFIBase):
             "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4"
         }
 
-        self.executable_opts = ('2048 2048 2048 global mpiio hdf5 fullstriped').split()
+        self.executable_opts = ('2048 2048 2048 global mpiio hdf5 fullstriped fsync').split()
         
         self.tags = {'performance', 'io'}
 

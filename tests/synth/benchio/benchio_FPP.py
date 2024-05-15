@@ -86,7 +86,7 @@ class BenchioFPP16Nodes(benchioMediumTestMultiFile):
             "OMP_NUM_THREADS": str(self.num_cpus_per_task),
         }
 
-        self.executable_opts = ('2048 2048 2048 global proc unstriped').split()
+        self.executable_opts = ('2048 2048 2048 global proc unstriped fsync').split()
         
         self.tags = {'performance', 'io'}
 
@@ -118,6 +118,6 @@ class BenchioFPP32Nodes(benchioMediumTestMultiFile):
             "SRUN_CPUS_PER_TASK": "2"
         }
 
-        self.executable_opts = ('8192 8192 8192 global proc unstriped').split()
+        self.executable_opts = ('8192 8192 8192 global proc unstriped fsync').split()
         
         self.tags = {'performance', 'io'}

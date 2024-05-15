@@ -7,7 +7,7 @@ module mpiio
 
 contains
 
-subroutine mpiiowrite(filename, iodata, n1, n2, n3, cartcomm)
+subroutine mpiiowrite(filename, iodata, n1, n2, n3, cartcomm, dofsync)
 
   character*(*) :: filename
   
@@ -16,6 +16,8 @@ subroutine mpiiowrite(filename, iodata, n1, n2, n3, cartcomm)
 
   integer, dimension(ndim) :: arraysize, arraystart
   integer, dimension(ndim) :: arraygsize, arraysubsize
+
+  logical :: dofsync
 
   integer :: cartcomm, ierr, rank, size
 
@@ -103,7 +105,9 @@ subroutine mpiiowrite(filename, iodata, n1, n2, n3, cartcomm)
 !
 !  Close file
 !
-
+  if (dofsync)
+     call MPI_File_sync(fh,ierr)
+  end if
   call MPI_File_close(fh, ierr)
 
   if (ierr /= MPI_SUCCESS) write(*,*) 'Close error on rank ', rank

@@ -27,7 +27,7 @@ program benchio
   character*(maxlen), dimension(numstriping) :: stripestring
   character*(maxlen) :: argstring
 
-  logical :: ioflag, stripeflag, globalflag, serialio
+  logical :: ioflag, stripeflag, globalflag, serialio, dofsync
   logical, dimension(numiolayer)  :: doio
   logical, dimension(numstriping) :: dostripe
 
@@ -96,6 +96,7 @@ program benchio
 
   doio(:) = .false.
   dostripe(:) = .false.  
+  dofsync = .false.
   
   numarg = command_argument_count()
 
@@ -147,6 +148,11 @@ program benchio
         end if
 
      end do
+
+! Check if we are explicity syncing data (to avoid caching)
+     if ('fsync' == argstring) then
+        dofsync = .true.
+     end if
 
      if (.not.ioflag .and. .not.stripeflag) then
         
@@ -226,6 +232,11 @@ program benchio
      write(*,*) "----------------------------"
      write(*,*)
      write(*,*) "Running on ", size, " process(es)"
+     if (dofsync)
+        write(*,*) "Includes fsync (no client caching)"
+     else
+        write(*,*) "No fsync (client caching possible)"
+     end if
      write(*,*)
   end if
 
@@ -350,14 +361,14 @@ program benchio
         select case (iolayer)
 
         case(1:3)
-           call serialwrite(filename, iodata, n1, n2, n3, iocomm)
+           call serialwrite(filename, iodata, n1, n2, n3, iocomm, dofsync)
            serialio = .true.
 
         case(4)
-           call mpiiowrite(filename, iodata, n1, n2, n3, iocomm)
+           call mpiiowrite(filename, iodata, n1, n2, n3, iocomm, dofsync)
 #ifdef USE_HDF5
         case(5)
-            call hdf5write(filename, iodata, n1, n2, n3, iocomm)
+            call hdf5write(filename, iodata, n1, n2, n3, iocomm, dofsync)
 #endif
 
 
