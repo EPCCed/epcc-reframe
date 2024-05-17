@@ -65,7 +65,7 @@ class benchioSmallTest(rfm.RegressionTest):
     def __init__(self,**kwds):
 
         super().__init__()
-        self.executable_opts = ('1260 1260 1260 global mpiio hdf5').split()
+        self.executable_opts = ('1260 1260 1260 global mpiio hdf5 fsync').split()
         self.num_tasks = 128 * self.num_nodes
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
@@ -74,7 +74,7 @@ class benchioSmallTest(rfm.RegressionTest):
 
         self.prerun_cmds  = ['source create_striped_dirs.sh', 'module remove darshan']
         self.postrun_cmds  = ['source delete_dirs.sh']
-        self.time_limit = '9m'
+        self.time_limit = '1h'
         self.build_system = 'CMake'
         self.build_system.ftn="ftn"
         self.modules = [ "cray-hdf5-parallel" ]
