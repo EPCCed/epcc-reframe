@@ -74,7 +74,7 @@ class benchioSmallTest(rfm.RegressionTest):
 
         self.prerun_cmds  = ['source create_striped_dirs.sh', 'module remove darshan']
         self.postrun_cmds  = ['source delete_dirs.sh']
-        self.time_limit = '9m'
+        self.time_limit = '1h'
         self.build_system = 'CMake'
         self.build_system.ftn="ftn"
         self.modules = [ "cray-hdf5-parallel" ]

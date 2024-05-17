@@ -83,7 +83,7 @@ class BenchioMPIIOOFI16Nodes(benchioMPIIOOFIBase):
         self.num_tasks = 2048
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '2h'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": str(self.num_cpus_per_task)
@@ -113,7 +113,7 @@ class BenchioMPIIOOFIOpt16Nodes(benchioMPIIOOFIBase):
         self.num_tasks = 2048
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '2h'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": str(self.num_cpus_per_task),

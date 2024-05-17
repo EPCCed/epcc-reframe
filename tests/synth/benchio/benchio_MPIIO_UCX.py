@@ -84,7 +84,7 @@ class BenchioMPIIOUCX16Nodes(benchioMPIIOUCXBase):
         self.num_tasks = 2048
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '20m'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": str(self.num_cpus_per_task)
@@ -114,7 +114,7 @@ class BenchioMPIIOUCXOpt16Nodes(benchioMPIIOUCXBase):
         self.num_tasks = 2048
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '20m'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": str(self.num_cpus_per_task),
@@ -146,7 +146,7 @@ class BenchioMPIIOUCXOpt16NodesAllstripe(benchioMPIIOUCXBase):
         self.num_tasks = 2048
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '20m'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": str(self.num_cpus_per_task),
@@ -178,7 +178,7 @@ class BenchioMPIIOUCX32Nodes(benchioMPIIOUCXBase):
         self.num_tasks = 4096
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '2h'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": "1",
@@ -209,7 +209,7 @@ class BenchioMPIIOUCXOpt32Nodes(benchioMPIIOUCXBase):
         self.num_tasks = 4096
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
-        self.time_limit = '2h'
+        self.time_limit = '3h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": "1",
