@@ -17,7 +17,7 @@ class VASPCdTe(VASPBase):
     num_cpus_per_task = 4
     time_limit = "1h"
     env_vars = {
-        "OMP_NUM_THREADS": str(num_cpus_per_task)
+        "OMP_NUM_THREADS": str(num_cpus_per_task),
         "SRUN_CPUS_PER_TASK": str(num_cpus_per_task)
     }
 
