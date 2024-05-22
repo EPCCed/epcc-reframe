@@ -24,7 +24,7 @@ class VASPCdTe(VASPBase):
     cores = variable(
         dict,
         value={
-            "archer2:compute": 128,
+            "archer2:compute": 32,
         },
     )
 
