@@ -8,15 +8,18 @@ class VASPCdTe(VASPBase):
     """ReFrame VASP CdTe (exact exchange) test"""
 
     valid_systems = ["archer2:compute"]
-    modules = ["vasp"]
+    modules = ["vasp", "PrgEnv-gnu", "craype-network-ucx", "cray-mpich-ucx"]
     executable = "vasp_ncl"
     prerun_cmds = ["tar -xf CdTe_input.tar.gz"]
     descr = "VASP CdTe (exact exchange) test"
 
-    n_nodes = 16
-    num_cpus_per_task = 1
+    n_nodes = 8
+    num_cpus_per_task = 4
     time_limit = "1h"
-    env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
+    env_vars = {
+        "OMP_NUM_THREADS": str(num_cpus_per_task)
+        "SRUN_CPUS_PER_TASK": str(num_cpus_per_task)
+    }
 
     cores = variable(
         dict,
