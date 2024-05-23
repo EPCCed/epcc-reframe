@@ -8,8 +8,8 @@ from gromacs_base import GromacsBaseCheck
 class Gromacs1400katomsCheckGPU(GromacsBaseCheck):
     """GROMACS 1400k atoms GPU regression test"""
 
-    descr = "GROMACS check CPU"
-    modules = ["gromacs/2022.3-gpu"]
+    descr = "GROMACS check GPU"
+    modules = ["gromacs/2023.4-gpu"]
     executable_opts = ("mdrun -noconfout -s gmx_1400k_atoms.tpr ").split()
     extra_resources = {
         "qos": {"qos": "gpu"},
