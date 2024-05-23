@@ -111,7 +111,7 @@ class BenchioFPP32Nodes(benchioMediumTestMultiFile):
         self.num_tasks = 2048
         self.num_tasks_per_node = 64
         self.num_cpus_per_task = 2
-        self.time_limit = '2h'
+        self.time_limit = '1h'
 
         self.env_vars = {
             "OMP_NUM_THREADS": "1",
