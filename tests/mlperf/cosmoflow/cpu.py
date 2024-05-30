@@ -8,14 +8,14 @@ class CosmoFlowCPUCheck(CosmoFlowBaseCheck):
     descr = "CosmoFlow CPU Benchmark"
     valid_systems = ['archer2:compute', 'cirrus:compute']
     num_tasks = 32
-    num_task_per_node=1
-    time_limit = "12h"
+    num_task_per_node=16
+    time_limit = "2h"
     executable = 'python'
 
     @run_after("init")
     def setup_systems(self):
         if self.current_system.name in ["archer2"]:
-            self.num_cpus_per_task = 128
+            self.num_cpus_per_task = 8
             self.env_vars = {
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
                 "SRUN_CPUS_PER_TASK" : str(self.num_cpus_per_task)

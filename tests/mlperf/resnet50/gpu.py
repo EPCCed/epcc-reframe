@@ -5,7 +5,7 @@ from base import ResNet50BaseCheck
 @rfm.simple_test
 class ResNet50GPUBenchmark(ResNet50BaseCheck):
     valid_prog_environs = ["Default", "rocm-PrgEnv-gnu"]
-    valid_systems = ['cirrus:compute-gpu-default', "archer2:compute-gpu"]
+    valid_systems = ['cirrus:compute-gpu-default', "archer2:compute-gpu-torch"]
     descr = "ResNet50 GPU Benchmark"
     
     num_tasks = None
@@ -21,8 +21,8 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
                                 "--config", "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/archer2benchmark_config.yaml",
                                 "--device", "cuda",
                                 "-lbs", f"{self.lbs}",
-                                "--t_subset_size", "1024",
-                                "--v_subset_size", "256"  
+                                "--t_subset_size", "2048",
+                                "--v_subset_size", "512"  
             ]
         if self.current_system.name in ["archer2"]:
             self.executable = ''
@@ -41,13 +41,14 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
             }
         
         elif self.current_system.name in ["cirrus"]:
+            self.executable_opts[2] = "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/cirrusbenchmark_config.yaml",
             self.executable = 'python'
             self.extra_resources = {
             "qos": {"qos": "gpu"},
             }
-            self.modules = ["openmpi/4.1.6-cuda-11.6"]
+            self.modules = ["openmpi/4.1.5-cuda-11.6"]
             self.prerun_cmds = ['eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"', 
-                            "conda activate mlperf-torch", 
+                            "conda activate mlperf_torch", 
             ]
             self.env_vars = {
                 'OMP_NUM_THREADS': "5",
@@ -64,7 +65,6 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
                 self.num_nodes = self.num_gpus//4
             else:
                 self.num_nodes = self.num_nodes//4 + 1
-        self.num_tasks = self.num_nodes
         
         if self.current_system.name in ["cirrus"]:
             self.job.options = [f"--nodes={self.num_nodes}", "--exclusive", f"--gres=gpu:{self.num_gpus if self.num_gpus <= 4 else 4}"]  # make sure you change ntasks in PARAMS

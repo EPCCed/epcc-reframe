@@ -6,10 +6,10 @@ from base import DeepCamBaseCheck
 class DeepCamCPUCheck(DeepCamBaseCheck):
     descr = "DeepCam CPU Benchmark"
     valid_systems = ['archer2:compute', 'cirrus:compute']
-    num_task_per_node=1
+    num_task_per_node=8
     executable = 'python'
     num_tasks = 32
-    time_limit = "12h"
+    time_limit = "2h"
     reference = {"archer2:compute": {"Throughput": (200, -0.05, 0.10, "images/s"),
                                      "Communication Time": (0.3, -0.1, 0.1, "s"),
                                      "Epoch Length": (500, -0.05, 0.05, "s"),
@@ -20,7 +20,7 @@ class DeepCamCPUCheck(DeepCamBaseCheck):
     def setup_systems(self):
         if self.current_system.name in ["archer2"]:
             self.valid_prog_environs = ['PrgEnv-gnu']
-            self.num_cpus_per_task = 128
+            self.num_cpus_per_task = 16
             self.env_vars = {
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
                 "SRUN_CPUS_PER_TASK" : str(self.num_cpus_per_task)
@@ -43,5 +43,4 @@ class DeepCamCPUCheck(DeepCamBaseCheck):
             self.executable_opts = ["/work/z043/shared/chris-ml-intern//ML_HPC/DeepCAM/Torch/train.py",
                                     " --config", "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/configs/cirrusbenchmark_config.yaml"
                                     ]
-
 

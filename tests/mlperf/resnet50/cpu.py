@@ -6,7 +6,7 @@ from base import ResNet50BaseCheck
 class ResNet50CPUCheck(ResNet50BaseCheck):
     descr = "ResNet50 CPU Benchmark"
     valid_systems = ['archer2:compute', 'cirrus:compute']
-    num_task_per_node=1
+    num_task_per_node=16
     executable = 'python'
     num_tasks = 32
     time_limit = "12h"
@@ -20,7 +20,7 @@ class ResNet50CPUCheck(ResNet50BaseCheck):
     def setup_systems(self):
         if self.current_system.name in ["archer2"]:
             self.valid_prog_environs = ['PrgEnv-gnu']
-            self.num_cpus_per_task = 128
+            self.num_cpus_per_task = 8
             self.env_vars = {
                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
                 "SRUN_CPUS_PER_TASK" : str(self.num_cpus_per_task)
