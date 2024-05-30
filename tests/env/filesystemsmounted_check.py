@@ -56,7 +56,7 @@ class FileSystemMountCheckWork4(rfm.RunOnlyRegressionTest):
         # self.executable_opts = []
         self.maintainers = ['James Richings']
         self.tags = {'production', 'craype'}
-        self.sanity_patterns = sn.assert_found(r'^work3-test', self.stdout)
+        self.sanity_patterns = sn.assert_found(r'^work4-test', self.stdout)
 
 @rfm.simple_test
 class FileSystemMountCheckWorknvme(rfm.RunOnlyRegressionTest):

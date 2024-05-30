@@ -1,32 +1,31 @@
+"""ReFrame base module for LAMMPS tests"""
 import reframe as rfm
 import reframe.utility.sanity as sn
 
 
-class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
-    """ReFrame base class for GROMACS tests"""
+class LAMMPSBase(rfm.RunOnlyRegressionTest):
+    """ReFrame base class for LAMMPS tests"""
 
-    valid_prog_environs = ["PrgEnv-gnu", "gnu", "nvidia-mpi"]
-    executable = "gmx_mpi"
+    valid_prog_environs = ["PrgEnv-gnu", "intel", "nvidia-mpi"]
+    executable = "lmp"
     extra_resources = {"qos": {"qos": "standard"}}
 
-    keep_files = ["md.log"]
+    keep_files = ["log.lammps"]
 
     maintainers = ["r.apostolo@epcc.ed.ac.uk"]
     strict_check = True
-    use_multithreading = False
     tags = {"applications", "performance"}
 
     @sanity_function
     def assert_finished(self):
-        return sn.assert_found(r"Finished mdrun", self.keep_files[0])
+        """Sanity check that simulation finished successfully"""
+        return sn.assert_found(r"Total wall time", self.keep_files[0])
 
     @performance_function("kJ/mol", perf_key="energy")
-    def assert_energy(self):
+    def extract_energy(self):
+        """Extract value of system energy for performance check"""
         return sn.extractsingle(
-            r"\s+Potential\s+Kinetic En\.\s+Total Energy"
-            r"\s+Conserved En\.\s+Temperature\n"
-            r"(\s+\S+){2}\s+(?P<energy>\S+)(\s+\S+){2}\n"
-            r"\s+Pressure \(bar\)\s+Constr\. rmsd",
+            r"\s+11000\s+\S+\s+\S+\s+(?P<energy>\S+)",
             self.keep_files[0],
             "energy",
             float,
@@ -35,6 +34,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     @performance_function("ns/day", perf_key="performance")
     def extract_perf(self):
+        """Extract performance value to compare with reference value"""
         return sn.extractsingle(
             r"Performance:\s+(?P<perf>\S+)",
             self.keep_files[0],
