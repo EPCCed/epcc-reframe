@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  generateName: '---CHANGE-NAME---'
+  labels:
+        kueue.x-k8s.io/queue-name:  eidf095ns-user-queue
+spec:
+  restartPolicy: Never
+  containers:
+    - name: '---CHANGE-NAME---'
+      image: bigballoon8/mlperf-epcc
+      workingDir: '---PATH-WORKDIR---'
+      command:
+        - torchrun
+      args:
+        - '---ADD-ARGS---'
+      env:
+        - name: OMP_NUM_THREADS
+          value: '4'
+      resources:
+        requests:
+          cpu: 16
+          memory: 16Gi
+        limits:
+          cpu: 16
+          memory: 32Gi
+          nvidia.com/gpu: '---CHANGE INT--'
+      volumeMounts:
+        - mountPath: /mnt/ceph_rbd
+          name: volume
+        - mountPath: /dev/shm
+          name: devshm
+  nodeSelector:
+    nvidia.com/gpu.product: '---CHANGE-NAME---'
+  volumes:
+    - name: volume
+      persistentVolumeClaim:
+        claimName: '---CHANGE-NAME---'
+    - name: devshm
+      emptyDir:
+        medium: Memory

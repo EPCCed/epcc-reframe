@@ -1,3 +1,12 @@
+from reframe.core.backends import register_launcher
+from reframe.core.launchers import JobLauncher
+
+
+@register_launcher('torchrun')
+class TorchRunLauncher(JobLauncher):
+    def command(self, job):
+        return ['torchrun', f'--nproc_per_node=4']
+
 site_configuration = {
     'systems': [
         {
@@ -21,6 +30,36 @@ site_configuration = {
                     'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=standard'],
                     'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                     'max_jobs': 16,
+                },
+                {
+                    "name": "compute-gpu",
+                    "descr": "Compute nodes with AMD GPUs",
+                    "scheduler": "slurm",
+                    'launcher': 'srun',
+                    'access': ['--partition=gpu'],
+                    'environs': ['rocm-PrgEnv-gnu','rocm-PrgEnv-cray','rocm-PrgEnv-aocc'],
+                    "resources": [
+                        {"name": "qos", "options": ["--qos={qos}"]},
+                        {
+                            "name": "gpu",
+                            "options": ["--gres=gpu:{num_gpus_per_node}"],
+                        },
+                    ],
+                },
+                {
+                    "name": "compute-gpu-torch",
+                    "descr": "Compute nodes with AMD GPUs",
+                    "scheduler": "slurm",
+                    'launcher': 'torchrun',
+                    'access': ['--partition=gpu'],
+                    'environs': ['rocm-PrgEnv-gnu','rocm-PrgEnv-cray','rocm-PrgEnv-aocc'],
+                    "resources": [
+                        {"name": "qos", "options": ["--qos={qos}"]},
+                        {
+                            "name": "gpu",
+                            "options": ["--gres=gpu:{num_gpus_per_node}"],
+                        },
+                    ],
                 }
             ]
         }
@@ -50,10 +89,35 @@ site_configuration = {
             'ftn': 'ftn',
             'target_systems': ['archer2']
         },
+        {
+            'name': 'rocm-PrgEnv-gnu',
+            'modules': ['PrgEnv-gnu', "rocm", "craype-accel-amd-gfx90a", "craype-x86-milan"],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'rocm-PrgEnv-cray',
+            'modules': ['PrgEnv-cray'],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
+        {
+            'name': 'rocm-PrgEnv-aocc',
+            'modules': ['PrgEnv-aocc'],
+            'cc': 'cc',
+            'cxx': 'CC',
+            'ftn': 'ftn',
+            'target_systems': ['archer2']
+        },
     ],
     'logging': [
         {
             'level': 'debug',
+            "perflog_compat": True,
             'handlers': [
                 {
                     'type': 'stream',
@@ -81,6 +145,7 @@ site_configuration = {
                     'type': 'file',
                     'name': 'reframe_perf.out',
                     'level': 'info',
+                    "perflog_compat": True,
                     'format': '[%(asctime)s] %(check_info)s: %(check_perf_var)s=%(check_perf_value)s (ref=%(check_perf_ref)s;l=%(check_perf_lower_thres)s;u=%(check_perf_upper_thres)s)) %(check_perf_unit)s', 
                     'append': True
                 },
@@ -89,16 +154,14 @@ site_configuration = {
                     'prefix': '%(check_system)s/%(check_partition)s',
                     'level': 'info',
                     'format': (
-                        '%(check_job_completion_time)s|reframe %(version)s|'
-                        '%(check_info)s|jobid=%(check_jobid)s|'
-                        '%(check_perf_var)s=%(check_perf_value)s|'
-                        'ref=%(check_perf_ref)s '
-                        '(l=%(check_perf_lower_thres)s, '
-                        'u=%(check_perf_upper_thres)s)|'
-                        '%(check_perf_unit)s'
+                        '%(check_display_name)s|%(check_result)s|%(check_job_completion_time)s|'
+                        '%(check_perf_var)s|'
+                        '%(check_perf_value)s %(check_perf_unit)s|'
+                        '(%(check_perf_ref)s, %(check_perf_lower_thres)s, %(check_perf_upper_thres)s)|'
                     ),
+                    
                     'append': True
-                }
+                },
             ]
         }
     ],

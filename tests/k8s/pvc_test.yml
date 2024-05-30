@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pvc-test
+  labels:
+    kueue.x-k8s.io/queue-name:  eidf095ns-user-queue
+spec:
+  template:
+    metadata:
+      name: pvc-test
+    spec:
+      containers:
+      - name: write
+        image: ubuntu:xenial
+        command: [/bin/bash, -c, --]
+        args: ["echo WRITE && dd if=/dev/zero of=/mnt/pv/test.img bs=BS count=COUNT oflag=dsync && echo READ && dd if=/mnt/pv/test.img of=/dev/null bs=BS"]
+        resources:
+          limits:
+            cpu: 16
+            memory: 32Gi
+            nvidia.com/gpu: 1
+        volumeMounts:
+        - mountPath: "/mnt/pv"
+          name: test-volume
+      volumes:
+      - name: test-volume
+        persistentVolumeClaim:
+          claimName: cosmoflow-pvc
+      restartPolicy: Never
+      nodeSelector:
+        nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB
