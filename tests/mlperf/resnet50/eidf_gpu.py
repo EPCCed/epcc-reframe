@@ -7,7 +7,7 @@ import copy
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-from base import ResNet50BaseCheck
+from resnet_base import ResNet50BaseCheck
 
 @rfm.simple_test
 class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
@@ -27,7 +27,7 @@ class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
     @run_after("init")
     def executable_setup(self):
         jobname = f"mlperf-resnet-"
-        with open("/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/mlperf/resnet50/base_pod.yaml", "r") as stream:
+        with open("/".join(__file__.split("/")[:-1]) + "/base_pod.yaml", "r") as stream:
             pod_info = yaml.safe_load(stream)
         pod_info["metadata"]["generateName"] = jobname
         pod_info["spec"]["containers"][0]["name"] = jobname[:-1] # remove '...-' at the end of str

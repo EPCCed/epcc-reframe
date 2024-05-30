@@ -1,6 +1,6 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
-from base import DeepCamBaseCheck
+from deepcam_base import DeepCamBaseCheck
 
 @rfm.simple_test
 class DeepCamGPUBenchmark(DeepCamBaseCheck):

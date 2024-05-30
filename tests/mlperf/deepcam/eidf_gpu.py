@@ -7,7 +7,7 @@ import copy
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-from base import DeepCamBaseCheck
+from deepcam_base import DeepCamBaseCheck
 
 base_k8s_pod = {
     "apiVersion": "v1",

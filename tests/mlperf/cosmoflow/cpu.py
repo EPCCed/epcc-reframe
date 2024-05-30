@@ -1,6 +1,6 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
-from base import CosmoFlowBaseCheck
+from cosmo_base import CosmoFlowBaseCheck
 
 @rfm.simple_test
 class CosmoFlowCPUCheck(CosmoFlowBaseCheck):

@@ -10,7 +10,7 @@ class CudaPodTest(rfm.RunOnlyRegressionTest):
 
     @run_after("init")
     def k8s_setup(self):
-        k8s_config_path = "/home/eidf095/eidf095/crae-ml/epcc-reframe/tests/k8s/cuda-pod.yml"
+        k8s_config_path = "/".join(__file__.split("/")[:-1]) + "/cuda-pod.yml"
         with open(k8s_config_path, "r") as stream:
             pod_info = yaml.safe_load(stream)
         pod_info["spec"]["containers"][0]["args"] = [

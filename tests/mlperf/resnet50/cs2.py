@@ -1,6 +1,6 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
-from base import ResNet50BaseCheck
+from resnet_base import ResNet50BaseCheck
 
 @rfm.simple_test
 class ResNet50CSXBenchmark(ResNet50BaseCheck):
