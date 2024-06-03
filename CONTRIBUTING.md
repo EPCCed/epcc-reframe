@@ -1,28 +1,28 @@
 # How to contribute
 
 1. If you're a first time contributor:
-  1. Go to the [epcc-reframe github](https://github.com/EPCCed/epcc-reframe/) and click the fork button to create your own copy of the project.
-  2. Clone the project on your computer with `git clone https://github.com/your-username/epcc-reframe.git`
-  3. Change directory: `cd epcc-reframe`.
-  4. Add the upstream repository: `git remote add upstream https://github.com/EPCCed/epcc-reframe.git`
-  5. `git remote -v` will now show two remote repositories, one name `upstream`, which refers to the `EPCCed` repository, and another named `origin`, which is your personal fork.
-  6. You can pull the latest changes from upstream with: `git checkout main && git pull upstream main`
+    1. Go to the [epcc-reframe github](https://github.com/EPCCed/epcc-reframe/) and click the fork button to create your own copy of the project.
+    2. Clone the project on your computer with `git clone https://github.com/your-username/epcc-reframe.git`
+    3. Change directory: `cd epcc-reframe`.
+    4. Add the upstream repository: `git remote add upstream https://github.com/EPCCed/epcc-reframe.git`
+    5. `git remote -v` will now show two remote repositories, one name `upstream`, which refers to the `EPCCed` repository, and another named `origin`, which is your personal fork.
+    6. You can pull the latest changes from upstream with: `git checkout main && git pull upstream main`
 
 2. Develop your contribution:
-  1. Create a branch for the feature you want to work on.
-  2. Commit changes locally as you progress (with `git add` and `git commit`). Please use descriptive commit messages.
-  3. Make sure your code follows the syntax guidelines detailed below.
-  4. If you're developing a new test, make sure you include the `maintainer` parameter in the class.
+    1. Create a branch for the feature you want to work on.
+    2. Commit changes locally as you progress (with `git add` and `git commit`). Please use descriptive commit messages.
+    3. Make sure your code follows the syntax guidelines detailed below.
+    4. If you're developing a new test, make sure you include the `maintainer` parameter in the class.
 
 3. Submit your contribution:
-  1. Push your changes back to your fork on GitHub with: `git push origin <branch-name>`.
-  2. Go to GitHub, the new branch will show up with a green "Pull Request" button.
-  3. Make sure to write clear title and messages, then click the button to submit it.
-  4. If the PR relates to any open issues, you can reference them in the message body (with `closes`, `fixes`, or just `xref` followed by the issue number).
+    1. Push your changes back to your fork on GitHub with: `git push origin <branch-name>`.
+    2. Go to GitHub, the new branch will show up with a green "Pull Request" button.
+    3. Make sure to write clear title and messages, then click the button to submit it.
+    4. If the PR relates to any open issues, you can reference them in the message body (with `closes`, `fixes`, or just `xref` followed by the issue number).
 
 4. Review process:
-  1. Someone will review the code you submit, either with inline comments or overall comments on the PR.
-  2. To update to your PR (based on these comments or not), make changes on your local repository, on the same branch as before, and these will also be pushed to the PR.
+    1. Someone will review the code you submit, either with inline comments or overall comments on the PR.
+    2. To update to your PR (based on these comments or not), make changes on your local repository, on the same branch as before, and these will also be pushed to the PR.
 
 # Syntax guidelines
 
