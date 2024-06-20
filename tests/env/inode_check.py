@@ -60,7 +60,7 @@ class inodeCheckCirrus(rfm.RunOnlyRegressionTest):
 
     filesystem = parameter(
         [
-        '/mnt/lustre/indy2lfs'
+        '/mnt/lustre/e1000/'
         ]
     )
 

@@ -1,3 +1,6 @@
+from reframe.core.backends import register_launcher
+from reframe.core.launchers import JobLauncher
+
 site_configuration = {
     "systems": [
         {
@@ -51,6 +54,20 @@ site_configuration = {
                         },
                     ],
                 },
+                {
+                    "name": "compute-gpu-default",
+                    "descr": "Compute nodes with GPUs but doesn't load nvcc compilers or mpi",
+                    "scheduler": "slurm",
+                    "launcher": "srun",
+                    "access": [
+                        "--partition=gpu",
+                    ],
+                    "max_jobs": 4,
+                    "environs": ["Default"],
+                    "resources": [
+                        {"name": "qos", "options": ["--qos={qos}"]},
+                    ],
+                },
             ],
         }
     ],
@@ -89,6 +106,7 @@ site_configuration = {
     "logging": [
         {
             "level": "debug",
+            "perflog_compat": True,
             "handlers": [
                 {
                     "type": "stream",
@@ -128,19 +146,17 @@ site_configuration = {
                     "append": True,
                 },
                 {
-                    "type": "filelog",
-                    "prefix": "%(check_system)s/%(check_partition)s",
-                    "level": "info",
-                    "format": (
-                        "%(check_job_completion_time)s|reframe %(version)s|"
-                        "%(check_info)s|jobid=%(check_jobid)s|"
-                        "%(check_perf_var)s=%(check_perf_value)s|"
-                        "ref=%(check_perf_ref)s "
-                        "(l=%(check_perf_lower_thres)s, "
-                        "u=%(check_perf_upper_thres)s)|"
-                        "%(check_perf_unit)s"
+                    'type': 'filelog',
+                    'prefix': '%(check_system)s/%(check_partition)s',
+                    'level': 'info',
+                    'format': (
+                        '%(check_display_name)s|%(check_result)s|%(check_job_completion_time)s|'
+                        '%(check_perf_var)s|'
+                        '%(check_perf_value)s %(check_perf_unit)s|'
+                        '(%(check_perf_ref)s, %(check_perf_lower_thres)s, %(check_perf_upper_thres)s)|'
                     ),
-                    "append": True,
+                    
+                    'append': True
                 },
             ],
         }

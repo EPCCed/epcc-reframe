@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  generateName: testing-
+  labels:
+    kueue.x-k8s.io/queue-name:  eidf095ns-user-queue
+spec:
+  containers:
+  - args:
+    command: ["sleep", "infinity"]
+    env:
+    - name: OMP_NUM_THREADS
+      value: '4'
+    image: bigballoon8/mlperf-epcc
+    name: mlperf-resnet
+    resources:
+      limits:
+        cpu: 16
+        memory: 32Gi
+      requests:
+        cpu: 16
+        memory: 16Gi
+  restartPolicy: Never

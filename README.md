@@ -7,9 +7,6 @@ Repository for ReFrame configuration and tests for EPCC systems.
   - `configuration/`: configuration files for different EPCC systems
   - `tests/`: test library. All tests should, wherever possible, be configured so that they can run on all systems
 
-## Modifications to ReFrame source
-
-
 ## Executing the test suite
 
 ### Run all tests
@@ -64,3 +61,8 @@ class MpiexecLauncher(JobLauncher):
         return ['mpiexec_mpt', '-ppn', str(job.num_tasks_per_node), '-n', str(job.num_tasks)]
 # HPE MPT mpiexec_mpt has to be used within a job (will not work with 'local' scheduler)
 ``` -->
+
+
+## Contributing and style guide
+
+Please see detailed instructions [here](CONTRIBUTING.md).
