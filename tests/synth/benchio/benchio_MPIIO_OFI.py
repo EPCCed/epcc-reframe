@@ -32,7 +32,7 @@ class benchioMPIIOOFIBase(rfm.RegressionTest):
     @run_before('run')
     def setup_run(self):
         stagedir_name=os.path.split( self.stagedir )[-1]
-        self.env_vars["WRITE_DIR"]=os.path.join(self.write_dir_prefix,stagedir_name)
+        self.env_vars["WRITE_DIR"]=os.path.join(self.write_dir_prefix,os.environ['USER'],stagedir_name)
         self.executable= self.stagedir + "/src/benchio"
 
     @run_before('compile')
