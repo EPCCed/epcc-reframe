@@ -1,24 +1,31 @@
+"""Compilation tests"""
 import reframe as rfm
 import reframe.utility.sanity as sn
 
 
 class HelloTestBase(rfm.RegressionTest):
+    """Base class for hello world tests"""
 
     lang = parameter(["c", "cpp", "f90"])
     tags = {"functionality", "short"}
     time_limit = "5m"
+    maintainers = ["r.apostolo@epcc.ed.ac.uk"]
 
-    @run_before('compile')
+    @run_before("compile")
     def prepare(self):
+        """sets source file name"""
         self.sourcepath = f"hello.{self.lang}"
 
     @sanity_function
     def assert_finished(self):
+        """confirms code execution"""
         return sn.assert_found(r"Hello, World\!", self.stdout)
 
 
 @rfm.simple_test
 class HelloTestCPU(HelloTestBase):
+    """CPU systems test class"""
+
     valid_systems = ["*"]
     valid_prog_environs = ["-gpu"]
     extra_resources = {
@@ -28,6 +35,8 @@ class HelloTestCPU(HelloTestBase):
 
 @rfm.simple_test
 class HelloTestGPU(HelloTestBase):
+    """GPU systems test class"""
+
     valid_systems = ["+gpu"]
     valid_prog_environs = ["+gpu"]
     extra_resources = {
