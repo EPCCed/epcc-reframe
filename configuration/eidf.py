@@ -1,3 +1,5 @@
+"""EIDF settings"""
+
 import socket
 
 site_configuration = {
@@ -35,7 +37,7 @@ site_configuration = {
                             "options": ["--gres=cs:{num_csx}"],
                         },
                     ],
-                }
+                },
             ],
         }
     ],
@@ -88,17 +90,16 @@ site_configuration = {
                     "append": True,
                 },
                 {
-                    'type': 'filelog',
-                    'prefix': '%(check_system)s/%(check_partition)s',
-                    'level': 'info',
-                    'format': (
-                        '%(check_display_name)s|%(check_result)s|%(check_job_completion_time)s|'
-                        '%(check_perf_var)s|'
-                        '%(check_perf_value)s %(check_perf_unit)s|'
-                        '(%(check_perf_ref)s, %(check_perf_lower_thres)s, %(check_perf_upper_thres)s)|'
+                    "type": "filelog",
+                    "prefix": "%(check_system)s/%(check_partition)s",
+                    "level": "info",
+                    "format": (
+                        "%(check_display_name)s|%(check_result)s|%(check_job_completion_time)s|"
+                        "%(check_perf_var)s|"
+                        "%(check_perf_value)s %(check_perf_unit)s|"
+                        "(%(check_perf_ref)s, %(check_perf_lower_thres)s, %(check_perf_upper_thres)s)|"
                     ),
-                    
-                    'append': True
+                    "append": True,
                 },
             ],
         }
