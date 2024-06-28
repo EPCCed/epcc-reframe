@@ -29,7 +29,7 @@ class InterfaceBoundsTest(rfm.RegressionTest):
     @run_after("init")
     def setup_path(self):
         """Sets up path"""
-        self.sourcepath = f"gcc-mpi_f08.{self.lang}"
+        self.sourcepath = f"gcc_mpi_f08.{self.lang}"
 
     @sanity_function
     def assert_notfound(self):
