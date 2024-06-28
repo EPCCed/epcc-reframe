@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """Test of download and build of xthi from repository master"""
 
-import os
-
 import reframe
 import reframe.utility.sanity as sn
 
@@ -13,6 +11,7 @@ REPOURL = "https://github.com/ARCHER2-HPC/xthi.git"
 class XthiCompilationTest(reframe.CompileOnlyRegressionTest):
     """Compile xthi via make"""
 
+    maintainers = ["k.straford@epcc.ed.ac.uk"]
     descr = "xthi compilation test"
     valid_systems = ["archer2:login", "cirrus:login"]
     valid_prog_environs = [
@@ -25,7 +24,7 @@ class XthiCompilationTest(reframe.CompileOnlyRegressionTest):
     build_system = "Make"
     build_system_max_concurrency = 1
     sourcesdir = REPOURL
-    sourcepath = 'src'
+    sourcepath = "src"
 
     @sanity_function
     def sanity_check_build(self):
