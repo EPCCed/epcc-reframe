@@ -545,6 +545,7 @@ additional-builtins = [
     "parameter",
     "performance_function",
     "reference",
+    "require_deps",
     "run_after",
     "run_before",
     "sanity_function",
