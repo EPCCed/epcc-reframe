@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 
-"""Checks ranks/thread affinity are properly distributed"""
+"""Test process/thread affinity. Based on test from CSCS."""
 
 import reframe as rfm
 import reframe.utility.sanity as sn
-
-# Test process/thread affinity. Based on test from CSCS.
 
 
 class AffinityTestBase(rfm.RegressionTest):
@@ -178,24 +176,28 @@ class AffinityMPITestARCHER2(AffinityTestBase):
 
 @rfm.simple_test
 class AffinityMPITestCirrus(AffinityTestBase):
+    """MPI affinity test for Cirrus"""
+
     variant = parameter(["fully_populated_nosmt"])
 
-    def __init__(self):
-        super().__init__(self.variant)
-        self.descr = "Checking core affinity for MPI processes."
-        self.valid_systems = ["cirrus:compute"]
-        self.cases = {
-            "fully_populated_nosmt": {
-                "ref_cirrus:compute": "cirrus_fully_populated_nosmt.txt",
-                "runopts_cirrus:compute": [
-                    "--hint=nomultithread",
-                    "--distribution=block:block",
-                ],
-                "num_tasks": 36,
-                "num_tasks_per_node": 36,
-                "num_cpus_per_task": 1,
-            },
-        }
+    descr = "Checking core affinity for MPI processes."
+    valid_systems = ["cirrus:compute"]
+    cases = {
+        "fully_populated_nosmt": {
+            "ref_cirrus:compute": "cirrus_fully_populated_nosmt.txt",
+            "runopts_cirrus:compute": [
+                "--hint=nomultithread",
+                "--distribution=block:block",
+            ],
+            "num_tasks": 36,
+            "num_tasks_per_node": 36,
+            "num_cpus_per_task": 1,
+        },
+    }
+
+    @run_after("init")
+    def setup_variant(self):
+        """sets up variants"""
         self.num_tasks = self.cases[self.variant]["num_tasks"]
         self.num_tasks_per_node = self.cases[self.variant][
             "num_tasks_per_node"
@@ -205,7 +207,8 @@ class AffinityMPITestCirrus(AffinityTestBase):
 
     @run_before("run")
     def set_launcher(self):
+        """Sets launcher"""
         partname = self.current_partition.fullname
         self.job.launcher.options = self.cases[self.variant][
-            "runopts_%s" % partname
+            f"runopts_{partname}"
         ]
