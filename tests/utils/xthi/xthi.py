@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-
-"""
-Test of download and build of xthi from repository master
-"""
+"""Test of download and build of xthi from repository master"""
 
 import os
 
@@ -30,7 +27,7 @@ class XthiCompilationTest(reframe.CompileOnlyRegressionTest):
     @run_after("init")
     def download_source(self):
         """Download fresh copy of repo"""
-        self.depends_on("xthiDownLoadTest", udeps.fully)
+        self.depends_on("XthiDownLoadTest", udeps.fully)
 
     @require_deps
     def locate_source(self):
