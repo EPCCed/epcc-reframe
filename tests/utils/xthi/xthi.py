@@ -30,7 +30,7 @@ class XthiCompilationTest(reframe.CompileOnlyRegressionTest):
         self.depends_on("XthiDownLoadTest", udeps.fully)
 
     @require_deps
-    def locate_source(self):
+    def locate_source(self, XthiDownLoadTest):
         """Find source dir"""
         prefix = XthiDownLoadTest(part="login").stagedir
         self.sourcesdir = os.path.join(prefix, "xthi", "src")
