@@ -88,7 +88,9 @@ class AffinityOMPTest(AffinityTestBase):
                 },
             }
         self.num_tasks = self.cases[self.variant]["num_tasks"]
-        self.num_tasks_per_node = self.cases[self.variant]["num_tasks_per_node"]
+        self.num_tasks_per_node = self.cases[self.variant][
+            "num_tasks_per_node"
+        ]
         self.num_cpus_per_task = self.cases[self.variant]["num_cpus_per_task"]
         self.extra_resources = {"qos": {"qos": "standard"}}
 
@@ -118,44 +120,46 @@ class AffinityMPITestARCHER2(AffinityTestBase):
         ]
     )
 
-    def __init__(self):
-        super().__init__(self.variant)
-        self.descr = "Checking core affinity for MPI processes."
-        self.valid_systems = ["archer2:compute"]
-        self.cases = {
-            "fully_populated_nosmt": {
-                "ref_archer2:compute": "archer2_fully_populated_nosmt.txt",
-                "runopts_archer2:compute": [
-                    "--hint=nomultithread",
-                    "--distribution=block:block",
-                ],
-                "num_tasks": 128,
-                "num_tasks_per_node": 128,
-                "num_cpus_per_task": 1,
-            },
-            "fully_populated_smt": {
-                "ref_archer2:compute": "archer2_fully_populated_smt.txt",
-                "runopts_archer2:compute": [
-                    "--ntasks=256",
-                    "--ntasks-per-node=256",
-                    "--hint=multithread",
-                    "--distribution=block:block",
-                ],
-                "num_tasks": 128,
-                "num_tasks_per_node": 128,
-                "num_cpus_per_task": 1,
-            },
-            "single_process_per_numa": {
-                "ref_archer2:compute": "archer2_single_process_per_numa.txt",
-                "runopts_archer2:compute": [
-                    "--hint=nomultithread",
-                    "--distribution=block:block",
-                ],
-                "num_tasks": 8,
-                "num_tasks_per_node": 8,
-                "num_cpus_per_task": 16,
-            },
-        }
+    descr = "Checking core affinity for MPI processes."
+    valid_systems = ["archer2:compute"]
+    cases = {
+        "fully_populated_nosmt": {
+            "ref_archer2:compute": "archer2_fully_populated_nosmt.txt",
+            "runopts_archer2:compute": [
+                "--hint=nomultithread",
+                "--distribution=block:block",
+            ],
+            "num_tasks": 128,
+            "num_tasks_per_node": 128,
+            "num_cpus_per_task": 1,
+        },
+        "fully_populated_smt": {
+            "ref_archer2:compute": "archer2_fully_populated_smt.txt",
+            "runopts_archer2:compute": [
+                "--ntasks=256",
+                "--ntasks-per-node=256",
+                "--hint=multithread",
+                "--distribution=block:block",
+            ],
+            "num_tasks": 128,
+            "num_tasks_per_node": 128,
+            "num_cpus_per_task": 1,
+        },
+        "single_process_per_numa": {
+            "ref_archer2:compute": "archer2_single_process_per_numa.txt",
+            "runopts_archer2:compute": [
+                "--hint=nomultithread",
+                "--distribution=block:block",
+            ],
+            "num_tasks": 8,
+            "num_tasks_per_node": 8,
+            "num_cpus_per_task": 16,
+        },
+    }
+
+    @run_after("init")
+    def setup_variant(self):
+        """sets up variants"""
         self.num_tasks = self.cases[self.variant]["num_tasks"]
         self.num_tasks_per_node = self.cases[self.variant][
             "num_tasks_per_node"
@@ -165,9 +169,10 @@ class AffinityMPITestARCHER2(AffinityTestBase):
 
     @run_before("run")
     def set_launcher(self):
+        """Sets launcher"""
         partname = self.current_partition.fullname
         self.job.launcher.options = self.cases[self.variant][
-            "runopts_%s" % partname
+            f"runopts_{partname}"
         ]
 
 
