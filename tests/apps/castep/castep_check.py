@@ -40,12 +40,12 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
     @performance_function("s", perf_key="runtime")
     def extract_runtime(self):
         """Extract total runtime to compare with reference value"""
-        return (sn.extractsingle(r"Total time\s+=\s+(?P<runtime>\S+)", self.keep_files[0], "runtime", float),)
+        return sn.extractsingle(r"Total time\s+=\s+(?P<runtime>\S+)", self.keep_files[0], "runtime", float)
 
     @performance_function("s", perf_key="calctime")
     def extract_calctime(self):
         """Extract calctime to compare with reference value"""
-        return (sn.extractsingle(r"Calculation time\s+=\s+(?P<calctime>\S+)", self.keep_files[0], "calctime", float),)
+        return sn.extractsingle(r"Calculation time\s+=\s+(?P<calctime>\S+)", self.keep_files[0], "calctime", float)
 
 
 @rfm.simple_test
@@ -62,8 +62,8 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
 
     reference["archer2:compute"]["calctime"] = (126, -0.1, 0.1, "s")
     reference["archer2:compute"]["runtime"] = (132, -0.1, 0.1, "s")
-    reference["cirrus:compute"]["calctime"] = (325.9, -1.65, 1.65, "s")
-    reference["cirrus:compute"]["runtime"] = (328.2, -1.55, 1.55, "s")
+    reference["cirrus:compute"]["calctime"] = (325.9, -0.1, 0.1, "s")
+    reference["cirrus:compute"]["runtime"] = (328.2, -0.1, 0.1, "s")
 
     @run_after("init")
     def setup_environment(self):
