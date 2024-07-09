@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+"""Base class for gromacs checks"""
+
 import reframe as rfm
 import reframe.utility.sanity as sn
 
@@ -18,10 +21,12 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def assert_finished(self):
+        """Sanity check that simulation finished successfully"""
         return sn.assert_found(r"Finished mdrun", self.keep_files[0])
 
     @performance_function("kJ/mol", perf_key="energy")
-    def assert_energy(self):
+    def extract_energy(self):
+        """Extract value of system energy for performance check"""
         return sn.extractsingle(
             r"\s+Potential\s+Kinetic En\.\s+Total Energy"
             r"\s+Conserved En\.\s+Temperature\n"
@@ -35,6 +40,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
 
     @performance_function("ns/day", perf_key="performance")
     def extract_perf(self):
+        """Extract value of system energy for performance check"""
         return sn.extractsingle(
             r"Performance:\s+(?P<perf>\S+)",
             self.keep_files[0],
