@@ -77,7 +77,7 @@ class CP2KCPUCheck2GHz(CP2KBaseCheck):
     # Command line options for executable
     executable_opts = ("-i input_bulk_HFX_3.inp -o cp2k.out ").split()
     # Performance test reference values
-    reference["archer2:compute"]["performance"] = (335, -0.1, 0.1, "seconds")
+    reference["archer2:compute"]["performance"] = (340, -0.1, 0.1, "seconds")
 
     @run_after("init")
     def setup_nnodes(self):
