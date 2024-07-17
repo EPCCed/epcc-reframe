@@ -86,6 +86,7 @@ class CP2KARCHER2(CP2KBaseCheck):
     @run_after("init")
     def setup_nnodes(self):
         """sets up number of tasks per node"""
+        self.descr += self.freq
         if self.current_system.name in ["archer2"]:
             self.env_vars = {
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
