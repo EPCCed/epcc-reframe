@@ -66,6 +66,33 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
 
 @rfm.simple_test
+class CP2KCPUCheck225GHz(CP2KBaseCheck):
+    """2.25 Ghz test"""
+
+    # Select system to use
+    valid_systems = ["archer2:compute"]
+    # Description of test
+    descr = "CP2K 2.25Ghz check"
+    # Performance test reference values
+    reference["archer2:compute"]["performance"] = (250, -0.1, 0.1, "seconds")
+
+    @run_after("init")
+    def setup_nnodes(self):
+        """sets up number of tasks per node"""
+        if self.current_system.name in ["archer2"]:
+            self.modules = ["cp2k"]
+            self.num_tasks = 384
+            self.num_tasks_per_node = 16
+            self.num_cpus_per_task = 8
+            self.time_limit = "1h"
+            self.env_vars = {
+                "OMP_NUM_THREADS": str(self.num_cpus_per_task),
+                "OMP_PLACES": "cores",
+                "SLURM_CPU_FREQ_REQ": "2250000",
+            }
+
+
+@rfm.simple_test
 class CP2KCPUCheck2GHz(CP2KBaseCheck):
     """2 Ghz test"""
 
@@ -95,33 +122,6 @@ class CP2KCPUCheck2GHz(CP2KBaseCheck):
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
                 "OMP_PLACES": "cores",
                 "SLURM_CPU_FREQ_REQ": "2000000",
-            }
-
-
-@rfm.simple_test
-class CP2KCPUCheck225GHz(CP2KBaseCheck):
-    """2.25 Ghz test"""
-
-    # Select system to use
-    valid_systems = ["archer2:compute"]
-    # Description of test
-    descr = "CP2K 2.25Ghz check"
-    # Performance test reference values
-    reference["archer2:compute"]["performance"] = (250, -0.1, 0.1, "seconds")
-
-    @run_after("init")
-    def setup_nnodes(self):
-        """sets up number of tasks per node"""
-        if self.current_system.name in ["archer2"]:
-            self.modules = ["cp2k"]
-            self.num_tasks = 384
-            self.num_tasks_per_node = 16
-            self.num_cpus_per_task = 8
-            self.time_limit = "1h"
-            self.env_vars = {
-                "OMP_NUM_THREADS": str(self.num_cpus_per_task),
-                "OMP_PLACES": "cores",
-                "SLURM_CPU_FREQ_REQ": "2250000",
             }
 
 
