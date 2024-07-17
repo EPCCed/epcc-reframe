@@ -34,6 +34,11 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
         "archer2:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
     }
 
+    reference_performance = {
+        "2000000": (350, -0.1, 0.1, "seconds"),
+        "2250000": (250, -0.1, 0.1, "seconds"),
+    }
+
     @sanity_function
     def assert_finished(self):
         """Sanity check that simulation finished successfully"""
@@ -94,14 +99,10 @@ class CP2KARCHER2(CP2KBaseCheck):
                 "SLURM_CPU_FREQ_REQ": self.freq,
             }
 
-    #  @run_before("performance")
-    #  def setup_perf(self):
-    #      """Changes reference values"""
-    #      if self.current_system.name in ["archer2"] and self.freq == "2250000":
-    #          # Change performance test reference value
-    #          self.reference["archer2:compute"]["performance"] = (250, -0.1, 0.1, "seconds")
-    #      else:
-    #          self.reference["archer2:compute"]["performance"] = (350, -0.1, 0.1, "seconds")
+    @run_before("performance")
+    def setup_perf(self):
+        """Changes reference values"""
+        self.reference["*"]["performance"] = self.reference_performance[self.freq]
 
 
 #  @rfm.simple_test
