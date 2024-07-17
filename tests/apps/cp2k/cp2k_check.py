@@ -74,9 +74,9 @@ class CP2KARCHER2(CP2KBaseCheck):
     # Description of test
     descr = "CP2K "
     # different cpu frequencies
-    freq = parameter([("2250000", 250), ("2000000", 350)])
+    freq = parameter(["2250000", "2000000"])
     # Default performance test reference value
-    #  reference["archer2:compute"]["performance"] = (, -0.1, 0.1, "seconds")
+    reference["archer2:compute"]["performance"] = (350, -1, 0.1, "seconds")
     # slurm parameters
     num_tasks = 384
     num_tasks_per_node = 16
@@ -86,21 +86,22 @@ class CP2KARCHER2(CP2KBaseCheck):
     @run_after("init")
     def setup_params(self):
         """sets up extra parameters"""
-        self.descr += self.freq[0]
+        self.descr += self.freq
         if self.current_system.name in ["archer2"]:
-            reference["archer2:compute"]["performance"] = (self.freq[1], -0.1, 0.1, "seconds")
             self.env_vars = {
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
                 "OMP_PLACES": "cores",
-                "SLURM_CPU_FREQ_REQ": self.freq[0],
+                "SLURM_CPU_FREQ_REQ": self.freq,
             }
 
-    #  @run_before("run")
+    #  @run_before("performance")
     #  def setup_perf(self):
     #      """Changes reference values"""
     #      if self.current_system.name in ["archer2"] and self.freq == "2250000":
     #          # Change performance test reference value
     #          self.reference["archer2:compute"]["performance"] = (250, -0.1, 0.1, "seconds")
+    #      else:
+    #          self.reference["archer2:compute"]["performance"] = (350, -0.1, 0.1, "seconds")
 
 
 #  @rfm.simple_test
