@@ -84,8 +84,8 @@ class CP2KARCHER2(CP2KBaseCheck):
     time_limit = "10m"
 
     @run_after("init")
-    def setup_nnodes(self):
-        """sets up number of tasks per node"""
+    def setup_params(self):
+        """sets up extra parameters"""
         self.descr += self.freq
         if self.current_system.name in ["archer2"]:
             self.env_vars = {
@@ -93,9 +93,13 @@ class CP2KARCHER2(CP2KBaseCheck):
                 "OMP_PLACES": "cores",
                 "SLURM_CPU_FREQ_REQ": self.freq,
             }
-            if self.freq == "2250000":
-                # Change performance test reference value
-                self.reference["archer2:compute"]["performance"] = (250, -0.1, 0.1, "seconds")
+
+    @run_before("run")
+    def setup_perf(self):
+        """Changes reference values"""
+        if self.current_system.name in ["archer2"] and self.freq == "2250000":
+            # Change performance test reference value
+            self.reference["archer2:compute"]["performance"] = (250, -0.1, 0.1, "seconds")
 
 
 #  @rfm.simple_test
