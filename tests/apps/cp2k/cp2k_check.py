@@ -53,7 +53,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     def extract_perf(self):
         """Extract performance value to compare with reference value"""
         return sn.extractsingle(
-            r"\s+CP2K(?:\s+\S+){5}\s+(?P<perf>\S+)",
+            r"\s+CP2K(?:\s+\d+\.?\d*){5}\s+(?P<perf>\S+)",
             self.keep_files[0],
             "perf",
             float,
