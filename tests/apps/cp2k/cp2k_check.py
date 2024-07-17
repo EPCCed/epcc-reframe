@@ -29,10 +29,9 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     # Reference value to validate run with
     energy_reference = -870.934788
 
-    # sn.assert_reference(energy, energy_reference, -1.0e-06, +1.0e-06)]
     reference = {
-        "cirrus:compute": {"energy": (energy_reference, -0.01, 0.01, "kJ/mol")},
-        "archer2:compute": {"energy": (energy_reference, -0.01, 0.01, "kJ/mol")},
+        "cirrus:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
+        "archer2:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
     }
 
     @sanity_function
@@ -40,7 +39,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
         """Sanity check that simulation finished successfully"""
         return sn.assert_found("CP2K   ", self.keep_files[0])
 
-    @performance_function("kJ/mol", perf_key="energy")
+    @performance_function("a.u.", perf_key="energy")
     def extract_energy(self):
         """Extract value of system energy for performance check"""
         return sn.extractsingle(
@@ -50,7 +49,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
             float,
         )
 
-    @performance_function("ns/day", perf_key="performance")
+    @performance_function("seconds", perf_key="performance")
     def extract_perf(self):
         """Extract performance value to compare with reference value"""
         return sn.extractsingle(
