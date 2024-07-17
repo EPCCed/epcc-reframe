@@ -30,18 +30,10 @@ class LAMMPSBaseEthanol(LAMMPSBase):
     ethanol_energy_reference = 537394.35
 
     reference = {
-        "cirrus:compute": {
-            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")
-        },
-        "cirrus:compute-gpu": {
-            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")
-        },
-        "archer2:compute": {
-            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")
-        },
-        "archer2-tds:compute": {
-            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")
-        },
+        "cirrus:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
+        "cirrus:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
+        "archer2:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
+        "archer2-tds:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
     }
 
 
@@ -77,9 +69,7 @@ class LAMMPSARCHER2EthanolCPU(LAMMPSBaseEthanol):
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks = self.n_nodes * self.cores.get(
-            self.current_partition.fullname, 1
-        )
+        self.num_tasks = self.n_nodes * self.cores.get(self.current_partition.fullname, 1)
 
 
 @rfm.simple_test
