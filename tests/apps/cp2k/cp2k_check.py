@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """ReFrame test for cp2k"""
 
 import reframe as rfm
@@ -67,7 +69,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
 @rfm.simple_test
 class CP2KARCHER2(CP2KBaseCheck):
-    """2.25 Ghz test"""
+    """CP2K test"""
 
     # Select system to use
     valid_systems = ["archer2:compute"]
