@@ -30,8 +30,8 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     energy_reference = -870.934788
 
     reference = {
-        "cirrus:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
-        "archer2:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
+        "*": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
+        #  "archer2:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
     }
 
     reference_performance = {
@@ -64,11 +64,6 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
             float,
         )
 
-    #  @run_before("run")
-    #  def set_task_distribution(self):
-    #      """change distribution"""
-    #      self.job.options = ["--distribution=block:block"]
-
 
 @rfm.simple_test
 class CP2KARCHER2(CP2KBaseCheck):
@@ -80,8 +75,6 @@ class CP2KARCHER2(CP2KBaseCheck):
     descr = "CP2K "
     # different cpu frequencies
     freq = parameter(["2250000", "2000000"])
-    # Default performance test reference value
-    #reference["archer2:compute"]["performance"] = (350, -1, 0.1, "seconds")
     # slurm parameters
     num_tasks = 384
     num_tasks_per_node = 16
@@ -89,9 +82,9 @@ class CP2KARCHER2(CP2KBaseCheck):
     time_limit = "10m"
 
     reference_performance = {
-            "2000000": (350, -0.1, 0.1, "seconds"),
-            "2250000": (250, -0.1, 0.1, "seconds"),
-            }
+        "2000000": (350, -0.1, 0.1, "seconds"),
+        "2250000": (250, -0.1, 0.1, "seconds"),
+    }
 
     @run_after("init")
     def setup_params(self):
@@ -109,7 +102,9 @@ class CP2KARCHER2(CP2KBaseCheck):
         """Changes reference values"""
         if self.current_system.name in ["archer2"]:
             # https://reframe-hpc.readthedocs.io/en/stable/utility_functions_reference.html#reframe.utility.ScopedDict
-            self.reference["archer2:compute:performance"] = self.reference_performance[self.freq]
+            self.reference[
+                "archer2:compute:performance"
+            ] = self.reference_performance[self.freq]
 
 
 # Cirrus default CPUfreq
