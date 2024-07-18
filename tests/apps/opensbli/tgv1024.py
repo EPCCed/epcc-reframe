@@ -1,52 +1,53 @@
-import itertools
-import os
+#!/usr/bin/env python3
+
+"""ReFrame test for OpenSBLI"""
 
 import reframe as rfm
 import reframe.utility.sanity as sn
 
 
 class OpenSBLIBaseCheck(rfm.RunOnlyRegressionTest):
-    def __init__(self):
-        super().__init__()
+    """Base class for SBLI test"""
 
-        self.executable = './OpenSBLI_mpi_openmp'
+    executable = "./OpenSBLI_mpi_openmp"
+    maintainers = ["a.turner@epcc.ed.ac.uk"]
+    tags = {"applications", "performance", "largescale"}
+    strict_check = False
+    use_multithreading = False
+    extra_resources = {"qos": {"qos": "standard"}}
 
-        self.sanity_patterns = sn.all([
-            sn.assert_found('Time taken for 1 iteration', self.stdout),
-        ])
+    @sanity_function
+    def assert_finished(self):
+        """Sanity check that job finished successfully"""
+        return sn.assert_found("Time taken for 1 iteration", self.stdout)
 
-        self.perf_patterns = {
-            'time': sn.extractsingle(r'Time taken for 1 iteration,\s+(?P<time>\S+)',
-                                     self.stdout, 'time', float),
-        }
+    @performance_function("s/iter", perf_key="performance")
+    def extract_perf(self):
+        """Extract performance value to compare with reference value"""
+        return (
+            sn.extractsingle(
+                r"Time taken for 1 iteration,\s+(?P<time>\S+)",
+                self.stdout,
+                "time",
+                float,
+            ),
+        )
 
-        self.maintainers = ['a.turner@epcc.ed.ac.uk']
-        self.tags = {'applications','performance','largescale'}
-        self.strict_check = False
-        self.use_multithreading = False
-        self.extra_resources = {
-                'qos': {'qos': 'standard'}
-        }
 
 @rfm.simple_test
 class OpenSBLIARCHER2LargeCheck(OpenSBLIBaseCheck):
-    def __init__(self):
+    """Large scale OpenSBLI test"""
 
-        super().__init__()
-        self.valid_systems = ['archer2:compute']
-        self.valid_prog_environs = ['PrgEnv-cray']
-        self.descr = 'OpenSBLI large scale performance test'
+    valid_systems = ["archer2:compute"]
+    valid_prog_environs = ["PrgEnv-cray"]
+    descr = "OpenSBLI large scale performance test"
 
-        self.num_tasks = 128 * 1024
-        self.num_tasks_per_node = 128
-        self.num_cpus_per_task = 1
-        self.time_limit = '20m'
-        self.env_vars = {
-            'OMP_NUM_THREADS': str(self.num_cpus_per_task)
-        }
-        
-        self.reference = {
-                'archer2:compute': {
-                    'perf': (0.013, -0.3, 0.3, 's/iter'),
-                }
-        }
+    num_tasks_per_node = 128
+    num_tasks = num_tasks_per_node * 1024
+    num_cpus_per_task = 1
+    time_limit = "20m"
+    env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
+
+    reference = {
+        "archer2:compute": {"performance": (0.013, -0.3, 0.3, "s/iter")}
+    }
