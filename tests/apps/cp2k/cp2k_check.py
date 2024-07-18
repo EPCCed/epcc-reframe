@@ -9,16 +9,12 @@ import reframe.utility.sanity as sn
 class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     """ReFrame CP2K test base class"""
 
-    # self.cpufreq = rfm.core.builtins.parameter(['1500000','2000000','2250000'])
-
     # Set Programming Environment
     valid_prog_environs = ["PrgEnv-gnu"]
     # Which modules to load in test
     modules = ["cp2k"]
     # Identify the executable
     executable = "cp2k.psmp"
-    # Command line options for executable
-    executable_opts = ("-i input_bulk_HFX_3.inp -o cp2k.out ").split()
     # Additional Slurm parameters. Requires adding to config file first.
     extra_resources = {"qos": {"qos": "standard"}}
     # Output files to be retained
@@ -33,7 +29,6 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
     reference = {
         "*": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
-        #  "archer2:compute": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
     }
 
     reference_performance = {
@@ -75,6 +70,8 @@ class CP2KARCHER2(CP2KBaseCheck):
     valid_systems = ["archer2:compute"]
     # Description of test
     descr = "CP2K "
+    # Command line options for executable
+    executable_opts = ("-i input_bulk_HFX_3.inp -o cp2k.out ").split()
     # different cpu frequencies
     freq = parameter(["2250000", "2000000"])
     # slurm parameters
@@ -109,31 +106,23 @@ class CP2KARCHER2(CP2KBaseCheck):
             ] = self.reference_performance[self.freq]
 
 
-# Cirrus default CPUfreq
-# @rfm.simple_test
-# class CP2KCPUCheckCirrus(CP2KBaseCheck):
-#     def __init__(self):
-#         super().__init__('cp2k.out')
-#
-#         # Select system to use
-#         self.valid_systems = ['cirrus:compute']
-#
-#         # Description of test
-#         self.descr = 'CP2K check Cirrus'
-#         # Command line options for executable
-#         self.executable_opts = ('-i input_bulk_HFX_3.inp -o cp2k.out ').split()
-#
-#         if (self.current_system.name in ['cirrus']):
-#            self.modules = ['cp2k']
-#            self.num_tasks = 360
-#            self.num_tasks_per_node = 18
-#            self.num_cpus_per_task = 2
-#            self.time_limit = '1h'
-#            self.env_vars = {
-#                 'OMP_NUM_THREADS': str(self.num_cpus_per_task),
-#                 'OMP_PLACES': 'cores',
-#                 }
-#
-#     @run_before('run')
-#     def set_task_distribution(self):
-#         self.job.options = ['--distribution=block:block']
+@rfm.simple_test
+class CP2KCPUCirrus(CP2KBaseCheck):
+    """CP2K test for Cirrus"""
+
+    # Select system to use
+    valid_systems = ["cirrus:compute"]
+    # Description of test
+    descr = "CP2K test"
+    # Command line options for executable
+    executable_opts = ("-i input_bulk_HFX_3.inp -o cp2k.out ").split()
+    # slurm parameters
+    num_tasks = 360
+    num_tasks_per_node = 18
+    num_cpus_per_task = 2
+    time_limit = "1h"
+
+    env_vars = {
+        "OMP_NUM_THREADS": str(num_cpus_per_task),
+        "OMP_PLACES": "cores",
+    }
