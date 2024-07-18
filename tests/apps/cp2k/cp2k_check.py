@@ -9,8 +9,6 @@ import reframe.utility.sanity as sn
 class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     """ReFrame CP2K test base class"""
 
-    # Set Programming Environment
-    valid_prog_environs = ["PrgEnv-gnu"]
     # Which modules to load in test
     modules = ["cp2k"]
     # Identify the executable
@@ -29,6 +27,7 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
 
     reference = {
         "*": {"energy": (energy_reference, -0.01, 0.01, "a.u.")},
+        "cirrus:compute": {"performance": (1300, -0.05, 0.05, "seconds")},
     }
 
     reference_performance = {
@@ -68,6 +67,8 @@ class CP2KARCHER2(CP2KBaseCheck):
 
     # Select system to use
     valid_systems = ["archer2:compute"]
+    # Set Programming Environment
+    valid_prog_environs = ["PrgEnv-gnu"]
     # Description of test
     descr = "CP2K "
     # Command line options for executable
@@ -112,6 +113,8 @@ class CP2KCPUCirrus(CP2KBaseCheck):
 
     # Select system to use
     valid_systems = ["cirrus:compute"]
+    # Set Programming Environment
+    valid_prog_environs = ["gnu"]
     # Description of test
     descr = "CP2K test"
     # Command line options for executable
