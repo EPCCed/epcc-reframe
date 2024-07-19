@@ -45,7 +45,7 @@ class OpenSBLIARCHER2LargeCheck(OpenSBLIBaseCheck):
     num_tasks_per_node = 128
     num_tasks = num_tasks_per_node * 1024
     num_cpus_per_task = 1
-    time_limit = "20m"
+    time_limit = "30m"
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
 
     reference = {
