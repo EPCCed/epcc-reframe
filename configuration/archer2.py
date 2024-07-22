@@ -25,7 +25,7 @@ site_configuration = {
                     "descr": "Login nodes",
                     "scheduler": "local",
                     "launcher": "local",
-                    "environs": ["PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
+                    "environs": ["Default", "PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
                 },
                 {
                     "name": "compute",
@@ -138,6 +138,13 @@ site_configuration = {
         {
             "name": "rocm-PrgEnv-aocc",
             "modules": ["PrgEnv-aocc"],
+            "cc": "cc",
+            "cxx": "CC",
+            "ftn": "ftn",
+            "target_systems": ["archer2"],
+        },
+        {
+            "name": "Default",
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
