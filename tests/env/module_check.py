@@ -54,11 +54,11 @@ class EnvironmentCheck(rfm.RunOnlyRegressionTest):
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc", "gcc", "intel"]
 
     executable = "module"
-    executable_opts = ["-t", "list"]
+    executable_opts = ["-t", "list", "2>&1"]
     maintainers = ["Andy Turner"]
     tags = {"production"}
 
     @sanity_function
     def assert_finished(self):
         """Sanity checks"""
-        return sn.assert_found(self.current_environ.name, self.stderr)
+        return sn.assert_found(self.current_environ.name, self.stdout)
