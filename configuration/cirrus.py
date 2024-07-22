@@ -13,7 +13,7 @@ site_configuration = {
                     "descr": "Login nodes",
                     "scheduler": "local",
                     "launcher": "local",
-                    "environs": ["gnu", "intel"],
+                    "environs": ["Default", "gnu", "intel"],
                 },
                 {
                     "name": "compute",
