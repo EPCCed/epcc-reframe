@@ -46,7 +46,12 @@ class INodeCheckARCHER2(rfm.RunOnlyRegressionTest):
     @sanity_function
     def validate_test(self):
         """Checks that command ran successfully"""
-        return sn.assert_found("MDT:0", self.stdout) and sn.assert_found("MDT:1", self.stdout)
+        return sn.all(
+            [
+                sn.assert_found("MDT:0", self.stdout),
+                sn.assert_found("MDT:1", self.stdout),
+            ]
+        )
 
     @performance_function("% inodes", perf_key="MDT-0")
     def extract_mdt0(self):
