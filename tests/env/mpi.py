@@ -66,7 +66,7 @@ class MpiInitTest(rfm.RegressionTest):
     def assert_finished(self):
         """Sanity checks"""
         found_mpithread = sn.extractsingle(
-            r"^mpi_thread_required=(\w+)\s+mpi_thread_supported=\w+\s+mpi_thread_queried=\w+\s+(\d)",
+            r"^mpi_thread_required=\w+\s+mpi_thread_supported=\w+\s+mpi_thread_queried=\w+\s+(\d)",
             self.stdout,
             1,
             int,
