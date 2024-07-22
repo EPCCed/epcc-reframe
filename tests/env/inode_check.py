@@ -53,14 +53,14 @@ class INodeCheckARCHER2(rfm.RunOnlyRegressionTest):
         """Returns % used for MDT0"""
         totinode = sn.extractsingle(r"\S+MDT0000\S+\s+(\S+)\s+.*", self.stdout, 1, int)
         usedinode = sn.extractsingle(r"\S+MDT0000\S+\s+\S+\s+(\S+)\s+.*", self.stdout, 1, int)
-        return round(100.0 * usedinode / totinode, 2)
+        return sn.round(100.0 * usedinode / totinode, 2)
 
     @performance_function("% inodes", perf_key="MDT-1")
     def extract_mdt1(self):
         """Returns % used for MDT1"""
         totinode = sn.extractsingle(r"\S+MDT0001\S+\s+(\S+)\s+.*", self.stdout, 1, int)
         usedinode = sn.extractsingle(r"\S+MDT0001\S+\s+\S+\s+(\S+)\s+.*", self.stdout, 1, int)
-        return round(100.0 * usedinode / totinode, 2)
+        return sn.round(100.0 * usedinode / totinode, 2)
 
 
 @rfm.simple_test
@@ -97,4 +97,4 @@ class INodeCheckCirrus(rfm.RunOnlyRegressionTest):
         """Returns % used for MDT0"""
         totinode = sn.extractsingle(r"\S+MDT0000\S+\s+(\S+)\s+.*", self.stdout, 1, int)
         usedinode = sn.extractsingle(r"\S+MDT0000\S+\s+\S+\s+(\S+)\s+.*", self.stdout, 1, int)
-        return 100.0 * usedinode / totinode
+        return sn.round(100.0 * usedinode / totinode, 2)
