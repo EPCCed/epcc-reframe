@@ -13,7 +13,7 @@ site_configuration = {
                     "descr": "Login nodes",
                     "scheduler": "local",
                     "launcher": "local",
-                    "environs": ["Default", "gnu", "intel"],
+                    "environs": ["Default", "gcc", "intel"],
                 },
                 {
                     "name": "compute",
@@ -26,7 +26,7 @@ site_configuration = {
                         "--partition=standard",
                     ],
                     "max_jobs": 16,
-                    "environs": ["gnu", "intel"],
+                    "environs": ["gcc", "intel"],
                     "resources": [
                         {
                             "name": "qos",
@@ -117,7 +117,7 @@ site_configuration = {
     ],
     "environments": [
         {
-            "name": "gnu",
+            "name": "gcc",
             "modules": ["gcc", "mpt"],
             "cc": "mpicc",
             "cxx": "mpicxx",

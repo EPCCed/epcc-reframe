@@ -81,7 +81,7 @@ class INodeCheckCirrus(rfm.RunOnlyRegressionTest):
     }
 
     descr = "Check number of free inodes"
-    valid_prog_environs = ["gnu"]
+    valid_prog_environs = ["gcc"]
     valid_systems = ["cirrus:login"]
     executable = "lfs df -i"
     maintainers = ["a.turner@epcc.ed.ac.uk"]

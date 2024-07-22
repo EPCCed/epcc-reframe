@@ -114,7 +114,7 @@ class CP2KCPUCirrus(CP2KBaseCheck):
     # Select system to use
     valid_systems = ["cirrus:compute"]
     # Set Programming Environment
-    valid_prog_environs = ["gnu"]
+    valid_prog_environs = ["gcc"]
     # Description of test
     descr = "CP2K test"
     # Command line options for executable

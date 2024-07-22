@@ -18,7 +18,7 @@ class XthiCompilationTest(reframe.CompileOnlyRegressionTest):
         "PrgEnv-cray",
         "PrgEnv-gnu",
         "PrgEnv-aocc",
-        "gnu",
+        "gcc",
         "intel",
     ]
     build_system = "Make"

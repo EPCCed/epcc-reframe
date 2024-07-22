@@ -95,7 +95,7 @@ class CirrusBlasTest(BLASBase):
     variant = parameter(["mkl"])
 
     valid_systems = ["cirrus"]
-    valid_prog_environs = ["gnu", "intel"]
+    valid_prog_environs = ["gcc", "intel"]
     reference = {
         "cirrus:compute": {
             "normal": (7.00, -0.15, None, "Gflops/s"),

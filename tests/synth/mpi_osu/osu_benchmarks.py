@@ -15,7 +15,7 @@ class OSUBenchmarkTestBase(rfm.RunOnlyRegressionTest):
 
     def __init__(self):
         self.valid_systems = ['archer2:compute', 'cirrus:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gnu','intel']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gcc','intel']
         self.sourcesdir = None
         self.num_tasks = 2
         self.num_tasks_per_node = 1
@@ -103,7 +103,7 @@ class OSUBuildTest(rfm.CompileOnlyRegressionTest):
     def __init__(self):
         self.descr = 'OSU benchmarks build test (currently fails with  Cray)'
         self.valid_systems = ['archer2:compute','cirrus:compute']
-        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gnu','intel']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gcc','intel']
         self.build_system = 'Autotools'
 
     @run_after('init')
@@ -132,7 +132,7 @@ class OSUDownloadTest(rfm.RunOnlyRegressionTest):
     def __init__(self):
         self.descr = 'OSU benchmarks download sources'
         self.valid_systems = ['archer2:login','cirrus:login']
-        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gnu','intel']
+        self.valid_prog_environs = ['PrgEnv-gnu', 'PrgEnv-cray', 'PrgEnv-aocc','gcc','intel']
         self.executable = 'wget'
         self.executable_opts = [
             'http://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-5.6.2.tar.gz'  # noqa: E501

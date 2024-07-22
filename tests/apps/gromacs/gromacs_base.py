@@ -8,7 +8,7 @@ import reframe.utility.sanity as sn
 class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
     """ReFrame base class for GROMACS tests"""
 
-    valid_prog_environs = ["PrgEnv-gnu", "gnu", "nvidia-mpi"]
+    valid_prog_environs = ["PrgEnv-gnu", "gcc", "nvidia-mpi"]
     executable = "gmx_mpi"
     extra_resources = {"qos": {"qos": "standard"}}
 

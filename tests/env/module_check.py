@@ -1,77 +1,64 @@
-# Copyright 2016-2020 Swiss National Supercomputing Centre (CSCS/ETH Zurich)
-# ReFrame Project Developers. See the top-level LICENSE file for details.
-#
-# SPDX-License-Identifier: BSD-3-Clause
+#!/usr/bin/env python3
+"""Reframe test to check that CPU target environment variable is correctly set"""
+
+# Based on work from:
+#   Copyright 2016-2020 Swiss National Supercomputing Centre (CSCS/ETH Zurich)
+#   ReFrame Project Developers. See the top-level LICENSE file for details.
+#   SPDX-License-Identifier: BSD-3-Clause
 
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-from reframe.core.runtime import runtime
-
 
 @rfm.simple_test
 class DefaultPrgEnvCheck(rfm.RunOnlyRegressionTest):
-    def __init__(self):
-        self.descr = 'Ensure PrgEnv-cray is loaded by default'
-        self.valid_prog_environs = ['Default']
-        self.valid_systems = ['archer2:login']
-        self.executable = 'module'
-        self.executable_opts = ['-t', 'list']
-        self.maintainers = ['Andy Turner']
-        self.tags = {'production', 'craype'}
-        self.sanity_patterns = sn.assert_found(r'^PrgEnv-cray', self.stderr)
+    """Check the default compilers"""
+
+    descr = "Ensure PrgEnv-cray is loaded by default"
+    valid_systems = ["archer2:login"]
+    valid_prog_environs = ["Default"]
+    executable = "module"
+    executable_opts = ["-t", "list"]
+    maintainers = ["a.turner@epcc.ed.ac.uk"]
+    tags = {"production", "craype"}
+
+    @sanity_function
+    def assert_finished(self):
+        """Sanity checks"""
+        return sn.assert_found(r"^PrgEnv-cray", self.stderr)
 
 
 @rfm.simple_test
 class DefaultModuleCheck(rfm.RunOnlyRegressionTest):
-    def __init__(self):
-        self.descr = 'Ensure epcc/setup-env is loaded by default'
-        self.valid_prog_environs = ['Default']
-        self.valid_systems = ['cirrus:login']
-        self.executable = 'module'
-        self.executable_opts = ['-t', 'list']
-        self.maintainers = ['Eleanor Broadway']
-        self.sanity_patterns = sn.assert_found('setup-env', self.stdout)
+    """Check the default compilers"""
+
+    descr = "Ensure epcc/setup-env is loaded by default"
+    valid_prog_environs = ["Default"]
+    valid_systems = ["cirrus:login"]
+    executable = "module"
+    executable_opts = ["-t", "list"]
+    maintainers = ["e.broadway@epcc.ed.ac.uk"]
+
+    @sanity_function
+    def assert_finished(self):
+        """Sanity checks"""
+        return sn.assert_found("setup-env", self.stdout)
 
 
 @rfm.simple_test
 class EnvironmentCheck(rfm.RunOnlyRegressionTest):
-    def __init__(self):
-        self.descr = 'Ensure programming environment is loaded correctly'
-        self.valid_systems = ['archer2:login']
-        self.valid_prog_environs = ['PrgEnv-cray', 'PrgEnv-gnu', 'PrgEnv-aocc']
+    """Check programming environemnts load correctly"""
 
-        self.executable = 'module'
-        self.executable_opts = ['-t', 'list']
-        self.sanity_patterns = sn.assert_found(self.env_module_patt,self.stderr)
-        self.maintainers = ['Andy Turner']
-        self.tags = {'production', 'craype'}
+    descr = "Ensure programming environment is loaded correctly"
+    valid_systems = ["archer2:login", "cirrus:login"]
+    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc", "gcc", "intel"]
 
-    @property
-    @deferrable
-    def env_module_patt(self):
-        return r'^%s' % self.current_environ.name
+    executable = "module"
+    executable_opts = ["-t", "list"]
+    maintainers = ["Andy Turner"]
+    tags = {"production"}
 
-@rfm.simple_test
-class EnvironmentCheckCirrus1(rfm.RunOnlyRegressionTest):
-    def __init__(self):
-        self.descr = 'Ensure programming environment is loaded correctly'
-        self.valid_systems = ['cirrus:login']
-        self.valid_prog_environs = ['gnu']
-        self.executable = 'module'
-        self.executable_opts = ['-t', 'list']
-        self.sanity_patterns = sn.assert_found('gcc', self.stdout)
-        self.maintainers = ['Eleanor Broadway']
-        self.tags = {'production'}
-
-@rfm.simple_test
-class EnvironmentCheckCirrus2(rfm.RunOnlyRegressionTest):
-    def __init__(self):
-        self.descr = 'Ensure programming environment is loaded correctly'
-        self.valid_systems = ['cirrus:login']
-        self.valid_prog_environs = ['intel']
-        self.executable = 'module'
-        self.executable_opts = ['-t', 'list']
-        self.sanity_patterns = sn.assert_found('intel', self.stdout)
-        self.maintainers = ['Eleanor Broadway']
-        self.tags = {'production'}
+    @sanity_function
+    def assert_finished(self):
+        """Sanity checks"""
+        return sn.assert_found(self.current_environ.name, self.stderr)

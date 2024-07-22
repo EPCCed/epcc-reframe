@@ -16,7 +16,7 @@ class UlimitCheck(rfm.RegressionTest):
 
     descr = "Checking the output of ulimit -s in node."
     valid_systems = ["archer2:compute", "cirrus:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc", "gnu", "intel"]
+    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc", "gcc", "intel"]
     sourcepath = "ulimit.c"
     ntasks = 1
     ntasks_per_node = 1
