@@ -54,6 +54,7 @@ class EnvironmentCheck(rfm.RunOnlyRegressionTest):
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc", "gcc", "intel"]
 
     executable = "module"
+    # redirecting stderr because lmod on A2 writes to stderr but tclmod on cirrus writes to stdout
     executable_opts = ["-t", "list", "2>&1"]
     maintainers = ["Andy Turner"]
     tags = {"production"}
