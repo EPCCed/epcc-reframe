@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reframe test to check that CPU target environment variable is correctly set"""
+"""Reframe test to check that MPI supports all required options"""
 
 # Based on work from:
 #   Copyright 2016-2020 Swiss National Supercomputing Centre (CSCS/ETH Zurich)
