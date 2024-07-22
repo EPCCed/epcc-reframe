@@ -36,6 +36,25 @@ site_configuration = {
                     ],
                 },
                 {
+                    "name": "highmem",
+                    "descr": "High memory compute nodes",
+                    "scheduler": "slurm",
+                    "launcher": "srun",
+                    "access": [
+                        "--hint=nomultithread",
+                        "--distribution=block:block",
+                        "--partition=highmem",
+                    ],
+                    "max_jobs": 16,
+                    "environs": ["gnu", "intel"],
+                    "resources": [
+                        {
+                            "name": "qos",
+                            "options": ["--qos=highmem"],
+                        },
+                    ],
+                },
+                {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with GPUs",
                     "features": ["gpu"],
