@@ -33,6 +33,7 @@ class LAMMPSBaseEthanol(LAMMPSBase):
         "cirrus:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
         "cirrus:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
         "archer2:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
+        "archer2:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
         "archer2-tds:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
     }
 
@@ -63,22 +64,22 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
 
 
 @rfm.simple_test
-class LAMMPSARCHER2EthanolGPU(LAMMPSBaseEthanol):
+class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     """ReFrame LAMMPS Ethanol test for performance checks"""
 
     valid_systems = ["cirrus:compute-gpu", "archer2:compute-gpu"]
     descr = LAMMPSBaseEthanol.descr + " -- GPU"
     modules = ["lammps-gpu"]
     extra_resources = {
-        "qos": {"qos": "short"},
         "gpu": {"num_gpus_per_node": "4"},
     }
+    exclusive_access = True
 
+    tags = tags.union({"gpu"})
     n_nodes = 1
     num_tasks = None
     num_cpus_per_task = None
 
-    executable_opts = LAMMPSBaseEthanol.executable_opts + ["-sf gpu -pk gpu 4"]
 
     reference["archer2:compute-gpu"]["performance"] = (1.0, -0.05, None, "ns/day")
     reference["cirrus:compute-gpu"]["performance"] = (9.4, -0.05, None, "ns/day")
@@ -87,8 +88,12 @@ class LAMMPSARCHER2EthanolGPU(LAMMPSBaseEthanol):
     def setup_nnodes(self):
         """sets up number of tasks per node"""
         if self.current_system.name in ["archer2"]:
-            self.num_tasks_per_node = 32
+            #self.num_tasks_per_node = 32
+            self.extra_resources["qos"] = {"qos": "gpu-exc"}
+            self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-pk kokkos gpu/aware -sf kk -k on g 4"]
         elif self.current_system.name in ["cirrus"]:
+            self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-sf gpu -pk gpu 4"]
+            self.extra_resources["qos"] = {"qos": "short"}
             self.num_tasks_per_node = 40
 
     @run_after("setup")
@@ -97,6 +102,7 @@ class LAMMPSARCHER2EthanolGPU(LAMMPSBaseEthanol):
         self.env_vars[
             "PARAMS"
         ] = f'"--exclusive --ntasks={self.num_tasks_per_node} --tasks-per-node={self.num_tasks_per_node}"'
-        # Slurm demands it be done this way.
+        # Cirru slurm demands it be done this way.
         # Trying to add $PARAMS directly to job.launcher.options fails.
-        self.job.launcher.options.append("${PARAMS}")
+        if self.current_system.name in ["cirrus"]:
+            self.job.launcher.options.append("${PARAMS}")
