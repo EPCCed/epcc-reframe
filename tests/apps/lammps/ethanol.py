@@ -90,7 +90,7 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
         if self.current_system.name in ["archer2"]:
             #self.num_tasks_per_node = 32
             self.extra_resources["qos"] = {"qos": "gpu-exc"}
-            self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-pk kokkos gpu/aware -sf kk -k on g 4"]
+            self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-k on g 4 -sf kk -pk kokkos newton on neigh half"]
         elif self.current_system.name in ["cirrus"]:
             self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-sf gpu -pk gpu 4"]
             self.extra_resources["qos"] = {"qos": "short"}
