@@ -1,4 +1,5 @@
 """ReFrame base module for NAMD tests"""
+
 import reframe as rfm
 import reframe.utility.sanity as sn
 
@@ -72,6 +73,7 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
             item=-1,
         )
 
+
 class NAMDNoSMPMixin(rfm.RegressionMixin):
 
     @run_after("setup", always_last=True)
@@ -97,7 +99,7 @@ class NAMDGPUMixin(rfm.RegressionMixin):
         self.modules = ["namd/2022.07.21-gpu"]
 
         devices = [str(i) for i in range(self.gpus_per_node)]
-        self.executable_opts += ["+devices", ','.join(devices)]
+        self.executable_opts += ["+devices", ",".join(devices)]
 
         # Cannot specify tasks or CPUs as SBATCH options on the GPU partition.
         # CPUs are assigned based on the number of GPUs requested.

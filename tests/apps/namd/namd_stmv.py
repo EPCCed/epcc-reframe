@@ -5,9 +5,9 @@ from namd_base import NAMDBase, NAMDNoSMPMixin, NAMDGPUMixin
 
 
 class DownloadStmvSource(rfm.CompileOnlyRegressionTest):
-    build_system = 'CustomBuild'
+    build_system = "CustomBuild"
 
-    @run_before('compile')
+    @run_before("compile")
     def setup_build(self):
         self.build_system.commands = [
             "wget https://www.ks.uiuc.edu/Research/namd/utilities/stmv.tar.gz",
