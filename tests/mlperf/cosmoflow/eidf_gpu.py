@@ -55,6 +55,7 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
     valid_prog_environs = ["*"]
     valid_systems = ["eidf:gpu-service"]
     env_vars = {"KUBECONFIG": "/kubernetes/config"}
+    job_name = "mlperf-cosmoflow"
 
     executable = "python"
 
@@ -66,18 +67,16 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
     # node_type = parameter(["NVIDIA-A100-SXM4-40GB", "NVIDIA-H100-80GB-HBM3"])
     node_type = parameter(["NVIDIA-A100-SXM4-40GB"])
 
+    namespace = "eidf095ns"
+    k8s_config = None
+
     @run_before("setup")
     def executable_setup(self):
         """Setup environemnt"""
-        self.job_name = "mlperf-cosmoflow"
         pod_info = copy.deepcopy(base_k8s_pod)
         pod_info["metadata"]["name"] = self.job_name
-        pod_info["spec"]["containers"][0]["name"] = self.job_name[
-            :-1
-        ]  # remove '...-' at the end of str
-        pod_info["spec"]["containers"][0][
-            "workingDir"
-        ] = "/workspace/ML_HPC/CosmoFlow/Torch"
+        pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1]  # remove '...-' at the end of str
+        pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML_HPC/CosmoFlow/Torch"
         pod_info["spec"]["containers"][0]["command"] = ["torchrun"]
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}",
@@ -90,32 +89,21 @@ class CosmoFlowGPUServiceBenchmark(CosmoFlowBaseCheck):
             "/workspace/ML_HPC/CosmoFlow/Torch/config.yaml",
         ]
 
-        pod_info["spec"]["containers"][0]["resources"]["limits"][
-            "nvidia.com/gpu"
-        ] = self.num_gpus
-        pod_info["spec"]["nodeSelector"][
-            "nvidia.com/gpu.product"
-        ] = self.node_type
-        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"][
-            "claimName"
-        ] = "cosmoflow-pvc"
+        pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
+        pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
+        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = "cosmoflow-pvc"
 
         self.k8s_config = pod_info
-        self.namespace = "eidf095ns"
 
     @performance_function("W", perf_key="Avg GPU Power Draw:")
     def extract_gpu_power_draw(self):
         """Extracts gpu power draw"""
-        return sn.extractsingle(
-            r"Avg GPU Power Draw: (.*)", self.stdout, tag=1, conv=float
-        )
+        return sn.extractsingle(r"Avg GPU Power Draw: (.*)", self.stdout, tag=1, conv=float)
 
     @performance_function("%", perf_key="Avg GPU Utilization:")
     def extract_gpu_util(self):
         """Extracts gpu utilization percentage"""
-        return sn.extractsingle(
-            r"Avg GPU Utilization: (.*)", self.stdout, tag=1, conv=float
-        )
+        return sn.extractsingle(r"Avg GPU Utilization: (.*)", self.stdout, tag=1, conv=float)
 
     @run_before("performance")
     def set_perf_variables(self):

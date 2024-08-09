@@ -64,6 +64,8 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
     node_type = parameter(["NVIDIA-A100-SXM4-40GB"])
     job_name = "mlperf-deepcam-"
 
+    k8s_config = None
+
     @run_after("init")
     def executable_setup(self):
         """setup variables"""
@@ -74,17 +76,11 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
             dset_path = "/mnt/ceph_rbd/gridftp-save/deepcam/All-Hist"
             pvc = "deepcam-pvc"
         else:
-            raise ValueError(
-                f"Dataset type '{self.dataset}' is not supported please select full|mini"
-            )
+            raise ValueError(f"Dataset type '{self.dataset}' is not supported please select full|mini")
         pod_info = copy.deepcopy(base_k8s_pod)
         pod_info["metadata"]["generateName"] = self.job_name
-        pod_info["spec"]["containers"][0]["name"] = self.job_name[
-            :-1
-        ]  # remove '...-' at the end of str
-        pod_info["spec"]["containers"][0][
-            "workingDir"
-        ] = "/workspace/ML_HPC/DeepCAM"
+        pod_info["spec"]["containers"][0]["name"] = self.job_name[:-1]  # remove '...-' at the end of str
+        pod_info["spec"]["containers"][0]["workingDir"] = "/workspace/ML_HPC/DeepCAM"
         pod_info["spec"]["containers"][0]["command"] = ["torchrun"]
         pod_info["spec"]["containers"][0]["args"] = [
             f"--nproc_per_node={self.num_gpus}",
@@ -98,24 +94,16 @@ class DeepCAMGPUServiceBenchmark(DeepCamBaseCheck):
         ]
         # print(" ".join(pod_info["spec"]["containers"][0]["args"]))
 
-        pod_info["spec"]["containers"][0]["resources"]["limits"][
-            "nvidia.com/gpu"
-        ] = self.num_gpus
-        pod_info["spec"]["nodeSelector"][
-            "nvidia.com/gpu.product"
-        ] = self.node_type
-        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"][
-            "claimName"
-        ] = pvc
+        pod_info["spec"]["containers"][0]["resources"]["limits"]["nvidia.com/gpu"] = self.num_gpus
+        pod_info["spec"]["nodeSelector"]["nvidia.com/gpu.product"] = self.node_type
+        pod_info["spec"]["volumes"][0]["persistentVolumeClaim"]["claimName"] = pvc
 
         self.k8s_config = pod_info
 
     @performance_function("W", perf_key="Avg GPU Power Draw:")
     def extract_gpu_power_draw(self):
         """Extracts gpu power draw"""
-        return sn.extractsingle(
-            r"Avg GPU Power Draw: (.*)", self.stdout, tag=1, conv=float
-        )
+        return sn.extractsingle(r"Avg GPU Power Draw: (.*)", self.stdout, tag=1, conv=float)
 
     @run_before("performance")
     def set_perf_variables(self):
