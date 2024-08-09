@@ -15,6 +15,8 @@ class AffinityTestBase(rfm.RegressionTest):
     sourcepath = "affinity.c"
     maintainers = ["a.turner@epcc.ed.ac.uk"]
     tags = {"functionality", "short"}
+    aff_cores = None
+    ref_cores = None
 
     @run_before("compile")
     def prepare_build(self):
@@ -28,26 +30,14 @@ class AffinityTestBase(rfm.RegressionTest):
         def parse_cpus(x):
             return sorted(x)
 
-        re_aff_cores = (
-            r"affinity = \s+(?P<cpus>\d+:\d+:(?:[\d+,]*|[\d+-]*)\d+)"
-        )
-        self.aff_cores = sn.extractall(
-            re_aff_cores, self.stdout, "cpus", parse_cpus
-        )
+        re_aff_cores = r"affinity = \s+(?P<cpus>\d+:\d+:(?:[\d+,]*|[\d+-]*)\d+)"
+        self.aff_cores = sn.extractall(re_aff_cores, self.stdout, "cpus", parse_cpus)
         ref_key = "ref_" + self.current_partition.fullname
-        self.ref_cores = sn.extractall(
-            re_aff_cores, self.cases[self.variant][ref_key], "cpus", parse_cpus
-        )
+        self.ref_cores = sn.extractall(re_aff_cores, self.cases[self.variant][ref_key], "cpus", parse_cpus)
 
         # Ranks and threads can be extracted into lists in order to compare
         # them since the affinity programm prints them in ascending order.
-        self.sanity_patterns = sn.all(
-            [
-                sn.assert_eq(
-                    sn.sorted(self.aff_cores), sn.sorted(self.ref_cores)
-                )
-            ]
-        )
+        self.sanity_patterns = sn.all([sn.assert_eq(sn.sorted(self.aff_cores), sn.sorted(self.ref_cores))])
 
 
 @rfm.simple_test
@@ -86,9 +76,7 @@ class AffinityOMPTest(AffinityTestBase):
                 },
             }
         self.num_tasks = self.cases[self.variant]["num_tasks"]
-        self.num_tasks_per_node = self.cases[self.variant][
-            "num_tasks_per_node"
-        ]
+        self.num_tasks_per_node = self.cases[self.variant]["num_tasks_per_node"]
         self.num_cpus_per_task = self.cases[self.variant]["num_cpus_per_task"]
         self.extra_resources = {"qos": {"qos": "standard"}}
 
@@ -96,9 +84,7 @@ class AffinityOMPTest(AffinityTestBase):
     def set_tasks_per_core(self):
         """Setup tasks"""
         partname = self.current_partition.fullname
-        self.num_cpus_per_task = self.cases[self.variant][
-            f"num_cpus_per_task_{partname}"
-        ]
+        self.num_cpus_per_task = self.cases[self.variant][f"num_cpus_per_task_{partname}"]
         self.num_tasks = 1
         self.env_vars = {
             "OMP_NUM_THREADS": str(self.num_cpus_per_task),
@@ -159,9 +145,7 @@ class AffinityMPITestARCHER2(AffinityTestBase):
     def setup_variant(self):
         """sets up variants"""
         self.num_tasks = self.cases[self.variant]["num_tasks"]
-        self.num_tasks_per_node = self.cases[self.variant][
-            "num_tasks_per_node"
-        ]
+        self.num_tasks_per_node = self.cases[self.variant]["num_tasks_per_node"]
         self.num_cpus_per_task = self.cases[self.variant]["num_cpus_per_task"]
         self.extra_resources = {"qos": {"qos": "standard"}}
 
@@ -169,9 +153,7 @@ class AffinityMPITestARCHER2(AffinityTestBase):
     def set_launcher(self):
         """Sets launcher"""
         partname = self.current_partition.fullname
-        self.job.launcher.options = self.cases[self.variant][
-            f"runopts_{partname}"
-        ]
+        self.job.launcher.options = self.cases[self.variant][f"runopts_{partname}"]
 
 
 @rfm.simple_test
@@ -199,9 +181,7 @@ class AffinityMPITestCirrus(AffinityTestBase):
     def setup_variant(self):
         """sets up variants"""
         self.num_tasks = self.cases[self.variant]["num_tasks"]
-        self.num_tasks_per_node = self.cases[self.variant][
-            "num_tasks_per_node"
-        ]
+        self.num_tasks_per_node = self.cases[self.variant]["num_tasks_per_node"]
         self.num_cpus_per_task = self.cases[self.variant]["num_cpus_per_task"]
         self.extra_resources = {"qos": {"qos": "standard"}}
 
@@ -209,6 +189,4 @@ class AffinityMPITestCirrus(AffinityTestBase):
     def set_launcher(self):
         """Sets launcher"""
         partname = self.current_partition.fullname
-        self.job.launcher.options = self.cases[self.variant][
-            f"runopts_{partname}"
-        ]
+        self.job.launcher.options = self.cases[self.variant][f"runopts_{partname}"]

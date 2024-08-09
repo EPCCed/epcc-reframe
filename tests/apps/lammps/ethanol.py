@@ -75,11 +75,10 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     }
     exclusive_access = True
 
-    tags = tags.union({"gpu"})
+    tags = LAMMPSBase.tags.union({"gpu"})
     n_nodes = 1
     num_tasks = None
     num_cpus_per_task = None
-
 
     reference["archer2:compute-gpu"]["performance"] = (1.0, -0.05, None, "ns/day")
     reference["cirrus:compute-gpu"]["performance"] = (9.4, -0.05, None, "ns/day")
@@ -88,9 +87,11 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     def setup_nnodes(self):
         """sets up number of tasks per node"""
         if self.current_system.name in ["archer2"]:
-            #self.num_tasks_per_node = 32
+            # self.num_tasks_per_node = 32
             self.extra_resources["qos"] = {"qos": "gpu-exc"}
-            self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-k on g 4 -sf kk -pk kokkos newton on neigh half"]
+            self.executable_opts = LAMMPSBaseEthanol.executable_opts + [
+                "-k on g 4 -sf kk -pk kokkos newton on neigh half"
+            ]
         elif self.current_system.name in ["cirrus"]:
             self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-sf gpu -pk gpu 4"]
             self.extra_resources["qos"] = {"qos": "short"}
