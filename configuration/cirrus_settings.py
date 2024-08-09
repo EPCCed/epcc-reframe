@@ -84,8 +84,8 @@ site_configuration = {
                     ],
                     "processor": {
                         "num_cpus": 40,
-                        "num_cpus_per_socket": 10,
-                        "num_sockets": 4,
+                        "num_cpus_per_socket": 20,
+                        "num_sockets": 2,
                     },
                     "devices": [
                         {"type": "gpu", "num_devices": 4}
