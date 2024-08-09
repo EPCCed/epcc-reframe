@@ -22,33 +22,25 @@ class ResNet50BaseCheck(rfm.RunOnlyRegressionTest):
     @performance_function("inputs/s", perf_key="Throughput")
     def extract_throughput(self):
         """Extracts throughput"""
-        speeds = sn.extractall(
-            r"Processing Speed: (.*)", self.stdout, tag=1, conv=float
-        )
+        speeds = sn.extractall(r"Processing Speed: (.*)", self.stdout, tag=1, conv=float)
         return sum(map(float, speeds)) / len(list(speeds))
 
     @performance_function("s", perf_key="Communication Time")
     def extract_communication(self):
         """Extracts communication time"""
-        times = sn.extractall(
-            r"Communication Time: (.*)", self.stdout, tag=1, conv=float
-        )
+        times = sn.extractall(r"Communication Time: (.*)", self.stdout, tag=1, conv=float)
         return sum(map(float, times)) / len(list(times))
 
     @performance_function("s", perf_key="Epoch Length")
     def extract_epoch_length(self):
         """Extracts epoch length"""
-        times = sn.extractall(
-            r"Time For Epoch: (.*)", self.stdout, tag=1, conv=float
-        )
+        times = sn.extractall(r"Time For Epoch: (.*)", self.stdout, tag=1, conv=float)
         return sum(map(float, times)) / len(list(times))
 
     @performance_function("s", perf_key="Total IO Time")
     def extract_io(self):
         """Extracts total io time"""
-        times = sn.extractall(
-            r"Total IO Time: (.*)", self.stdout, tag=1, conv=float
-        )
+        times = sn.extractall(r"Total IO Time: (.*)", self.stdout, tag=1, conv=float)
         return sum(map(float, times)) / len(list(times))
 
     @sanity_function

@@ -102,9 +102,7 @@ class CP2KARCHER2(CP2KBaseCheck):
         """Changes reference values"""
         if self.current_system.name in ["archer2"]:
             # https://reframe-hpc.readthedocs.io/en/stable/utility_functions_reference.html#reframe.utility.ScopedDict
-            self.reference[
-                "archer2:compute:performance"
-            ] = self.reference_performance[self.freq]
+            self.reference["archer2:compute:performance"] = self.reference_performance[self.freq]
 
 
 @rfm.simple_test

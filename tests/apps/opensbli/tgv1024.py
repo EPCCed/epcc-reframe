@@ -48,6 +48,4 @@ class OpenSBLIARCHER2LargeCheck(OpenSBLIBaseCheck):
     time_limit = "30m"
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
 
-    reference = {
-        "archer2:compute": {"performance": (0.013, -0.3, 0.3, "s/iter")}
-    }
+    reference = {"archer2:compute": {"performance": (0.013, -0.3, 0.3, "s/iter")}}

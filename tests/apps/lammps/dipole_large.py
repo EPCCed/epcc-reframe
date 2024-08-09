@@ -40,6 +40,4 @@ class LAMMPSDipole(LAMMPSBase):
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks = self.n_nodes * self.cores.get(
-            self.current_partition.fullname, 1
-        )
+        self.num_tasks = self.n_nodes * self.cores.get(self.current_partition.fullname, 1)

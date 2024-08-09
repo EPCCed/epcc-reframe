@@ -27,9 +27,7 @@ class BLASBase(rfm.RegressionTest):
     @performance_function("Gflops/s", perf_key="normal")
     def extract_normal(self):
         """Extract performance value of non-transposed dgemv run"""
-        return sn.extractsingle(
-            r"Normal\s+=\s+(?P<normal>\S+)", self.stdout, "normal", float
-        )
+        return sn.extractsingle(r"Normal\s+=\s+(?P<normal>\S+)", self.stdout, "normal", float)
 
     @performance_function("Gflops/s", perf_key="transpose")
     def extract_transpose(self):

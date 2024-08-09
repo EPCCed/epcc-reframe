@@ -7,6 +7,7 @@ import reframe.utility.sanity as sn
 @rfm.simple_test
 class CudaPodTest(rfm.RunOnlyRegressionTest):
     """CUDA pod test class"""
+
     # Could probably be merged with cuda_job using a base class
 
     valid_systems = ["eidf:gpu-service"]

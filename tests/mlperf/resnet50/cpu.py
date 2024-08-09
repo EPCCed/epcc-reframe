@@ -41,8 +41,7 @@ class ResNet50CPUCheck(ResNet50BaseCheck):
                 "conda activate mlperf-torch-cpu",
             ]
             self.executable_opts = [
-                "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py"
-                " --config",
+                "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/train.py" " --config",
                 "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/archer2benchmark_config.yaml",
             ]
 
