@@ -1,4 +1,4 @@
-name: Linting
+name: Lint and syntax checks
 
 on: [push, pull_request]
 
@@ -40,10 +40,9 @@ jobs:
     - name: flake8 Lint
       uses: py-actions/flake8@v2
       with:
-        ignore: ["E203", "W503"]
         max-line-length: "120"
         path: "tests"
-        plugins: "flake8-bugbear flake8-black flake8-pyproject"
+        plugins: "flake8-bugbear flake8-pyproject"
 
   python-black:
     name: Python Black
