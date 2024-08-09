@@ -1,16 +1,6 @@
 name: Linting
 
-on: 
-  push:
-    paths-ignore: 
-      - 'tests/k8s/**'
-      - 'tests/mlperf/**'
-      - 'tests/synth/**'
-  pull_request:
-    paths-ignore: 
-      - 'tests/k8s/**'
-      - 'tests/mlperf/**'
-      - 'tests/synth/**'
+on: [push, pull_request]
 
 jobs:
   pylint:
