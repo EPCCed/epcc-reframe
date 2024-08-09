@@ -1,7 +1,22 @@
 import reframe as rfm
-from reframe.core.builtins import run_after, variable
+from reframe.core.builtins import run_after, run_before, variable, fixture
 
 from namd_base import NAMDBase, NAMDNoSMPMixin, NAMDGPUMixin
+
+
+class DownloadStmvSource(rfm.CompileOnlyRegressionTest):
+    build_system = 'CustomBuild'
+
+    @run_before('compile')
+    def setup_build(self):
+        self.build_system.commands = [
+            "wget https://www.ks.uiuc.edu/Research/namd/utilities/stmv.tar.gz",
+            "sha256sum -c stmv_sha256sum.txt",
+            "tar xzf stmv.tar.gz",
+            "mv stmv/* .",
+            "rmdir stmv",
+            "rm stmv.tar.gz"
+        ]
 
 
 class NAMDStmvBase(NAMDBase):
@@ -11,6 +26,8 @@ class NAMDStmvBase(NAMDBase):
     descr = "NAMD stmv (1M atoms) performance"
     input_file = "stmv.namd"
     time_limit = "10m"
+
+    build_source_fixture = fixture(DownloadStmvSource, scope="environment")
 
     energy_reference = -2451700.0
 
@@ -45,6 +62,7 @@ class NAMDStmvBase(NAMDBase):
 
     @run_after("setup")
     def setup_resources(self):
+        self.sourcesdir = self.build_source_fixture.stagedir
         self.num_nodes = self.n_nodes[self.current_partition.fullname]
         super().setup_resources()
 
