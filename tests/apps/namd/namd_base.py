@@ -9,47 +9,36 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
     """ReFrame base class for NAMD tests"""
 
     valid_prog_environs = ["intel", "nvidia-mpi"]
+    modules = ["namd/2.14"]
     executable = "namd2"
 
     maintainers = ["n.mannall@epcc.ed.ac.uk"]
     strict_check = True
     tags = {"applications", "performance"}
 
-    extra_resources = {"qos": {"qos": "standard"}}
+    qos = variable(str, value="standard")
 
     input_file = variable(str)
     num_nodes = variable(int, value=1)
 
-    cores = variable(
-        dict,
-        value={
-            "archer2:compute": 128,
-            "archer2-tds:compute": 128,
-            "cirrus:compute": 36,
-            "cirrus:compute-gpu": 40,
-            "cirrus:highmem": 112,
-        },
-    )
-
     @run_after("setup")
     def setup_resources(self):
-        if self.num_cpus_per_task > 1:
-            self.modules = ["namd"]
-            self.env_vars["OMP_NUM_THREADS"] = str(self.num_cpus_per_task)
+        proc = self.current_partition.processor
+        self.num_cpus_per_task = proc.num_cpus_per_socket
+        self.num_tasks_per_node = proc.num_sockets
 
-            pemap = []
-            commap = []
-            for i in range(self.num_tasks_per_node):
-                pemap.append(f"{self.num_cpus_per_task * i + 1}-{self.num_cpus_per_task * (i + 1) - 1}")
-                commap.append(str(self.num_cpus_per_task * i))
-
-            self.executable_opts = f"+setcpuaffinity +ppn {self.num_cpus_per_task - 1} +pemap {','.join(pemap)} +commap {','.join(commap)}".split()
-        else:
-            self.modules = ["namd/2.14-nosmp"]
-            self.env_vars["OMP_NUM_THREADS"] = 1
-        
         self.num_tasks = self.num_nodes * self.num_tasks_per_node
-        
+        self.env_vars["OMP_NUM_THREADS"] = str(self.num_cpus_per_task)
+
+        self.extra_resources["qos"] = {"qos": self.qos}
+
+        pemap = []
+        commap = []
+        for i in range(self.num_tasks_per_node):
+            pemap.append(f"{self.num_cpus_per_task * i + 1}-{self.num_cpus_per_task * (i + 1) - 1}")
+            commap.append(str(self.num_cpus_per_task * i))
+
+        self.executable_opts = f"+setcpuaffinity +ppn {self.num_cpus_per_task - 1} +pemap {','.join(pemap)} +commap {','.join(commap)}".split()
 
     @run_before("run", always_last=True)
     def set_input_file(self):
@@ -81,3 +70,41 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
             float,
             item=-1,
         )
+
+class NAMDNoSMPMixin(rfm.RegressionMixin):
+
+    @run_after("setup", always_last=True)
+    def remove_smp(self):
+        self.modules = ["namd/2.14-nosmp"]
+
+        proc = self.current_partition.processor
+        self.num_cpus_per_task = 1
+        self.num_tasks_per_node = proc.num_cpus
+
+        self.num_tasks = self.num_nodes * self.num_tasks_per_node
+        self.env_vars["OMP_NUM_THREADS"] = 1
+
+        self.executable_opts = []
+
+
+class NAMDGPUMixin(rfm.RegressionMixin):
+
+    gpus_per_node = variable(int)
+
+    @run_after("setup", always_last=True)
+    def add_gpu_devices(self):
+        self.modules = ["namd/2022.07.21-gpu"]
+
+        devices = [str(i) for i in range(self.gpus_per_node)]
+        self.executable_opts += ["+devices", ','.join(devices)]
+
+        # Cannot specify tasks or CPUs as SBATCH options on the GPU partition.
+        # CPUs are assigned based on the number of GPUs requested.
+        self.job.launcher.options.append(
+            f"--cpus-per-task={self.num_cpus_per_task} --ntasks={self.num_tasks} --tasks-per-node={self.num_tasks_per_node}"
+        )
+        self.num_cpus_per_task = None
+        self.num_tasks = None
+        self.num_tasks_per_node = None
+
+        self.extra_resources["gpu"] = {"num_gpus_per_node": self.gpus_per_node}

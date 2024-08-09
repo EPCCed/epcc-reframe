@@ -34,6 +34,11 @@ site_configuration = {
                             "options": ["--qos={qos}"],
                         },
                     ],
+                    "processor": {
+                        "num_cpus": 36,
+                        "num_cpus_per_socket": 18,
+                        "num_sockets": 2,
+                    }
                 },
                 {
                     "name": "highmem",
@@ -53,6 +58,11 @@ site_configuration = {
                             "options": ["--qos=highmem"],
                         },
                     ],
+                    "processor": {
+                        "num_cpus": 112,
+                        "num_cpus_per_socket": 28,
+                        "num_sockets": 4,
+                    }
                 },
                 {
                     "name": "compute-gpu",
@@ -72,6 +82,14 @@ site_configuration = {
                             "options": ["--gres=gpu:{num_gpus_per_node}"],
                         },
                     ],
+                    "processor": {
+                        "num_cpus": 40,
+                        "num_cpus_per_socket": 10,
+                        "num_sockets": 4,
+                    },
+                    "devices": [
+                        {"type": "gpu", "num_devices": 4}
+                    ]
                 },
                 {
                     "name": "compute-gpu-default",
@@ -86,6 +104,14 @@ site_configuration = {
                     "resources": [
                         {"name": "qos", "options": ["--qos={qos}"]},
                     ],
+                    "processor": {
+                        "num_cpus": 40,
+                        "num_cpus_per_socket": 20,
+                        "num_sockets": 2,
+                    },
+                    "devices": [
+                        {"type": "gpu", "num_devices": 4}
+                    ]
                 },
             ],
         }
