@@ -15,14 +15,15 @@ class DownloadStmvSource(rfm.CompileOnlyRegressionTest):
             "tar xzf stmv.tar.gz",
             "mv stmv/* .",
             "rmdir stmv",
-            "rm stmv.tar.gz"
+            "rm stmv.tar.gz",
+            "sed -i '63s|outputName          /usr/tmp/stmv-output|outputName          stmv-output|' stmv.namd",
         ]
 
 
 class NAMDStmvBase(NAMDBase):
     """ReFrame NAMD stmv (1M atoms) test base class"""
 
-    valid_systems = ["cirrus:compute", "cirrus:highmem"]
+    valid_systems = ["archer2:compute", "archer2-tds:compute", "cirrus:compute", "cirrus:highmem"]
     descr = "NAMD stmv (1M atoms) performance"
     input_file = "stmv.namd"
     time_limit = "10m"
@@ -60,6 +61,14 @@ class NAMDStmvBase(NAMDBase):
         },
     )
 
+    num_cores_per_task = {
+        "archer2:compute": 16,
+        "archer2-tds:compute": 16,
+        "cirrus:compute": 18,
+        "cirrus:compute-gpu": 10,
+        "cirrus:highmem": 28,
+    }
+
     @run_after("setup")
     def setup_resources(self):
         self.sourcesdir = self.build_source_fixture.stagedir
@@ -72,12 +81,27 @@ class NAMDStmvCPU(NAMDStmvBase):
 
     descr = NAMDStmvBase.descr + " -- CPU"
 
+    reference["archer2:compute:performance"] = (
+        5.28,
+        -0.05,
+        0.05,
+        "ns/day",
+    )
+
+    reference["archer2-tds:compute:performance"] = (
+        5.28,
+        -0.05,
+        0.05,
+        "ns/day",
+    )
+
     reference["cirrus:compute:performance"] = (
         0.389,
         -0.05,
         0.05,
         "ns/day",
     )
+
     reference["cirrus:highmem:performance"] = (
         0.371,
         -0.05,
@@ -90,6 +114,20 @@ class NAMDStmvCPU(NAMDStmvBase):
 class NAMDStmvCPUNoSMP(NAMDStmvBase, NAMDNoSMPMixin):
 
     descr = NAMDStmvBase.descr + " -- CPU, No SMP"
+
+    reference["archer2:compute:performance"] = (
+        5.31,
+        -0.05,
+        0.05,
+        "ns/day",
+    )
+
+    reference["archer2-tds:compute:performance"] = (
+        5.31,
+        -0.05,
+        0.05,
+        "ns/day",
+    )
 
     reference["cirrus:compute:performance"] = (
         0.407,

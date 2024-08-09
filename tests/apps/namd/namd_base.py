@@ -8,7 +8,7 @@ from reframe.core.builtins import performance_function, sanity_function, run_aft
 class NAMDBase(rfm.RunOnlyRegressionTest):
     """ReFrame base class for NAMD tests"""
 
-    valid_prog_environs = ["intel", "nvidia-mpi"]
+    valid_prog_environs = ["intel", "nvidia-mpi", "PrgEnv-cray"]
     modules = ["namd/2.14"]
     executable = "namd2"
 
@@ -21,11 +21,12 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
     input_file = variable(str)
     num_nodes = variable(int, value=1)
 
+    num_cores_per_task = variable(dict, value={})
+
     @run_after("setup")
     def setup_resources(self):
-        proc = self.current_partition.processor
-        self.num_cpus_per_task = proc.num_cpus_per_socket
-        self.num_tasks_per_node = proc.num_sockets
+        self.num_cpus_per_task = self.num_cores_per_task[self.current_partition.fullname]
+        self.num_tasks_per_node = self.current_partition.processor.num_cpus // self.num_cpus_per_task
 
         self.num_tasks = self.num_nodes * self.num_tasks_per_node
         self.env_vars["OMP_NUM_THREADS"] = str(self.num_cpus_per_task)
