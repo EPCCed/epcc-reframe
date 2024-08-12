@@ -30,6 +30,11 @@ site_configuration = {
                     'access': ['--hint=nomultithread','--distribution=block:block','--partition=standard','--qos=standard'],
                     'environs': ['PrgEnv-gnu','PrgEnv-cray','PrgEnv-aocc'],
                     'max_jobs': 16,
+                    "processor": {
+                        "num_cpus": 128,
+                        "num_cpus_per_socket": 64,
+                        "num_sockets": 2,
+                    },
                 },
                 {
                     "name": "compute-gpu",
