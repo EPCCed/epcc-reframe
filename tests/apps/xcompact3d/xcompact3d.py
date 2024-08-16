@@ -29,6 +29,8 @@ class xcompact3dLargeTest(rfm.RegressionTest):
             "OMP_NUM_THREADS": str(self.num_cpus_per_task)
         }
 
+        self.modules = ["cmake/3.29.4"]
+
         self.time_limit = '1h'
         self.build_system = 'CMake'
         self.build_system.ftn="ftn"
