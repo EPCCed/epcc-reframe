@@ -60,7 +60,7 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
 
     # Use the io500.sh script as our executable. Before using it, we need
     # to fix the preamble to correctly create and stripe the run directories.
-    #@require_deps
+    # @require_deps
     @run_before("run")
     def set_executable(self):
         """setup executable"""
