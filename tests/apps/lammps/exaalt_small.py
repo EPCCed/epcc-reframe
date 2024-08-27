@@ -17,7 +17,7 @@ class ExaaltLammpsSmall(LAMMPSBase):
         "-var nx 256",
         "-var ny 256",
         "-var nz 256",
-        "-var nsteps 100"
+        "-var nsteps 100",
     ]
 
     n_nodes = 16
@@ -31,7 +31,6 @@ class ExaaltLammpsSmall(LAMMPSBase):
             "archer2:compute": 128,
         },
     )
-
 
     reference = {
         "archer2:compute": {
@@ -48,6 +47,4 @@ class ExaaltLammpsSmall(LAMMPSBase):
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks = self.n_nodes * self.cores.get(
-            self.current_partition.fullname, 1
-        )
+        self.num_tasks = self.n_nodes * self.cores.get(self.current_partition.fullname, 1)
