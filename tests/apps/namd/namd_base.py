@@ -2,8 +2,7 @@
 
 import reframe as rfm
 import reframe.utility.sanity as sn
-from reframe.core.builtins import (performance_function, run_after, run_before,
-                                   sanity_function, variable)
+from reframe.core.builtins import performance_function, run_after, run_before, sanity_function, variable
 
 
 class NAMDBase(rfm.RunOnlyRegressionTest):
