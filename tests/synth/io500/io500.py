@@ -11,11 +11,11 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 from reframe.core.backends import getlauncher
-from reframe.utility import osext, udeps
+from reframe.utility import osext
 
 
-@rfm.simple_test
-class IO500BuildTest(rfm.CompileOnlyRegressionTest):
+#  @rfm.simple_test
+class IO500Build(rfm.CompileOnlyRegressionTest):
     """Clone and build the IO500 source code."""
 
     descr = "Clone and build the IO500 benchmark."
@@ -37,7 +37,6 @@ class IO500BuildTest(rfm.CompileOnlyRegressionTest):
 
 
 # Base class for the IO500 Benchmark runs.
-@rfm.simple_test
 class IO500Benchmark(rfm.RunOnlyRegressionTest):
     """Base IO500 benchmark class."""
 
@@ -55,24 +54,22 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     }
 
     modules = ["craype-network-ucx", "cray-mpich-ucx"]
+    executable = "./io500.sh"
 
-    @run_after("init")
-    def set_dependencies(self):
-        """Setup dependencies"""
-        self.depends_on("IO500BuildTest", udeps.by_env)
+    io500_binaries = fixture(IO500Build, scope="environment")
 
     # Use the io500.sh script as our executable. Before using it, we need
     # to fix the preamble to correctly create and stripe the run directories.
-    @require_deps
-    def set_executable(self, IO500BuildTest):
+    #@require_deps
+    @run_before("run")
+    def set_executable(self):
         """setup executable"""
-        self.executable = "./io500.sh"
         # Copy the full contents of the build directory to the test stage
         # directory. Then delete everything *before* the warning in io500.sh
         # and prepend what remains with the contents of io500-prologue.sh
         # which create the work directories and set their striping.
         self.prerun_cmds = [
-            "cp -r " + IO500BuildTest().stagedir + "/* .",
+            "cp -r " + self.io500_binaries.stagedir + "/* .",
             "sed -i -n -E -e '/YOU SHOULD NOT EDIT/,$ p' " + self.executable,
             "cat io500-prologue.sh " + self.executable + " > io500-fixed.sh",
             "cp io500-fixed.sh " + self.executable,
@@ -107,7 +104,7 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
                 osext.run_command(
                     "find -P " + self.datadir[self.fs] + " -type f -print0 -o -type l -print0 | xargs -0 munlink"
                 )
-            except Exception:
+            except OSError:
                 # If munlink failed, rm the entirety of datafiles the old-fashioned way.
                 osext.run_command("rm -rf " + self.datadir[self.fs])
             else:
@@ -124,13 +121,23 @@ class IO500Benchmark(rfm.RunOnlyRegressionTest):
     @performance_function("kIOPS")
     def extract_test_iops(self, kind="ior-easy-write"):
         """Extract IOPS performance value"""
-        return sn.extractsingle(r"\[RESULT\]\s+" + kind + r"\s+(\d+\.?\d*)\s+", self.stdout, 1, float)
+        return sn.extractsingle(
+            r"\[RESULT\]\s+" + kind + r"\s+(\d+\.?\d*)\s+",
+            self.stdout,
+            1,
+            float,
+        )
 
     # Extract bandwidth performance for a single test.
     @performance_function("GiB/s")
     def extract_test_bw(self, kind="mdtest-easy-write"):
         """Extract bandwidth performance value"""
-        return sn.extractsingle(r"\[RESULT\]\s+" + kind + r"\s+(\d+\.?\d*)\s+", self.stdout, 1, float)
+        return sn.extractsingle(
+            r"\[RESULT\]\s+" + kind + r"\s+(\d+\.?\d*)\s+",
+            self.stdout,
+            1,
+            float,
+        )
 
     # Extract the final bandwidth score
     @performance_function("GiB/s")
@@ -180,22 +187,20 @@ class IO500RunDebug(IO500Benchmark):
 
     fs = parameter(["work4"])
 
-    def __init__(self):
-        super().__init__()
-        self.num_tasks = 1
-        self.num_tasks_per_node = 1
-        self.time_limit = "10m"
+    num_tasks = 1
+    num_tasks_per_node = 1
+    time_limit = "10m"
 
-        self.env_vars = {
-            "OMP_NUM_THREADS": "1",
-            "SRUN_CPUS_PER_TASK": "16",
-            "FI_OFI_RXM_SAR_LIMIT": "64K",
-            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4",
-        }
+    env_vars = {
+        "OMP_NUM_THREADS": "1",
+        "SRUN_CPUS_PER_TASK": "16",
+        "FI_OFI_RXM_SAR_LIMIT": "64K",
+        "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4",
+    }
 
-        self.executable_opts = ["config-debug-run.ini"]
+    executable_opts = ["config-debug-run.ini"]
 
-        self.tags = {"performance"}
+    tags = {"performance"}
 
 
 # Test a large run that should be valid for submission to the IO500 list.
@@ -206,23 +211,21 @@ class IO500RunValid(IO500Benchmark):
 
     fs = parameter(["work4"])
 
-    def __init__(self):
-        super().__init__()
-        self.num_tasks = 80
-        self.num_tasks_per_node = 8
-        self.num_cpus_per_task = 16
-        self.time_limit = "10h"
+    num_tasks = 80
+    num_tasks_per_node = 8
+    num_cpus_per_task = 16
+    time_limit = "10h"
 
-        self.env_vars = {
-            "OMP_NUM_THREADS": "1",
-            "SRUN_CPUS_PER_TASK": "16",
-            "FI_OFI_RXM_SAR_LIMIT": "64K",
-            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4",
-        }
+    env_vars = {
+        "OMP_NUM_THREADS": "1",
+        "SRUN_CPUS_PER_TASK": "16",
+        "FI_OFI_RXM_SAR_LIMIT": "64K",
+        "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4",
+    }
 
-        self.executable_opts = ["config-valid.ini"]
+    executable_opts = ["config-valid.ini"]
 
-        self.tags = {"performance", "largeio"}
+    tags = {"performance", "largeio"}
 
 
 # Test a small run that should still indicate file system performance
@@ -232,20 +235,18 @@ class IO500RunSmall(IO500Benchmark):
 
     fs = parameter(["work2"])
 
-    def __init__(self):
-        super().__init__()
-        self.num_tasks = 40
-        self.num_tasks_per_node = 8
-        self.num_cpus_per_task = 16
-        self.time_limit = "6h"
+    num_tasks = 40
+    num_tasks_per_node = 8
+    num_cpus_per_task = 16
+    time_limit = "6h"
 
-        self.env_vars = {
-            "OMP_NUM_THREADS": "1",
-            "SRUN_CPUS_PER_TASK": "16",
-            "FI_OFI_RXM_SAR_LIMIT": "64K",
-            "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4",
-        }
+    env_vars = {
+        "OMP_NUM_THREADS": "1",
+        "SRUN_CPUS_PER_TASK": "16",
+        "FI_OFI_RXM_SAR_LIMIT": "64K",
+        "MPICH_MPIIO_HINTS": "*:cray_cb_write_lock_mode=2,*:cray_cb_nodes_multiplier=4",
+    }
 
-        self.executable_opts = ["config-small.ini"]
+    executable_opts = ["config-small.ini"]
 
-        self.tags = {"performance"}
+    tags = {"performance"}
