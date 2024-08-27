@@ -33,7 +33,6 @@ class LAMMPSBaseEthanol(LAMMPSBase):
         "cirrus:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
         "cirrus:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
         "archer2:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
-        "archer2:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
         "archer2-tds:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
     }
 
@@ -67,7 +66,7 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
 class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     """ReFrame LAMMPS Ethanol test for performance checks"""
 
-    valid_systems = ["cirrus:compute-gpu", "archer2:compute-gpu"]
+    valid_systems = ["cirrus:compute-gpu"]
     descr = LAMMPSBaseEthanol.descr + " -- GPU"
     modules = ["lammps-gpu"]
     extra_resources = {
@@ -80,12 +79,12 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     num_tasks = None
     num_cpus_per_task = None
 
-    reference["archer2:compute-gpu"]["performance"] = (1.0, -0.05, None, "ns/day")
     reference["cirrus:compute-gpu"]["performance"] = (9.4, -0.05, None, "ns/day")
 
     @run_after("init")
     def setup_nnodes(self):
         """sets up number of tasks per node"""
+        # unfinished
         if self.current_system.name in ["archer2"]:
             # self.num_tasks_per_node = 32
             self.extra_resources["qos"] = {"qos": "gpu-exc"}
