@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+"""Gromacs 1400k atom HECBioSim benchmark"""
+
 import reframe as rfm
 
 from gromacs_base import GromacsBaseCheck
@@ -41,6 +45,8 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
 
 @rfm.simple_test
 class GromacsCPUCheck(Gromacs1400kAtomsBase):
+    """Gromacs CPU checks"""
+
     valid_systems = ["archer2:compute", "cirrus:compute"]
     modules = ["gromacs"]
     descr = Gromacs1400kAtomsBase.descr + " -- CPU"
@@ -50,36 +56,21 @@ class GromacsCPUCheck(Gromacs1400kAtomsBase):
     num_cpus_per_task = 1
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
 
-    reference["archer2:compute"]["performance"] = (
-        22.4,
-        -0.1,
-        0.1,
-        "ns/day",
-    )
-    reference["archer2-tds:compute"]["performance"] = (
-        22.4,
-        -0.1,
-        0.1,
-        "ns/day",
-    )
-    reference["cirrus:compute"]["performance"] = (
-        5.50,
-        -0.1,
-        0.1,
-        "ns/day",
-    )
+    reference["archer2:compute"]["performance"] = (24.0, -0.1, None, "ns/day")
+    reference["archer2-tds:compute"]["performance"] = (22.4, -0.1, None, "ns/day")
+    reference["cirrus:compute"]["performance"] = (5.50, -0.1, None, "ns/day")
 
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks_per_node = self.cores.get(
-            self.current_partition.fullname, 1
-        )
+        self.num_tasks_per_node = self.cores.get(self.current_partition.fullname, 1)
         self.num_tasks = self.n_nodes * self.num_tasks_per_node
 
 
 @rfm.simple_test
 class GromacsGPUCheck(Gromacs1400kAtomsBase):
+    """Gromacs GPU checks"""
+
     valid_systems = ["cirrus:compute-gpu"]
     modules = ["gromacs/2023.4-gpu"]
     descr = Gromacs1400kAtomsBase.descr + " -- GPU"
@@ -96,12 +87,7 @@ class GromacsGPUCheck(Gromacs1400kAtomsBase):
     num_tasks = None
     num_cpus_per_tasks = None
 
-    reference["cirrus:compute-gpu"]["performance"] = (
-        11.5,
-        -0.05,
-        0.05,
-        "ns/day",
-    )
+    reference["cirrus:compute-gpu"]["performance"] = (11.5, -0.05, None, "ns/day")
 
     @run_after("setup")
     def setup_gpu_options(self):

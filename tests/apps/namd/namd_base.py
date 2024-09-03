@@ -3,8 +3,6 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-from reframe.core.builtins import performance_function, sanity_function, run_after, run_before, variable
-
 
 class NAMDBase(rfm.RunOnlyRegressionTest):
     """ReFrame base class for NAMD tests"""
@@ -26,6 +24,7 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
 
     @run_after("setup")
     def setup_resources(self):
+        """setup resources"""
         self.num_cpus_per_task = self.num_cores_per_task[self.current_partition.fullname]
         self.num_tasks_per_node = self.current_partition.processor.num_cpus // self.num_cpus_per_task
 
@@ -40,10 +39,14 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
             pemap.append(f"{self.num_cpus_per_task * i + 1}-{self.num_cpus_per_task * (i + 1) - 1}")
             commap.append(str(self.num_cpus_per_task * i))
 
-        self.executable_opts = f"+setcpuaffinity +ppn {self.num_cpus_per_task - 1} +pemap {','.join(pemap)} +commap {','.join(commap)}".split()
+        self.executable_opts = (
+            f"+setcpuaffinity +ppn {self.num_cpus_per_task - 1} "
+            "+pemap {','.join(pemap)} +commap {','.join(commap)}".split()
+        )
 
     @run_before("run", always_last=True)
     def set_input_file(self):
+        """setup input file"""
         self.executable_opts.append(self.input_file)
 
     @sanity_function
@@ -75,9 +78,11 @@ class NAMDBase(rfm.RunOnlyRegressionTest):
 
 
 class NAMDNoSMPMixin(rfm.RegressionMixin):
+    """NAMD no SMP test"""
 
     @run_after("setup", always_last=True)
     def remove_smp(self):
+        """remove smp"""
         self.modules = ["namd/2.14-nosmp"]
 
         proc = self.current_partition.processor
@@ -91,11 +96,14 @@ class NAMDNoSMPMixin(rfm.RegressionMixin):
 
 
 class NAMDGPUMixin(rfm.RegressionMixin):
+    """NAMD GPU test"""
 
     gpus_per_node = variable(int)
+    executable_opts = []
 
     @run_after("setup", always_last=True)
     def add_gpu_devices(self):
+        """GPU devices"""
         self.modules = ["namd/2022.07.21-gpu"]
 
         devices = [str(i) for i in range(self.gpus_per_node)]
@@ -104,7 +112,8 @@ class NAMDGPUMixin(rfm.RegressionMixin):
         # Cannot specify tasks or CPUs as SBATCH options on the GPU partition.
         # CPUs are assigned based on the number of GPUs requested.
         self.job.launcher.options.append(
-            f"--cpus-per-task={self.num_cpus_per_task} --ntasks={self.num_tasks} --tasks-per-node={self.num_tasks_per_node}"
+            f"--cpus-per-task={self.num_cpus_per_task} --ntasks={self.num_tasks} "
+            f"--tasks-per-node={self.num_tasks_per_node}"
         )
         self.num_cpus_per_task = None
         self.num_tasks = None

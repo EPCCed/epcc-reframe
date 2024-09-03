@@ -1,63 +1,32 @@
 #!/usr/bin/env python
-
-import os
+"""Test of download and build of xthi from repository master"""
 
 import reframe
-import reframe.utility.sanity as sanity
-import reframe.utility.udeps as depends
+import reframe.utility.sanity as sn
 
-"""
-Test of download and build of xthi from repository master
-"""
+REPOURL = "https://github.com/ARCHER2-HPC/xthi.git"
 
-repoURL = "https://github.com/ARCHER2-HPC/xthi.git"
 
 @reframe.simple_test
-class xthiCompilationTest(reframe.CompileOnlyRegressionTest):
+class XthiCompilationTest(reframe.CompileOnlyRegressionTest):
+    """Compile xthi via make"""
 
-    """
-    Compile xthi via make
-    """
-
+    maintainers = ["k.straford@epcc.ed.ac.uk"]
     descr = "xthi compilation test"
-    valid_systems = ["archer2:login",'cirrus:login']
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc",'gnu','intel']
+    valid_systems = ["archer2:login", "cirrus:login"]
+    valid_prog_environs = [
+        "PrgEnv-cray",
+        "PrgEnv-gnu",
+        "PrgEnv-aocc",
+        "gcc",
+        "intel",
+    ]
     build_system = "Make"
-
-    @run_after("init")
-    def download_source(self):
-
-        self.depends_on("xthiDownLoadTest", depends.fully)
-
-    @require_deps
-    def locate_source(self, xthiDownLoadTest):
-
-        prefix = xthiDownLoadTest(part="login").stagedir
-        self.sourcesdir = os.path.join(prefix, "xthi", "src")
-
-    @run_before("compile")
-    def set_make_options(self):
-        self.build_system_max_concurrency = 1
+    build_system_max_concurrency = 1
+    sourcesdir = REPOURL
+    sourcepath = "src"
 
     @sanity_function
     def sanity_check_build(self):
-        return sanity.assert_not_found("error", self.stderr)
-
-
-@reframe.simple_test
-class xthiDownLoadTest(reframe.RunOnlyRegressionTest):
-
-    """
-    Download our very own xthi code.
-    """
-
-    descr = "xthi git clone"
-    valid_systems = ["archer2:login",'cirrus:login']
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc",'gnu','intel']
-    executable = "git"
-    executable_opts = ["clone", repoURL]
-
-    @sanity_function
-    def sanity_check_download(self):
-
-        return sanity.assert_true(os.path.exists("xthi"))
+        """Ensure build completed without errors"""
+        return sn.assert_not_found("error", self.stderr)
