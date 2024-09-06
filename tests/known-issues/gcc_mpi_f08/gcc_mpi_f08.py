@@ -9,6 +9,7 @@ https://gcc.gnu.org/pipermail/fortran/2020-September/055068.html
 
 This issue prevents the mpi_f08 interface being used.
 We expect GCC to potentially be affected and other compilers to not be affected.
+Errors will be reported if gcc passes the test, or another type of compiler fails the test.
 """
 
 import reframe as rfm
@@ -32,6 +33,10 @@ class InterfaceBoundsTest(rfm.RegressionTest):
         self.sourcepath = f"gcc_mpi_f08.{self.lang}"
 
     @sanity_function
-    def assert_notfound(self):
-        """Checks that issue was not found"""
+    def assert_result(self):
+        """Checks that issue was not found for non-gcc compilers"""
+        # Expect gcc to fail check
+        if str(self.current_environ) in ["PrgEnv-gnu", "gcc"]:
+            return sn.assert_found(r"F", self.stdout)
+        # Expect other compilers to pass check
         return sn.assert_not_found(r"F", self.stdout)

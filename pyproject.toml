@@ -1,3 +1,11 @@
+[project]
+name = "EPCC-Reframe"
+description = "ReFrame configuration and test suite for the EPCC HPC systems"
+dependencies = ["reframe-hpc"]
+requires-python = ">= 3.6"
+readme = "README.md"
+license = {file = "LICENSE"}
+
 [tool.black]
 line-length = 120
 
