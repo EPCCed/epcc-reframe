@@ -99,9 +99,9 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     @run_after("setup")
     def setup_gpu_options(self):
         """sets up different resources for gpu systems"""
-        self.env_vars[
-            "PARAMS"
-        ] = f'"--exclusive --ntasks={self.num_tasks_per_node} --tasks-per-node={self.num_tasks_per_node}"'
+        self.env_vars["PARAMS"] = (
+            f'"--exclusive --ntasks={self.num_tasks_per_node} --tasks-per-node={self.num_tasks_per_node}"'
+        )
         # Cirru slurm demands it be done this way.
         # Trying to add $PARAMS directly to job.launcher.options fails.
         if self.current_system.name in ["cirrus"]:
