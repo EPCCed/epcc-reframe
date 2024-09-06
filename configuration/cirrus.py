@@ -50,7 +50,7 @@ site_configuration = {
                         "--partition=highmem",
                     ],
                     "max_jobs": 16,
-                    "environs": ["gnu", "intel"],
+                    "environs": ["gcc", "intel"],
                     "resources": [
                         {
                             "name": "qos",
