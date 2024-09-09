@@ -122,6 +122,7 @@ site_configuration = {
                 "craype-accel-amd-gfx90a",
                 "craype-x86-milan",
             ],
+            "features": ["gpu"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
@@ -130,6 +131,7 @@ site_configuration = {
         {
             "name": "rocm-PrgEnv-cray",
             "modules": ["PrgEnv-cray"],
+            "features": ["gpu"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
@@ -138,6 +140,7 @@ site_configuration = {
         {
             "name": "rocm-PrgEnv-aocc",
             "modules": ["PrgEnv-aocc"],
+            "features": ["gpu"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
