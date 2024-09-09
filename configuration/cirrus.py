@@ -49,7 +49,7 @@ site_configuration = {
                         "--distribution=block:block",
                         "--partition=highmem",
                     ],
-                    "max_jobs": 16,
+                    "max_jobs": 2,
                     "environs": ["gcc", "intel"],
                     "resources": [
                         {
@@ -121,8 +121,8 @@ site_configuration = {
         },
         {
             "name": "Default",
+            "features": ["default"],
             "cc": "gcc",
-            "cxx": "gcc",
             "ftn": "gfortran",
             "target_systems": ["cirrus"],
         },
