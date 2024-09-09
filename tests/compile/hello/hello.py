@@ -28,7 +28,7 @@ class HelloTestCPU(HelloTestBase):
     """CPU systems test class"""
 
     valid_systems = ["-gpu"]
-    valid_prog_environs = ["-gpu"]
+    valid_prog_environs = ["-gpu -default"]
     extra_resources = {
         "qos": {"qos": "standard"},
     }
