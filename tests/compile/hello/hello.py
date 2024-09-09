@@ -50,4 +50,5 @@ class HelloTestGPU(HelloTestBase):
     @run_after("setup")
     def setup_gpu_options(self):
         """Change qos for ARCHER2"""
-        self.extra_resources["qos"]["qos"] = "gpu-shd"
+        if self.current_system.name in ["archer2"]:
+            self.extra_resources["qos"]["qos"] = "gpu-shd"
