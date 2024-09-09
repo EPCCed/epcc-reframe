@@ -39,7 +39,7 @@ site_configuration = {
                         "--qos=standard",
                     ],
                     "environs": ["PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
-                    "max_jobs": 16,
+                    "max_jobs": 64,
                     "processor": {
                         "num_cpus": 128,
                         "num_cpus_per_socket": 64,
@@ -69,7 +69,7 @@ site_configuration = {
                 },
                 {
                     "name": "compute-gpu-torch",
-                    "descr": "Compute nodes with AMD GPUs",
+                    "descr": "Compute nodes with AMD GPUs, and torch launcher",
                     "max_jobs": 2,
                     "features": ["torch"],
                     "scheduler": "slurm",
