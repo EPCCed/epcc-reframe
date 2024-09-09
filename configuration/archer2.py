@@ -49,6 +49,7 @@ site_configuration = {
                 {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with AMD GPUs",
+                    "max_jobs": 1,
                     "features": ["gpu"],
                     "scheduler": "slurm",
                     "launcher": "srun",
@@ -69,6 +70,7 @@ site_configuration = {
                 {
                     "name": "compute-gpu-torch",
                     "descr": "Compute nodes with AMD GPUs",
+                    "max_jobs": 1,
                     "features": ["gpu"],
                     "scheduler": "slurm",
                     "launcher": "torchrun",
