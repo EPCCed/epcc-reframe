@@ -122,6 +122,8 @@ site_configuration = {
         {
             "name": "Default",
             "cc": "gcc",
+            "cxx": "gcc",
+            "ftn": "gfortran",
             "target_systems": ["cirrus"],
         },
     ],
