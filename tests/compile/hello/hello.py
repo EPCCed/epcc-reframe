@@ -38,7 +38,7 @@ class HelloTestCPU(HelloTestBase):
 class HelloTestGPU(HelloTestBase):
     """GPU systems test class"""
 
-    valid_systems = ["+gpu"]
+    valid_systems = ["-torch"]
     valid_prog_environs = ["+gpu"]
     extra_resources = {
         "qos": {"qos": "gpu"},
