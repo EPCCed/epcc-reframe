@@ -12,7 +12,7 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
     """Restnet50 test class for GPUs"""
 
     valid_prog_environs = ["Default", "rocm-PrgEnv-gnu"]
-    valid_systems = ["cirrus:compute-gpu-default", "archer2:compute-gpu-torch"]
+    valid_systems = ["cirrus:compute-gpu", "archer2:compute-gpu-torch"]
     descr = "ResNet50 GPU Benchmark"
 
     num_tasks = None

@@ -12,7 +12,7 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
     """Class for deepcam tests on gpus"""
 
     valid_prog_environs = ["Default", "rocm-PrgEnv-gnu"]
-    valid_systems = ["cirrus:compute-gpu-default", "archer2:compute-gpu-torch"]
+    valid_systems = ["cirrus:compute-gpu", "archer2:compute-gpu-torch"]
     descr = "Deepcam GPU Benchmark"
 
     num_tasks = None
