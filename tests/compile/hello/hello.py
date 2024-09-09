@@ -1,4 +1,5 @@
 """Compilation tests"""
+
 import reframe as rfm
 import reframe.utility.sanity as sn
 
@@ -45,3 +46,8 @@ class HelloTestGPU(HelloTestBase):
     }
     num_tasks = None
     num_cpus_per_task = None
+
+    @run_after("setup")
+    def setup_gpu_options(self):
+        """Change qos for ARCHER2"""
+        self.extra_resources["qos"]["qos"] = "gpu-shd"
