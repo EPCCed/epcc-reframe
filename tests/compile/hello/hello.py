@@ -27,7 +27,7 @@ class HelloTestBase(rfm.RegressionTest):
 class HelloTestCPU(HelloTestBase):
     """CPU systems test class"""
 
-    valid_systems = ["*"]
+    valid_systems = ["-gpu"]
     valid_prog_environs = ["-gpu"]
     extra_resources = {
         "qos": {"qos": "standard"},
