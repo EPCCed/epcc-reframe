@@ -37,7 +37,7 @@ site_configuration = {
                         "num_cpus": 36,
                         "num_cpus_per_socket": 18,
                         "num_sockets": 2,
-                    }
+                    },
                 },
                 {
                     "name": "highmem",
@@ -50,7 +50,7 @@ site_configuration = {
                         "--partition=highmem",
                     ],
                     "max_jobs": 16,
-                    "environs": ["gnu", "intel"],
+                    "environs": ["gcc", "intel"],
                     "resources": [
                         {
                             "name": "qos",
@@ -61,7 +61,7 @@ site_configuration = {
                         "num_cpus": 112,
                         "num_cpus_per_socket": 28,
                         "num_sockets": 4,
-                    }
+                    },
                 },
                 {
                     "name": "compute-gpu",
@@ -86,9 +86,7 @@ site_configuration = {
                         "num_cpus_per_socket": 20,
                         "num_sockets": 2,
                     },
-                    "devices": [
-                        {"type": "gpu", "num_devices": 4}
-                    ]
+                    "devices": [{"type": "gpu", "num_devices": 4}],
                 },
                 {
                     "name": "compute-gpu-default",
@@ -108,9 +106,7 @@ site_configuration = {
                         "num_cpus_per_socket": 20,
                         "num_sockets": 2,
                     },
-                    "devices": [
-                        {"type": "gpu", "num_devices": 4}
-                    ]
+                    "devices": [{"type": "gpu", "num_devices": 4}],
                 },
             ],
         }
@@ -144,6 +140,7 @@ site_configuration = {
         {
             "name": "Default",
             "cc": "gcc",
+            "ftn": "gfortran",
             "target_systems": ["cirrus"],
         },
     ],
@@ -169,10 +166,7 @@ site_configuration = {
                     "type": "file",
                     "name": "reframe.log",
                     "level": "debug",
-                    "format": (
-                        "[%(asctime)s] %(levelname)s "
-                        "%(levelno)s: %(check_info)s: %(message)s"
-                    ),
+                    "format": ("[%(asctime)s] %(levelname)s " "%(levelno)s: %(check_info)s: %(message)s"),
                     "append": False,
                 },
             ],
