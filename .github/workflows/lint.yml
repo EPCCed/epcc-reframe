@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Python Black
-        uses: cytopia/docker-black@0.8
+      - uses: psf/black@stable
         with:
-          path: 'tests/'
+          options: "--check --verbose"
+          src: "./tests/"
