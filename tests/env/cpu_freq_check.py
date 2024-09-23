@@ -28,6 +28,7 @@ class CPUFreqTest(rfm.RunOnlyRegressionTest):
         """Sanity check that CPU_CRAY_TARGET is set"""
         return sn.assert_found(f"SLURM_CPU_FREQ_REQ={self.freq}", self.stdout)
 
+
 @rfm.simple_test
 class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
     """Checks that CPU frequency is set to 2.25GHz by default"""
