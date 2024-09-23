@@ -17,7 +17,6 @@ class CPUFreqTest(rfm.RunOnlyRegressionTest):
     descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz as default"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
-    #sourcesdir = None
     executable = "./freq_print.sh"
 
     tags = {"production", "maintenance", "craype"}
@@ -29,9 +28,6 @@ class CPUFreqTest(rfm.RunOnlyRegressionTest):
         """Sanity check that CPU_CRAY_TARGET is set"""
         return sn.assert_found(f"SLURM_CPU_FREQ_REQ={self.freq}", self.stdout)
 
-
-
-
 @rfm.simple_test
 class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
     """Checks that CPU frequency is set to 2.25GHz by default"""
@@ -39,7 +35,6 @@ class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
     descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz as default"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
-    #sourcesdir = None
     executable = "./freq_print.sh"
 
     tags = {"production", "maintenance", "craype"}
@@ -48,6 +43,7 @@ class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
 
     @run_before('run')
     def set_cpu_freq(self):
+        """Add slurm command line variable to job script to set frequency to 2.25Ghz"""
         self.job.launcher.options = ['--cpu-freq=2250000']
 
     @sanity_function
