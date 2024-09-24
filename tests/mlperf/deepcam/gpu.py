@@ -58,7 +58,7 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
             self.extra_resources = {
                 "qos": {"qos": "gpu"},
             }
-            self.modules = ["openmpi/4.1.5-cuda-11.6"]
+            self.modules = ["openmpi/4.1.6-cuda-11.6"]
             self.prerun_cmds = [
                 'eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"',
                 "conda activate mlperf_torch",
