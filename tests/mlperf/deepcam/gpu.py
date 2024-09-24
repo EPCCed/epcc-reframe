@@ -17,7 +17,8 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
 
     num_tasks = None
     num_gpus = parameter([4])  # parameter(1 << pow for pow in range(7))
-    lbs = parameter([8])
+    # Due to memory, Cirrus is limited to a lbs of 2
+    # lbs = parameter([2])
 
     time_limit = "1h"
     num_nodes = 1
@@ -25,17 +26,6 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
     @run_after("init")
     def setup_systems(self):
         """Setup environment"""
-        self.executable_opts = [
-            "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/train.py",
-            "--config",
-            "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/configs/archer2benchmark_config.yaml",
-            "--device",
-            "cuda",
-            "-lbs",
-            f"{self.lbs}",
-            # "--t_subset_size", "1024",
-            # "--v_subset_size", "512"
-        ]
         if self.current_system.name in ["archer2"]:
             self.executable = ""
             self.extra_resources = {
@@ -52,6 +42,18 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
                 "LD_PRELOAD": "$CRAY_MPICH_ROOTDIR/gtl/lib/libmpi_gtl_hsa.so:$LD_PRELOAD",
                 "HOME": "$PWD",
             }
+            self.executable_opts = [
+                "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/train.py",
+                "--config",
+                "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/configs/archer2benchmark_config.yaml",
+                "--device",
+                "cuda",
+                "-lbs",
+                "8",
+                # "--t_subset_size", "1024",
+                # "--v_subset_size", "512"
+            ]
+
 
         elif self.current_system.name in ["cirrus"]:
             self.executable = "python"
@@ -60,14 +62,25 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
             }
             self.modules = ["openmpi/4.1.6-cuda-11.6"]
             self.prerun_cmds = [
-                'eval "$(/work/z043/shared/miniconda3/bin/conda shell.bash hook)"',
-                "conda activate mlperf_torch",
+                'eval "$(/work/z04/shared/ebroadwa/miniconda3/bin/conda shell.bash hook)"',
+                "conda activate torch_mlperf",
             ]
             self.env_vars = {
                 "OMP_NUM_THREADS": "5",
                 "SRUN_CPUS_PER_TASK": "5",
                 "OMPI_MCA_mpi_warn_on_fork": "0",
             }
+            self.executable_opts = [
+                "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/train.py",
+                "--config",
+                "/work/z043/shared/chris-ml-intern/ML_HPC/DeepCAM/Torch/configs/cirrusbenchmark_config.yaml",
+                "--device",
+                "cuda",
+                "-lbs",
+                "2",
+                # "--t_subset_size", "1024",
+                # "--v_subset_size", "512"
+            ]
 
     @run_before("run")
     def set_task_distribution(self):

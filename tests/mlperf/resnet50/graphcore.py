@@ -8,7 +8,7 @@ from resnet_base import ResNet50BaseCheck
 
 
 @rfm.simple_test
-class ResNetGPUServiceBenchmark(ResNet50BaseCheck):
+class ResNetGPUServiceGraphCoreBenchmark(ResNet50BaseCheck):
     """Resnet50 test class for graphcore"""
 
     valid_prog_environs = ["*"]
