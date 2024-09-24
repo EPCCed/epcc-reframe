@@ -37,7 +37,7 @@ site_configuration = {
                         "num_cpus": 36,
                         "num_cpus_per_socket": 18,
                         "num_sockets": 2,
-                    }
+                    },
                 },
                 {
                     "name": "highmem",
@@ -61,7 +61,7 @@ site_configuration = {
                         "num_cpus": 112,
                         "num_cpus_per_socket": 28,
                         "num_sockets": 4,
-                    }
+                    },
                 },
                 {
                     "name": "compute-gpu",
@@ -80,6 +80,28 @@ site_configuration = {
                             "name": "gpu",
                             "options": ["--gres=gpu:{num_gpus_per_node}"],
                         },
+                    ],
+                    "processor": {
+                        "num_cpus": 40,
+                        "num_cpus_per_socket": 20,
+                        "num_sockets": 2,
+                    },
+                    "devices": [{"type": "gpu", "num_devices": 4}],
+                },
+<<<<<<< HEAD
+||||||| 09644b2
+                {
+                    "name": "compute-gpu-default",
+                    "descr": "Compute nodes with GPUs but doesn't load nvcc compilers or mpi",
+                    "scheduler": "slurm",
+                    "launcher": "srun",
+                    "access": [
+                        "--partition=gpu",
+                    ],
+                    "max_jobs": 4,
+                    "environs": ["Default"],
+                    "resources": [
+                        {"name": "qos", "options": ["--qos={qos}"]},
                     ],
                     "processor": {
                         "num_cpus": 40,
@@ -149,10 +171,7 @@ site_configuration = {
                     "type": "file",
                     "name": "reframe.log",
                     "level": "debug",
-                    "format": (
-                        "[%(asctime)s] %(levelname)s "
-                        "%(levelno)s: %(check_info)s: %(message)s"
-                    ),
+                    "format": ("[%(asctime)s] %(levelname)s " "%(levelno)s: %(check_info)s: %(message)s"),
                     "append": False,
                 },
             ],

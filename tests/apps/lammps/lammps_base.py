@@ -1,4 +1,5 @@
 """ReFrame base module for LAMMPS tests"""
+
 import reframe as rfm
 import reframe.utility.sanity as sn
 

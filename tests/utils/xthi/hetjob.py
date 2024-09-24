@@ -17,7 +17,6 @@ import reframe.utility.sanity as sn
 
 @rfm.simple_test
 class SharedCommWorldTest(rfm.RunOnlyRegressionTest):
-
     """
     SLURM hetjob with 3 nodes (no OpenMP) as per first example
     https://docs.archer2.ac.uk/user-guide/scheduler/#heterogeneous-jobs
@@ -50,7 +49,6 @@ class SharedCommWorldTest(rfm.RunOnlyRegressionTest):
 
 @rfm.simple_test
 class SharedCommWorldWithOpenMPTest(rfm.RunOnlyRegressionTest):
-
     """
     SLURM hetjob with shared MPI_COMM_WORLD and OpenMP as per
     the mixed MPI/OpenMP example at
