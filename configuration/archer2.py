@@ -39,7 +39,7 @@ site_configuration = {
                         "--qos=standard",
                     ],
                     "environs": ["PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
-                    "max_jobs": 16,
+                    "max_jobs": 64,
                     "processor": {
                         "num_cpus": 128,
                         "num_cpus_per_socket": 64,
@@ -49,6 +49,7 @@ site_configuration = {
                 {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with AMD GPUs",
+                    "max_jobs": 2,
                     "features": ["gpu"],
                     "scheduler": "slurm",
                     "launcher": "srun",
@@ -68,8 +69,9 @@ site_configuration = {
                 },
                 {
                     "name": "compute-gpu-torch",
-                    "descr": "Compute nodes with AMD GPUs",
-                    "features": ["gpu"],
+                    "descr": "Compute nodes with AMD GPUs, and torch launcher",
+                    "max_jobs": 2,
+                    "features": ["torch"],
                     "scheduler": "slurm",
                     "launcher": "torchrun",
                     "access": ["--partition=gpu"],
@@ -122,6 +124,7 @@ site_configuration = {
                 "craype-accel-amd-gfx90a",
                 "craype-x86-milan",
             ],
+            "features": ["gpu"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
@@ -130,6 +133,7 @@ site_configuration = {
         {
             "name": "rocm-PrgEnv-cray",
             "modules": ["PrgEnv-cray"],
+            "features": ["gpu"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
@@ -138,6 +142,7 @@ site_configuration = {
         {
             "name": "rocm-PrgEnv-aocc",
             "modules": ["PrgEnv-aocc"],
+            "features": ["gpu"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",

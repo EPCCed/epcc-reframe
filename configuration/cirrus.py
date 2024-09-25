@@ -49,7 +49,7 @@ site_configuration = {
                         "--distribution=block:block",
                         "--partition=highmem",
                     ],
-                    "max_jobs": 16,
+                    "max_jobs": 2,
                     "environs": ["gcc", "intel"],
                     "resources": [
                         {
@@ -73,33 +73,13 @@ site_configuration = {
                         "--partition=gpu",
                     ],
                     "max_jobs": 4,
-                    "environs": ["nvidia-mpi"],
+                    "environs": ["Default", "nvidia-mpi"],
                     "resources": [
                         {"name": "qos", "options": ["--qos={qos}"]},
                         {
                             "name": "gpu",
                             "options": ["--gres=gpu:{num_gpus_per_node}"],
                         },
-                    ],
-                    "processor": {
-                        "num_cpus": 40,
-                        "num_cpus_per_socket": 20,
-                        "num_sockets": 2,
-                    },
-                    "devices": [{"type": "gpu", "num_devices": 4}],
-                },
-                {
-                    "name": "compute-gpu-default",
-                    "descr": "Compute nodes with GPUs but doesn't load nvcc compilers or mpi",
-                    "scheduler": "slurm",
-                    "launcher": "srun",
-                    "access": [
-                        "--partition=gpu",
-                    ],
-                    "max_jobs": 4,
-                    "environs": ["Default"],
-                    "resources": [
-                        {"name": "qos", "options": ["--qos={qos}"]},
                     ],
                     "processor": {
                         "num_cpus": 40,
@@ -139,6 +119,7 @@ site_configuration = {
         },
         {
             "name": "Default",
+            "features": ["default"],
             "cc": "gcc",
             "ftn": "gfortran",
             "target_systems": ["cirrus"],

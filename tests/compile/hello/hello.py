@@ -27,8 +27,8 @@ class HelloTestBase(rfm.RegressionTest):
 class HelloTestCPU(HelloTestBase):
     """CPU systems test class"""
 
-    valid_systems = ["*"]
-    valid_prog_environs = ["-gpu"]
+    valid_systems = ["-gpu"]
+    valid_prog_environs = ["-gpu -default"]
     extra_resources = {
         "qos": {"qos": "standard"},
     }
@@ -38,7 +38,7 @@ class HelloTestCPU(HelloTestBase):
 class HelloTestGPU(HelloTestBase):
     """GPU systems test class"""
 
-    valid_systems = ["+gpu"]
+    valid_systems = ["-torch"]
     valid_prog_environs = ["+gpu"]
     extra_resources = {
         "qos": {"qos": "gpu"},
@@ -46,3 +46,9 @@ class HelloTestGPU(HelloTestBase):
     }
     num_tasks = None
     num_cpus_per_task = None
+
+    @run_after("setup")
+    def setup_gpu_options(self):
+        """Change qos for ARCHER2"""
+        if self.current_system.name in ["archer2"]:
+            self.extra_resources["qos"]["qos"] = "gpu-shd"
