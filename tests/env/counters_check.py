@@ -54,8 +54,8 @@ class CrayCountersCPUEnergyTest(rfm.RunOnlyRegressionTest):
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
     sourcesdir = None
-    executable = "cat /sys/cray/pm_counters/cpu_energy"    
-    
+    executable = "cat /sys/cray/pm_counters/cpu_energy"
+
     tags = {"production", "maintenance", "craype"}
 
     @sanity_function
