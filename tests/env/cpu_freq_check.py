@@ -16,7 +16,7 @@ class CPUFreqTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz as default"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     executable = "./freq_print.sh"
 
     tags = {"production", "maintenance", "craype"}
@@ -35,7 +35,7 @@ class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz as default"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     executable = "./freq_print.sh"
 
     tags = {"production", "maintenance", "craype"}
