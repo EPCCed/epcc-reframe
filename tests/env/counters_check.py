@@ -16,7 +16,7 @@ class CrayCountersEnergyTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the node energy pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/energy"
 
@@ -34,7 +34,7 @@ class CrayCountersPowerTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the node power pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/power"
 
@@ -52,7 +52,7 @@ class CrayCountersCPUEnergyTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the cpu energy pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/cpu_energy"
 
@@ -70,7 +70,7 @@ class CrayCountersCPUPowerTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the cpu power pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/cpu_power"
 
@@ -88,7 +88,7 @@ class CrayCountersMemoryEnergyTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the memory energy pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/memory_energy"
 
@@ -106,7 +106,7 @@ class CrayCountersMemPowerTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the memory power pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/memory_power"
 
@@ -124,7 +124,7 @@ class CrayCountersCPU0TempTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the cpu 0 temperature pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/cpu0_temp"
 
@@ -142,7 +142,7 @@ class CrayCountersCPU1TempTest(rfm.RunOnlyRegressionTest):
 
     descr = "Checks whether the cpu 1 temperature pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
-    valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
+    valid_prog_environs = ["PrgEnv-cray"]
     sourcesdir = None
     executable = "cat /sys/cray/pm_counters/cpu1_temp"
 
