@@ -42,10 +42,10 @@ class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
 
     freq = 2250000
 
-    @run_before('run')
+    @run_before("run")
     def set_cpu_freq(self):
         """Add slurm command line variable to job script to set frequency to 2.25Ghz"""
-        self.job.launcher.options = ['--cpu-freq=2250000']
+        self.job.launcher.options = ["--cpu-freq=2250000"]
 
     @sanity_function
     def assert_finished(self):
