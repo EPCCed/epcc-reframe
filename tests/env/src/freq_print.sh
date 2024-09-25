@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo SLURM_CPU_FREQ_REQ=$SLURM_CPU_FREQ_REQ
