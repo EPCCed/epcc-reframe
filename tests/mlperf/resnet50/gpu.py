@@ -56,7 +56,6 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
                 "512",
             ]
 
-
         elif self.current_system.name in ["cirrus"]:
             # self.executable_opts[2] = (
             #     "/work/z043/shared/chris-ml-intern/ML/ResNet50/Torch/configs/cirrusbenchmark_config.yaml",
@@ -88,7 +87,6 @@ class ResNet50GPUBenchmark(ResNet50BaseCheck):
                 "--v_subset_size",
                 "512",
             ]
-
 
     @run_before("run")
     def set_task_distribution(self):

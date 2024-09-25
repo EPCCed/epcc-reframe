@@ -20,7 +20,6 @@ class CosmoFlowGPUBenchmark(CosmoFlowBaseCheck):
     # Due to memory, Cirrus is limited to a lbs of 2
     lbs = parameter([2])
 
-
     time_limit = "1h"
     num_nodes = 1
 
@@ -55,7 +54,6 @@ class CosmoFlowGPUBenchmark(CosmoFlowBaseCheck):
                 # "--v_subset_size", "512"
             ]
 
-
         elif self.current_system.name in ["cirrus"]:
             self.executable = "python"
             self.extra_resources = {
@@ -77,14 +75,12 @@ class CosmoFlowGPUBenchmark(CosmoFlowBaseCheck):
                 "/work/z043/shared/chris-ml-intern/ML_HPC/CosmoFlow/Torch/configs/cirrus_config.yaml",
                 "--device",
                 "cuda",
-                "--data-dir", 
-                "/work/z04/shared/mlperf-hpc/cosmoflow/mini/cosmoUniverse_2019_05_4parE_tf_v2_mini "
-                "-lbs",
+                "--data-dir",
+                "/work/z04/shared/mlperf-hpc/cosmoflow/mini/cosmoUniverse_2019_05_4parE_tf_v2_mini " "-lbs",
                 "2",
                 # "--t_subset_size", "2048",
                 # "--v_subset_size", "512"
             ]
-
 
     @run_before("run")
     def set_task_distribution(self):

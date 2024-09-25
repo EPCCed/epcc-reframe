@@ -54,7 +54,6 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
                 # "--v_subset_size", "512"
             ]
 
-
         elif self.current_system.name in ["cirrus"]:
             self.executable = "python"
             self.extra_resources = {
@@ -109,5 +108,3 @@ class DeepCamGPUBenchmark(DeepCamBaseCheck):
             self.job.launcher.options.append(
                 f"--ntasks={self.num_gpus} --tasks-per-node={self.num_gpus if self.num_gpus <= 4 else 4}"
             )
-
-    # ----------------------------------------------------------------------------
