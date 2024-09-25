@@ -14,7 +14,7 @@ import reframe.utility.sanity as sn
 class CPUFreqTest(rfm.RunOnlyRegressionTest):
     """Checks that CPU frequency is set to 2GHz by default"""
 
-    descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz as default"
+    descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz by default"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray"]
     executable = "./freq_print.sh"
@@ -25,15 +25,15 @@ class CPUFreqTest(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def assert_finished(self):
-        """Sanity check that CPU_CRAY_TARGET is set"""
+        """Sanity check that SLURM_CPU_FREQ_REQ is set"""
         return sn.assert_found(f"SLURM_CPU_FREQ_REQ={self.freq}", self.stdout)
 
 
 @rfm.simple_test
 class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
-    """Checks that CPU frequency is set to 2.25GHz by default"""
+    """Checks that CPU frequency is set to 2.25GHz"""
 
-    descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz as default"
+    descr = "Checks whether SLURM_CPU_FREQ_REQ can be set to 2.25GHz is set by slurm"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray"]
     executable = "./freq_print.sh"
@@ -49,5 +49,5 @@ class CPUHighFreqTest(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def assert_finished(self):
-        """Sanity check that CPU_CRAY_TARGET is set"""
+        """Sanity check that SLURM_CPU_FREQ_REQ is set"""
         return sn.assert_found(f"SLURM_CPU_FREQ_REQ={self.freq}", self.stdout)
