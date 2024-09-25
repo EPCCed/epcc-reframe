@@ -76,7 +76,8 @@ class CosmoFlowGPUBenchmark(CosmoFlowBaseCheck):
                 "--device",
                 "cuda",
                 "--data-dir",
-                "/work/z04/shared/mlperf-hpc/cosmoflow/mini/cosmoUniverse_2019_05_4parE_tf_v2_mini " "-lbs",
+                "/work/z04/shared/mlperf-hpc/cosmoflow/mini/cosmoUniverse_2019_05_4parE_tf_v2_mini ",
+                "-lbs",
                 "2",
                 # "--t_subset_size", "2048",
                 # "--v_subset_size", "512"
