@@ -120,9 +120,9 @@ class CrayCountersMemPowerTest(rfm.RunOnlyRegressionTest):
 
 @rfm.simple_test
 class CrayCountersCPU0TempTest(rfm.RunOnlyRegressionTest):
-    """Checks that the CPU 0 Tempreture counter is reporting"""
+    """Checks that the CPU 0 Temperature counter is reporting"""
 
-    descr = "Checks whether the cpu 0 tempreture pm counter is accessible and reporting"
+    descr = "Checks whether the cpu 0 temperature pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
     sourcesdir = None
@@ -132,14 +132,14 @@ class CrayCountersCPU0TempTest(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def assert_finished(self):
-        """Sanity check that CPU 0 tempreture is reporting"""
+        """Sanity check that CPU 0 temperature is reporting"""
         return sn.assert_found(r"\S+ C \S+ us", self.stdout)
 
 
 @rfm.simple_test
 class CrayCountersCPU1TempTest(rfm.RunOnlyRegressionTest):
-    """Checks that the CPU 1 Tempreture counter is reporting"""
-    descr = "Checks whether the cpu 1 tempreture pm counter is accessible and reporting"
+    """Checks that the CPU 1 Temperature counter is reporting"""
+    descr = "Checks whether the cpu 1 temperature pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
     sourcesdir = None
@@ -149,5 +149,5 @@ class CrayCountersCPU1TempTest(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def assert_finished(self):
-        """Sanity check that CPU 1 tempreture is reporting"""
+        """Sanity check that CPU 1 temperature is reporting"""
         return sn.assert_found(r"\S+ C \S+ us", self.stdout)
