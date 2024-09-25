@@ -139,6 +139,7 @@ class CrayCountersCPU0TempTest(rfm.RunOnlyRegressionTest):
 @rfm.simple_test
 class CrayCountersCPU1TempTest(rfm.RunOnlyRegressionTest):
     """Checks that the CPU 1 Temperature counter is reporting"""
+
     descr = "Checks whether the cpu 1 temperature pm counter is accessible and reporting"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray", "PrgEnv-gnu", "PrgEnv-aocc"]
