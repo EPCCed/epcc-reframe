@@ -15,7 +15,7 @@ import reframe.utility.sanity as sn
 class XCompact3DHugeUCXTest(rfm.RegressionTest):
     """XCompact 3D Huge Test"""
 
-    valid_systems = ["archer2:compute"]
+    valid_systems = ["archer2:compute-capability"]
     valid_prog_environs = ["PrgEnv-gnu"]
     modules = ["craype-network-ucx"]
 
@@ -46,7 +46,7 @@ class XCompact3DHugeUCXTest(rfm.RegressionTest):
     ]
     builddir = "Incompact3d"
     executable = "Incompact3d/bin/xcompact3d"
-    executable_opts = ["input-4096.i3d"]
+    executable_opts = ["input-2048.i3d"]
     modules = ["cmake/3.29.4"]
 
     reference = {"archer2:compute": {"steptime": (6.3, -0.2, 0.2, "seconds")}}

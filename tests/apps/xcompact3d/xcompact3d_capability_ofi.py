@@ -15,7 +15,7 @@ import reframe.utility.sanity as sn
 class XCompact3DHugeOFITest(rfm.RegressionTest):
     """XCompact 3D Huge Test"""
 
-    valid_systems = ["archer2:compute"]
+    valid_systems = ["archer2:compute-capability"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
     tags = {"performance", "largescale", "applications"}
