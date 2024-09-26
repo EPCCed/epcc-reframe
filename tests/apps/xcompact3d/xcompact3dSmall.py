@@ -18,7 +18,7 @@ class XCompact3DSmallTest(rfm.RegressionTest):
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
-    tags = {"performance", "largescale", "applications"}
+    tags = {"performance", "applications"}
 
     num_nodes = 8
     num_tasks_per_node = 128
@@ -29,7 +29,6 @@ class XCompact3DSmallTest(rfm.RegressionTest):
 
     time_limit = "1h"
     build_system = "CMake"
-    build_system.ftn = "ftn"
     prebuild_cmds = [
         "git clone https://github.com/xcompact3d/Incompact3d.git",
         "cd Incompact3d",
