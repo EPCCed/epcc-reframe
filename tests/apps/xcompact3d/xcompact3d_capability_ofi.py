@@ -29,7 +29,6 @@ class XCompact3DHugeOFITest(rfm.RegressionTest):
 
     time_limit = "1h"
     build_system = "CMake"
-    build_system.ftn = "ftn"
     prebuild_cmds = [
         "git clone https://github.com/xcompact3d/Incompact3d.git",
         "cd Incompact3d",
