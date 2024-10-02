@@ -14,7 +14,7 @@ import numpy as np
 class SlurmEnergy1nodeTest(rfm.RunOnlyRegressionTest):
     """Checks the energy reporting with a delay"""
 
-    descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz by default"
+    descr = "Checks whether slurm collects the energy usage of jobs correctly"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray"]
     executable = "./energy_diff.sh"
@@ -67,10 +67,10 @@ class SlurmEnergy1nodeTest(rfm.RunOnlyRegressionTest):
 class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
     """Checks the energy reporting with a delay"""
 
-    descr = "Checks whether SLURM_CPU_FREQ_REQ is set to 2GHz by default"
+    descr = "Checks whether slurm collects the energy usage of jobs correctly"
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-cray"]
-    executable = "./energy_diff_multi_2.sh"
+    executable = "./energy_diff_multi.sh"
 
     num_nodes = 4
     num_tasks_per_node = 1
@@ -104,11 +104,11 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
             shell=True,
         )
 
-        print("nodelist output: ", nodelist_raw.stdout)
+        #print("nodelist output: ", nodelist_raw.stdout)
 
         nodelist = list(nodelist_raw.stdout.split(","))
 
-        print("nodelist: ", nodelist)
+        #print("nodelist: ", nodelist)
 
         energy_data = []
 
@@ -121,14 +121,14 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
             energy_counters.append(int(str(energy[0])))
             energy_counters.append(int(str(energy[1])))
 
-        print("energy counters: ", energy_counters)
+        #print("energy counters: ", energy_counters)
 
         energy_slurm = sn.extractall_s(
             r"JobID\s+ConsumedEnergy\s+------------ --------------\s+[0-9]+\s+[0-9]+\s+[0-9]+.bat\+\s+[0-9]+\s+[0-9]+.ext\+\s+[0-9]+\s+[0-9]+.0\s+(?P<energy>[0-9]+)",
             str(slurm.stdout),
             "energy",
         )
-        print("energy slurm: ", energy_slurm)
+        #print("energy slurm: ", energy_slurm)
 
         energy_counters_diff = 0
 
@@ -136,10 +136,10 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
             print(energy_counters[i+1] - energy_counters[i])
             energy_counters_diff+=energy_counters[i+1] - energy_counters[i] 
 
-        print("energy counters diff: ", energy_counters_diff)
+        #print("energy counters diff: ", energy_counters_diff)
 
         diff = energy_counters_diff - int(str(energy_slurm[0]))
 
-        print("diff: ", diff)
+        #print("diff: ", diff)
 
         return diff
