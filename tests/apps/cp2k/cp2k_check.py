@@ -18,6 +18,10 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     # Output files to be retained
     keep_files = ["cp2k.out"]
 
+    # Set time limit
+
+    time_limit = "20m"
+
     maintainers = ["j.richings@epcc.ed.ac.uk"]
     use_multithreading = False
     tags = {"applications", "performance"}
@@ -68,13 +72,13 @@ class CP2KARCHER2(CP2KBaseCheck):
     # Select system to use
     valid_systems = ["archer2:compute"]
     # Set Programming Environment
-    valid_prog_environs = ["PrgEnv-gnu"]
+    valid_prog_environs = ["PrgEnv-gnu", "PrgEnv-gnu-hf"]
     # Description of test
     descr = "CP2K "
     # Command line options for executable
     executable_opts = ("-i input_bulk_HFX_3.inp -o cp2k.out ").split()
     # different cpu frequencies
-    freq = parameter(["2250000", "2000000"])
+    freq = ["2250000", "2000000"]
     # slurm parameters
     num_tasks = 384
     num_tasks_per_node = 16
@@ -89,20 +93,20 @@ class CP2KARCHER2(CP2KBaseCheck):
     @run_after("init")
     def setup_params(self):
         """sets up extra parameters"""
-        self.descr += self.freq
+        #self.descr += self.freq
         if self.current_system.name in ["archer2"]:
             self.env_vars = {
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
-                "OMP_PLACES": "cores",
-                "SLURM_CPU_FREQ_REQ": self.freq,
-            }
+                "OMP_PLACES": "cores"}
+#                "SLURM_CPU_FREQ_REQ": self.freq,
+#            }
 
     @run_before("performance")
     def set_reference(self):
         """Changes reference values"""
         if self.current_system.name in ["archer2"]:
             # https://reframe-hpc.readthedocs.io/en/stable/utility_functions_reference.html#reframe.utility.ScopedDict
-            self.reference["archer2:compute:performance"] = self.reference_performance[self.freq]
+            self.reference["archer2:compute:performance"] = self.reference_performance["2250000" if self.current_environ.name[-3:] =='-hf' else "2000000"]
 
 
 @rfm.simple_test

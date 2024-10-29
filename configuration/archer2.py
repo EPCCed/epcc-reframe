@@ -25,7 +25,7 @@ site_configuration = {
                     "descr": "Login nodes",
                     "scheduler": "local",
                     "launcher": "local",
-                    "environs": ["Default", "PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
+                    "environs": ["Default", "PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc", "PrgEnv-gnu-hf", "PrgEnv-cray-hf", "PrgEnv-aocc-hf"],
                 },
                 {
                     "name": "compute",
@@ -38,7 +38,7 @@ site_configuration = {
                         "--partition=standard",
                         "--qos=standard",
                     ],
-                    "environs": ["PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
+                    "environs": ["PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc", "PrgEnv-gnu-hf", "PrgEnv-cray-hf", "PrgEnv-aocc-hf"],
                     "max_jobs": 64,
                     "processor": {
                         "num_cpus": 128,
@@ -101,6 +101,15 @@ site_configuration = {
             "target_systems": ["archer2"],
         },
         {
+            "name": "PrgEnv-gnu-hf",
+            "modules": ["PrgEnv-gnu"],
+            "cc": "cc",
+            "cxx": "CC",
+            "ftn": "ftn",
+            "env_vars": [["SLURM_CPU_FREQ_REQ", 2250000]],
+            "target_systems": ["archer2"],
+        },
+        {
             "name": "PrgEnv-cray",
             "modules": ["PrgEnv-cray"],
             "cc": "cc",
@@ -109,11 +118,29 @@ site_configuration = {
             "target_systems": ["archer2"],
         },
         {
+            "name": "PrgEnv-cray-hf",
+            "modules": ["PrgEnv-cray"],
+            "cc": "cc",
+            "cxx": "CC",
+            "ftn": "ftn",
+            "env_vars": [["SLURM_CPU_FREQ_REQ", 2250000]],
+            "target_systems": ["archer2"],
+        },
+        {
             "name": "PrgEnv-aocc",
             "modules": ["PrgEnv-aocc"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
+            "target_systems": ["archer2"],
+        },
+        {
+            "name": "PrgEnv-aocc-hf",
+            "modules": ["PrgEnv-aocc"],
+            "cc": "cc",
+            "cxx": "CC",
+            "ftn": "ftn",
+            "env_vars": [["SLURM_CPU_FREQ_REQ", 2250000]],
             "target_systems": ["archer2"],
         },
         {
