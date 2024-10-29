@@ -11,6 +11,34 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 
+
+class XCompact3dFetchStable(AppsFetchBase):
+    """Test to fetch xcompact3d from github"""
+    executable = 'git clone'
+    executable_opts = [
+        f'https://github.com/xcompact3d/Incompact3d.git'
+    ]
+
+    local = True
+
+    valid_systems = ['*']
+    valid_prog_environs = ['']
+
+
+class Xcompact3dBuildStable(AppsCompileBase):
+    """Reframe base class for application compilation tests"""
+    descr = 'Build app'
+    build_system = ''
+    valid_systems = ['']
+    valid_prog_environs = ['']
+
+
+
+
+
+
+
+
 @rfm.simple_test
 class XCompact3DTest(rfm.RegressionTest):
     """XCompact 3D Test"""

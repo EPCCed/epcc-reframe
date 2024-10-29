@@ -12,15 +12,15 @@ import reframe.utility.sanity as sn
 
 
 @rfm.simple_test
-class XCompact3DTest(rfm.RegressionTest):
-    """XCompact 3D Test"""
+class XCompact3DSmallTest(rfm.RegressionTest):
+    """XCompact 3D Small Test"""
 
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
     tags = {"performance", "applications"}
 
-    num_nodes = 64
+    num_nodes = 8
     num_tasks_per_node = 128
     num_cpus_per_task = 1
     num_tasks = num_nodes * num_tasks_per_node * num_cpus_per_task
@@ -35,7 +35,7 @@ class XCompact3DTest(rfm.RegressionTest):
     ]
     builddir = "Incompact3d"
     executable = "Incompact3d/bin/xcompact3d"
-    executable_opts = ["input-64.i3d"]
+    executable_opts = ["input-8.i3d"]
     modules = ["cmake/3.29.4"]
 
     reference = {"archer2:compute": {"steptime": (6.3, -0.2, 0.2, "seconds")}}

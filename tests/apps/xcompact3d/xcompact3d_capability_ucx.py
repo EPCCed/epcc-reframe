@@ -12,20 +12,30 @@ import reframe.utility.sanity as sn
 
 
 @rfm.simple_test
-class XCompact3DTest(rfm.RegressionTest):
-    """XCompact 3D Test"""
+class XCompact3DHugeUCXTest(rfm.RegressionTest):
+    """XCompact 3D Huge Test"""
 
-    valid_systems = ["archer2:compute"]
+    valid_systems = ["archer2:compute-capability"]
     valid_prog_environs = ["PrgEnv-gnu"]
+    modules = ["craype-network-ucx"]
 
-    tags = {"performance", "applications"}
+    tags = {"performance", "largescale", "applications"}
 
-    num_nodes = 64
+    num_nodes = 2048
     num_tasks_per_node = 128
     num_cpus_per_task = 1
     num_tasks = num_nodes * num_tasks_per_node * num_cpus_per_task
 
-    env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
+    env_vars = {
+        "OMP_NUM_THREADS": str(num_cpus_per_task),
+        "UCX_TLS": "dc,self,sm",
+        "UCX_DC_MLX5_RX_QUEUE_LEN": "20000",
+        "UCX_DC_RX_QUEUE_LEN": "20000",
+        "UCX_DC_MLX5_TIMEOUT": "20m",
+        "UCX_DC_TIMEOUT": "20m",
+        "UCX_UD_MLX5_TX_NUM_GET_BYTES": "1G",
+        "UCX_UD_MLX5_MAX_GET_ZCOPY": "128k",
+    }
 
     time_limit = "1h"
     build_system = "CMake"
@@ -35,7 +45,7 @@ class XCompact3DTest(rfm.RegressionTest):
     ]
     builddir = "Incompact3d"
     executable = "Incompact3d/bin/xcompact3d"
-    executable_opts = ["input-64.i3d"]
+    executable_opts = ["input-2048.i3d"]
     modules = ["cmake/3.29.4"]
 
     reference = {"archer2:compute": {"steptime": (6.3, -0.2, 0.2, "seconds")}}
