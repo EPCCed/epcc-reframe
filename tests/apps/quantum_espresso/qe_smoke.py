@@ -28,7 +28,7 @@ class AUSURF112QESmall(QE_PW_BaseCheck):
 
     reference = {
         "archer2:compute" : {
-            "performance": (60, 0.1, -0.1, "s")
+            "PWSCF_wall": (357.7, -0.5, 0.5, "s")                
         }
     }
 

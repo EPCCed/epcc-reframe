@@ -43,7 +43,7 @@ class QE_PW_BaseCheck(rfm.RunOnlyRegressionTest):
             float(seconds)
         )
 
-    @performance_function("s", perf_key="performance")
+    @performance_function("s")
     def extract_report_time(self, name: str = None, kind: str = None) -> float:
         """Extract timings from pw.x stdout
         Args:
