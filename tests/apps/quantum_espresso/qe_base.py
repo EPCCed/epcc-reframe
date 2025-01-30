@@ -1,27 +1,44 @@
-"""ReFrame base module for Quantum Espresso (QE) tests"""
+#!/usr/bin/env python3
 
-"""Tests adapted from Experimental ReFrame 4.0 Test Libary"""
-"""https://reframe-hpc.readthedocs.io/en/stable/_modules/hpctestlib/sciapps/qespresso/benchmarks.html#QEspressoPWCheck.extract_report_time"""
+"""ReFrame base set-up and extract performance values for Quantum Espresso (QE)"""
 
+import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-class QE_PW_BaseCheck(rfm.RunOnlyRegressionTest):
-    """ReFrame base class for QE tests"""
-
-    valid_prog_environs = ["PrgEnv-gnu", "intel", "gcc"]
-    executable = "pw.x"
-    extra_resources = {"qos": {"qos": "standard"}}
+class QEBaseEnvironment(rfm.RunOnlyRegressionTest): 
+    """Definition of functions used for all QE ReFrame tests"""
 
     maintainers = ["e.broadway@epcc.ed.ac.uk"]
     strict_check = True 
     use_multithreading = False
     tags = {"applications", "performance"}
+    valid_systems = ["archer2:compute"]
+    valid_prog_environs = ["PrgEnv-gnu"]
+
 
     @sanity_function
     def assert_finished(self):
         """Sanity check that simulation finished successfully"""
         return sn.assert_found("JOB DONE.", self.stdout)
+
+
+    @run_before('performance')
+    def set_perf_variables(self):
+        """Build a dictionary of performance variables"""
+
+        # Expand the variables to collect different stats, commented out below
+        timings = ['PWSCF']
+        # timings = [
+        #     'PWSCF', 'electrons', 'c_bands', 'cegterg', 'calbec',
+        #     'fft', 'ffts', 'fftw'
+        # ]
+
+        for name in timings:
+            for kind in ['cpu', 'wall']:
+                res = self.extract_report_time(name, kind)
+                self.perf_variables[f'{name}_{kind}'] = res
+
 
     @staticmethod
     @sn.deferrable
@@ -42,6 +59,7 @@ class QE_PW_BaseCheck(rfm.RunOnlyRegressionTest):
             float(minutes) * 60 +
             float(seconds)
         )
+
 
     @performance_function("s")
     def extract_report_time(self, name: str = None, kind: str = None) -> float:
@@ -75,19 +93,3 @@ class QE_PW_BaseCheck(rfm.RunOnlyRegressionTest):
             ).evaluate()
         )
         return(execute_time)
-
-    @run_before('performance')
-    def set_perf_variables(self):
-        """Build a dictionary of performance variables"""
-
-        # Expand the variables to collect different stats
-        timings = ['PWSCF']
-        # timings = [
-        #     'PWSCF', 'electrons', 'c_bands', 'cegterg', 'calbec',
-        #     'fft', 'ffts', 'fftw'
-        # ]
-
-        for name in timings:
-            for kind in ['cpu', 'wall']:
-                res = self.extract_report_time(name, kind)
-                self.perf_variables[f'{name}_{kind}'] = res
