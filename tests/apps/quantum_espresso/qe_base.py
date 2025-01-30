@@ -6,7 +6,7 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-class QEBaseEnvironment(rfm.RunOnlyRegressionTest): 
+class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
     """Definition of functions used for all QE ReFrame tests"""
 
     maintainers = ["e.broadway@epcc.ed.ac.uk"]
