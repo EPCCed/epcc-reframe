@@ -2,7 +2,6 @@
 
 """ReFrame base set-up and extract performance values for Quantum Espresso (QE)"""
 
-import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
@@ -10,7 +9,7 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
     """Definition of functions used for all QE ReFrame tests"""
 
     maintainers = ["e.broadway@epcc.ed.ac.uk"]
-    strict_check = True 
+    strict_check = True
     use_multithreading = False
     tags = {"applications", "performance"}
     valid_systems = ["archer2:compute"]
@@ -92,4 +91,5 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
                 self.stdout, tag, str
             ).evaluate()
         )
-        return(execute_time)
+        return execute_time
+    

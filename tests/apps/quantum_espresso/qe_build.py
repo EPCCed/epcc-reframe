@@ -11,8 +11,6 @@ class QESourceBuild(rfm.CompileOnlyRegressionTest):
     def __init__(self):
         self.valid_systems = ["archer2:compute"]
         self.valid_prog_environs = ["PrgEnv-gnu"]
-        # local = True
-
         self.build_system = "CMake"
         self.modules = ["cray-fftw", "cray-hdf5-parallel", "cmake"]
         self.prebuild_cmds = [
@@ -31,3 +29,4 @@ class QESourceBuild(rfm.CompileOnlyRegressionTest):
         self.build_system.builddir = "build"
         self.build_system.max_concurrency = 8
         self.sanity_patterns = sn.assert_not_found('ERROR', self.stderr)
+        

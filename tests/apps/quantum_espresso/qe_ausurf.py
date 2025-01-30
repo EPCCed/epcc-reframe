@@ -4,15 +4,11 @@
 
 import os
 import reframe as rfm
-
 from qe_base import QEBaseEnvironment
-# from qe_build import QESourceBuild
 
-# @rfm.simple_test
 class QEAUSURF112ARCHER2(QEBaseEnvironment):
     """Base class to run the AUSURF112 QE Smoke test on ARCHER2"""
     def __init__(self):
-        super().__init__()
         self.num_tasks = 256
         self.num_tasks_per_node = 128
         self.num_cpus_per_task = 1
@@ -24,7 +20,7 @@ class QEAUSURF112ARCHER2(QEBaseEnvironment):
         self.executable_opts = ["-i ausurf.in"]
         self.reference = {
             "archer2:compute" : {
-                "PWSCF_wall": (260.0, -0.1, 0.1, "s")    # percentage             
+                "PWSCF_wall": (260.0, -0.1, 0.1, "s")
             }
         }
 
