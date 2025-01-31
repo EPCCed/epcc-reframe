@@ -1,9 +1,8 @@
-#!/usr/bin/env python3
-
-"""ReFrame base set-up and extract performance values for Quantum Espresso (QE)"""
+"""ReFrame Base Quantum Espresso (QE)"""
 
 import reframe as rfm
 import reframe.utility.sanity as sn
+
 
 class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
     """Definition of functions used for all QE ReFrame tests"""
@@ -15,12 +14,10 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
-
     @sanity_function
     def assert_finished(self):
         """Sanity check that simulation finished successfully"""
         return sn.assert_found("JOB DONE.", self.stdout)
-
 
     @run_before('performance')
     def set_perf_variables(self):
@@ -37,7 +34,6 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
             for kind in ['cpu', 'wall']:
                 res = self.extract_report_time(name, kind)
                 self.perf_variables[f'{name}_{kind}'] = res
-
 
     @staticmethod
     @sn.deferrable
@@ -58,7 +54,6 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
             float(minutes) * 60 +
             float(seconds)
         )
-
 
     @performance_function("s")
     def extract_report_time(self, name: str = None, kind: str = None) -> float:
@@ -92,4 +87,3 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
             ).evaluate()
         )
         return execute_time
-    
