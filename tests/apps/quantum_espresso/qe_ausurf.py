@@ -35,18 +35,10 @@ class QEAUSURF112Module(QEAUSURF112ARCHER2):
 @rfm.simple_test
 class QEAUSURF112SourceBuild(QEAUSURF112ARCHER2):
     """Define the modules and pw.x executable for QE on ARCHER2"""
-    # depends_on("QESourceBuild")
     modules = ["cray-fftw", "cray-hdf5-parallel", "cmake"]
     qe_binary = fixture(QESourceBuild, scope="environment")
-
-    # @require_deps
-    # def set_executable(self, QESourceBuild):
-    #     """ This sets the executable to the one built by reframe """
-    #     self.executable = os.path.join(
-    #         QESourceBuild().stagedir, 'q-e-qe-7.1', 'build', 'bin', 'pw.x'
-    #     )
 
     @run_after("setup")
     def set_executable(self):
         """ Sets up executable"""
-        self.executable = os.path.join(self. build_system.builddir, 'bin', 'pw.x')
+        self.executable = os.path.join(self.qe_binary.stagedir, 'q-e-qe-7.1', 'build', 'bin', 'pw.x')
