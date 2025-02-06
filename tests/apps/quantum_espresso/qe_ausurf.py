@@ -9,6 +9,7 @@ from qe_build import QESourceBuild
 
 class QEAUSURF112ARCHER2(QEBaseEnvironment):
     """Base class to run the AUSURF112 QE Smoke test on ARCHER2"""
+
     num_tasks = 256
     num_tasks_per_node = 128
     num_cpus_per_task = 1
@@ -18,16 +19,13 @@ class QEAUSURF112ARCHER2(QEBaseEnvironment):
     extra_resources = {"qos": {"qos": "standard"}}
     modules = ["cray-fftw", "cray-hdf5-parallel"]
     executable_opts = ["-i ausurf.in"]
-    reference = {
-        "archer2:compute" : {
-            "PWSCF_wall": (260.0, -0.1, 0.1, "s")
-        }
-    }
+    reference = {"archer2:compute": {"PWSCF_wall": (260.0, -0.1, 0.1, "s")}}
 
 
 @rfm.simple_test
 class QEAUSURF112Module(QEAUSURF112ARCHER2):
     """Define the module and pw.x executable for QE on ARCHER2"""
+
     modules = ["quantum_espresso"]
     executable = "pw.x"
 
@@ -35,10 +33,11 @@ class QEAUSURF112Module(QEAUSURF112ARCHER2):
 @rfm.simple_test
 class QEAUSURF112SourceBuild(QEAUSURF112ARCHER2):
     """Define the modules and pw.x executable for QE on ARCHER2"""
+
     modules = ["cray-fftw", "cray-hdf5-parallel", "cmake"]
     qe_binary = fixture(QESourceBuild, scope="environment")
 
     @run_after("setup")
     def set_executable(self):
-        """ Sets up executable"""
-        self.executable = os.path.join(self.qe_binary.stagedir, 'q-e-qe-7.1', 'build', 'bin', 'pw.x')
+        """Sets up executable"""
+        self.executable = os.path.join(self.qe_binary.stagedir, "q-e-qe-7.1", "build", "bin", "pw.x")

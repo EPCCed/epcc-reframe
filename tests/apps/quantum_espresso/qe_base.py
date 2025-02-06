@@ -19,21 +19,21 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
         """Sanity check that simulation finished successfully"""
         return sn.assert_found("JOB DONE.", self.stdout)
 
-    @run_before('performance')
+    @run_before("performance")
     def set_perf_variables(self):
         """Build a dictionary of performance variables"""
 
         # Expand the variables to collect different stats, commented out below
-        timings = ['PWSCF']
+        timings = ["PWSCF"]
         # timings = [
         #     'PWSCF', 'electrons', 'c_bands', 'cegterg', 'calbec',
         #     'fft', 'ffts', 'fftw'
         # ]
 
         for name in timings:
-            for kind in ['cpu', 'wall']:
+            for kind in ["cpu", "wall"]:
                 res = self.extract_report_time(name, kind)
-                self.perf_variables[f'{name}_{kind}'] = res
+                self.perf_variables[f"{name}_{kind}"] = res
 
     @staticmethod
     @sn.deferrable
@@ -43,17 +43,12 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
         if timing is None:
             return 0
 
-        days, timing = (['0', '0'] + timing.split('d'))[-2:]
-        hours, timing = (['0', '0'] + timing.split('h'))[-2:]
-        minutes, timing = (['0', '0'] + timing.split('m'))[-2:]
-        seconds = timing.split('s')[0]
+        days, timing = (["0", "0"] + timing.split("d"))[-2:]
+        hours, timing = (["0", "0"] + timing.split("h"))[-2:]
+        minutes, timing = (["0", "0"] + timing.split("m"))[-2:]
+        seconds = timing.split("s")[0]
 
-        return (
-            float(days) * 86400 +
-            float(hours) * 3600 +
-            float(minutes) * 60 +
-            float(seconds)
-        )
+        return float(days) * 86400 + float(hours) * 3600 + float(minutes) * 60 + float(seconds)
 
     @performance_function("s")
     def extract_report_time(self, name: str = None, kind: str = None) -> float:
@@ -70,20 +65,17 @@ class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
         if kind is None:
             return 0
         kind = kind.lower()
-        if kind == 'cpu':
+        if kind == "cpu":
             tag = 1
-        elif kind == 'wall':
+        elif kind == "wall":
             tag = 2
         else:
-            raise ValueError(f'unknown kind: {kind}')
+            raise ValueError(f"unknown kind: {kind}")
 
         # Possible formats
         #       PWSCF        :   4d 6h19m CPU  10d14h38m WALL
 
         execute_time = self.convert_timings(
-            sn.extractsingle(
-                fr'{name}\s+:\s+(.+)\s+CPU\s+(.+)\s+WALL',
-                self.stdout, tag, str
-            ).evaluate()
+            sn.extractsingle(rf"{name}\s+:\s+(.+)\s+CPU\s+(.+)\s+WALL", self.stdout, tag, str).evaluate()
         )
         return execute_time

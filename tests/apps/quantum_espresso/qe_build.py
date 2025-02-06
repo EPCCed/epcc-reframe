@@ -1,4 +1,4 @@
-"""Compile QE """
+"""Compile QE"""
 
 # import os
 
@@ -14,11 +14,11 @@ class QESourceBuild(rfm.CompileOnlyRegressionTest):
     local = True
     build_locally = True
     prebuild_cmds = [
-            'wget https://github.com/QEF/q-e/archive/refs/tags/qe-7.1.tar.gz',
-            'tar xzf qe-7.1.tar.gz',
-            'cp FindSCALAPACK.cmake q-e-qe-7.1/cmake',
-            'cd q-e-qe-7.1'
-        ]
+        "wget https://github.com/QEF/q-e/archive/refs/tags/qe-7.1.tar.gz",
+        "tar xzf qe-7.1.tar.gz",
+        "cp FindSCALAPACK.cmake q-e-qe-7.1/cmake",
+        "cd q-e-qe-7.1",
+    ]
 
     @run_before("compile")
     def prepare_build(self):
@@ -31,7 +31,7 @@ class QESourceBuild(rfm.CompileOnlyRegressionTest):
             "-DQE_ENABLE_SCALAPACK=ON",
             "-DQE_ENABLE_HDF5=ON",
             '-DCMAKE_Fortran_FLAGS="-O3 -g \
-                -fallow-argument-mismatch -fopenmp -ffpe-summary=none"'
+                -fallow-argument-mismatch -fopenmp -ffpe-summary=none"',
         ]
 
     @sanity_function
