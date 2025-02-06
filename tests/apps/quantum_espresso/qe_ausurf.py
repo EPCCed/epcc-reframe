@@ -19,25 +19,29 @@ class QEAUSURF112ARCHER2(QEBaseEnvironment):
     extra_resources = {"qos": {"qos": "standard"}}
     modules = ["cray-fftw", "cray-hdf5-parallel"]
     executable_opts = ["-i ausurf.in"]
-    reference = {"archer2:compute": {"PWSCF_wall": (260.0, -0.1, 0.1, "s")}}
+
+    if QEBaseEnvironment.qe_version == "7.1": 
+        reference = {"archer2:compute": {"PWSCF_wall": (260.0, -0.1, 0.1, "s")}}
 
 
 @rfm.simple_test
 class QEAUSURF112Module(QEAUSURF112ARCHER2):
     """Define the module and pw.x executable for QE on ARCHER2"""
 
-    modules = ["quantum_espresso"]
+    tags = {"applications", "performance"}
     executable = "pw.x"
+    modules = [f"quantum_espresso/{QEBaseEnvironment.qe_version}"]
 
 
 @rfm.simple_test
 class QEAUSURF112SourceBuild(QEAUSURF112ARCHER2):
     """Define the modules and pw.x executable for QE on ARCHER2"""
 
-    modules = ["cray-fftw", "cray-hdf5-parallel", "cmake"]
     qe_binary = fixture(QESourceBuild, scope="environment")
+    tags = {"applications", "performance", "compilation"}
+    modules = ["cray-fftw", "cray-hdf5-parallel", "cmake"]
 
     @run_after("setup")
     def set_executable(self):
         """Sets up executable"""
-        self.executable = os.path.join(self.qe_binary.stagedir, "q-e-qe-7.1", "build", "bin", "pw.x")
+        self.executable = os.path.join(self.qe_binary.stagedir, f"q-e-qe-{QEBaseEnvironment.qe_version}", "build", "bin", "pw.x")

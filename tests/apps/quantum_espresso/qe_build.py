@@ -1,28 +1,29 @@
 """Compile QE"""
 
-# import os
-
 import reframe as rfm
 import reframe.utility.sanity as sn
+from qe_base import QEBaseEnvironment
 
 
 class QESourceBuild(rfm.CompileOnlyRegressionTest):
-    """Build QE from source, mimicking the ARCHER2 7.1 module"""
+    """Build QE from source, mimicking the ARCHER2 module version"""
 
     build_system = "CMake"
     modules = ["cray-fftw", "cray-hdf5-parallel", "cmake"]
     local = True
     build_locally = True
+    version = f"{QEBaseEnvironment.qe_version}"
     prebuild_cmds = [
-        "wget https://github.com/QEF/q-e/archive/refs/tags/qe-7.1.tar.gz",
-        "tar xzf qe-7.1.tar.gz",
-        "cp FindSCALAPACK.cmake q-e-qe-7.1/cmake",
-        "cd q-e-qe-7.1",
+        f"wget https://github.com/QEF/q-e/archive/refs/tags/qe-{version}.tar.gz",
+        f"tar xzf qe-{version}.tar.gz",
+        f"cp FindSCALAPACK.cmake q-e-qe-{version}/cmake",
+        f"cd q-e-qe-{version}",
     ]
 
     @run_before("compile")
     def prepare_build(self):
         """Prepare the system to build"""
+        
         self.build_system.max_concurrency = 8
         self.build_system.builddir = "build"
         self.build_system.config_opts = [

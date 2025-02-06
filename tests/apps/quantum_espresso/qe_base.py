@@ -7,10 +7,12 @@ import reframe.utility.sanity as sn
 class QEBaseEnvironment(rfm.RunOnlyRegressionTest):
     """Definition of functions used for all QE ReFrame tests"""
 
+    # Set the version of QE, i.e. 6.8, 7.1, 7.3.1  
+    # Warning: reduce number of tasks (i.e. 32) to use 6.8 with AUSURF
+    qe_version = "7.1"
     maintainers = ["e.broadway@epcc.ed.ac.uk"]
     strict_check = True
     use_multithreading = False
-    tags = {"applications", "performance"}
     valid_systems = ["archer2:compute"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
