@@ -20,7 +20,7 @@ class QEAUSURF112ARCHER2(QEBaseEnvironment):
     modules = ["cray-fftw", "cray-hdf5-parallel"]
     executable_opts = ["-i ausurf.in"]
 
-    if QEBaseEnvironment.qe_version == "7.1": 
+    if QEBaseEnvironment.qe_version == "7.1":
         reference = {"archer2:compute": {"PWSCF_wall": (260.0, -0.1, 0.1, "s")}}
 
 
@@ -44,4 +44,6 @@ class QEAUSURF112SourceBuild(QEAUSURF112ARCHER2):
     @run_after("setup")
     def set_executable(self):
         """Sets up executable"""
-        self.executable = os.path.join(self.qe_binary.stagedir, f"q-e-qe-{QEBaseEnvironment.qe_version}", "build", "bin", "pw.x")
+        self.executable = os.path.join(
+            self.qe_binary.stagedir, f"q-e-qe-{QEBaseEnvironment.qe_version}", "build/bin/pw.x"
+        )

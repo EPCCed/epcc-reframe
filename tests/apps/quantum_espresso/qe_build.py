@@ -23,7 +23,7 @@ class QESourceBuild(rfm.CompileOnlyRegressionTest):
     @run_before("compile")
     def prepare_build(self):
         """Prepare the system to build"""
-        
+
         self.build_system.max_concurrency = 8
         self.build_system.builddir = "build"
         self.build_system.config_opts = [
