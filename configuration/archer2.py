@@ -47,6 +47,25 @@ site_configuration = {
                     },
                 },
                 {
+                    "name": "compute-capability",
+                    "descr": "Compute nodes during capabilitydays",
+                    "scheduler": "slurm",
+                    "launcher": "srun",
+                    "access": [
+                        "--hint=nomultithread",
+                        "--distribution=block:block",
+                        "--partition=standard",
+                        "--qos=capabilityday",
+                    ],
+                    "environs": ["PrgEnv-gnu", "PrgEnv-cray", "PrgEnv-aocc"],
+                    "max_jobs": 64,
+                    "processor": {
+                        "num_cpus": 128,
+                        "num_cpus_per_socket": 64,
+                        "num_sockets": 2,
+                    },
+                },
+                {
                     "name": "compute-gpu",
                     "descr": "Compute nodes with AMD GPUs",
                     "max_jobs": 2,
