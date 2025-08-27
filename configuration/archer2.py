@@ -119,7 +119,7 @@ site_configuration = {
         },
         {
             "name": "spack-gnu",
-            "modules": ["cse_env","PrgEnv-gnu"],
+            "modules": ["PrgEnv-gnu","cse_env"],
             "cc": "cc",
             "cxx": "CC",
             "ftn": "ftn",
