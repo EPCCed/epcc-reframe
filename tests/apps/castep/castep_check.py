@@ -9,7 +9,7 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
     """Base class for the CASTEP checks"""
 
     tags = {"applications", "performance"}
-    valid_prog_environs = ["PrgEnv-gnu", "intel","spack-gnu"]
+    valid_prog_environs = ["PrgEnv-gnu", "intel", "spack-gnu"]
     executable = "castep.mpi"
 
     maintainers = ["a.turner@epcc.ed.ac.uk"]
