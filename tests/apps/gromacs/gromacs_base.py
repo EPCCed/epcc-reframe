@@ -4,10 +4,11 @@
 import reframe as rfm
 import reframe.utility.sanity as sn
 
+
 class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
     """ReFrame base class for GROMACS tests"""
-    
-    valid_prog_environs = ["PrgEnv-gnu", "gcc", "nvidia-mpi","spack-cray"]
+
+    valid_prog_environs = ["PrgEnv-gnu", "gcc", "nvidia-mpi", "spack-cray"]
     executable = "gmx_mpi"
     extra_resources = {"qos": {"qos": "standard"}}
 
@@ -36,7 +37,7 @@ class GromacsBaseCheck(rfm.RunOnlyRegressionTest):
             float,
             item=-1,
         )
-    
+
     @performance_function("ns/day", perf_key="performance")
     def extract_perf(self):
         """Extract value of system energy for performance check"""
