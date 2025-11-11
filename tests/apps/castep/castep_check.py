@@ -52,7 +52,7 @@ class CASTEPBaseCheck(rfm.RunOnlyRegressionTest):
 class CASTEPCPUCheck(CASTEPBaseCheck):
     """CASTEP Check for CPU"""
 
-    valid_systems = ["archer2:compute", "cirrus:compute"]
+    valid_systems = ["archer2:compute", "cirrus:compute","cirrus-ex:compute"]
     descr = "CASTEP corrctness and performance test"
     executable_opts = ["al3x3"]
 
@@ -62,11 +62,15 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
     reference["archer2:compute"] = {}
     reference["archer2:compute"]["calctime"] = (126, -0.1, 0.1, "s")
     reference["archer2:compute"]["runtime"] = (132, -0.1, 0.1, "s")
-
+    
     reference["cirrus:compute"] = {}
-
     reference["cirrus:compute"]["calctime"] = (325.9, -0.1, 0.1, "s")
     reference["cirrus:compute"]["runtime"] = (328.2, -0.1, 0.1, "s")
+
+    reference["cirrus-ex:compute"] = {}
+    reference["cirrus-ex:compute"]["runtime"] = (82, -0.1, 0.1, "s")
+    reference["cirrus-ex:compute"]["calctime"] = (74, -0.1, 0.1, "s")
+
 
     @run_after("init")
     def setup_environment(self):
@@ -75,6 +79,11 @@ class CASTEPCPUCheck(CASTEPBaseCheck):
             self.modules = ["castep"]
             self.num_tasks = 512
             self.num_tasks_per_node = 128
+        
+        if self.current_system.name in ["cirrus-ex"]:
+            self.modules = ["castep"]
+            self.num_tasks = 288 * 2
+            self.num_tasks_per_node = 288
 
         if self.current_system.name in ["cirrus"]:
             self.modules = ["castep/22.1.1"]

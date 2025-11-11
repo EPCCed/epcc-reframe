@@ -44,6 +44,7 @@ class DeepCAMGPUtest(DeepCAMBase):
                 "qos": {"qos": "gpu"},
                 "gpu": {"num_gpus_per_node": str(self.num_gpus)},
             }
+        
         self.executable_opts = [
             train_script,
             "--wireup_method nccl-slurm",
@@ -77,32 +78,59 @@ class DeepCAMGPUtest(DeepCAMBase):
 @rfm.simple_test
 class DeepCAMCPUtest(DeepCAMBase):
     """Running DeepCAM on CPU"""
-
+    
     num_nodes = 4
     num_tasks_per_node = 8
     num_cpus_per_task = 16
     num_tasks = 32
     time_limit = "1h"
-    valid_systems = ["archer2:compute"]
+    valid_systems = ["archer2:compute","cirrus-ex:compute"]
     valid_prog_environs = ["PrgEnv-cray"]
-    extra_resources = {"qos": {"qos": "standard"}}
-    reference = {"archer2:compute": {"epoch-time": (272, -0.1, 0.1, "s")}}
+    reference = {"archer2:compute": {"epoch-time": (272, -0.1, 0.1, "s")}
+                 ,"cirrus-ex:compute": {"epoch-time": (119.7, -0.01, 0.01, "s")}
+                 }
 
+    @run_after("init")
+    def set_modules(self):
+        if self.current_system.name in ["cirrus-ex"]:
+            self.modules = ["py-torch"]
+
+    @run_after("init")
+    def set_num_tasks(self):
+
+        if self.current_system.name in ["cirrus-ex"]:
+            self.num_tasks_per_node = 24
+            self.num_cpus_per_task = 12
+        
+        if self.current_system.name in ["archer2"]:
+            self.num_tasks_per_node = 8
+            self.num_cpus_per_task = 16
+        
+        self.num_tasks = self.num_nodes * self.num_tasks_per_node
+        
     @run_after("setup")
     def setup_job(self):
         """Set-up submission script"""
         train_script = os.path.join(self.mlperf_benchmarks.stagedir, "hpc", "deepcam", "src", "deepCam", "train.py")
+
+        data_dir_prefix = None
+        if self.current_system.name in ["cirrus-ex"]:
+            data_dir_prefix = "/work/z04/shared/mlperf-hpc/deepcam/mini/"
+        if self.current_system.name in ["archer2"]:
+            data_dir_prefix = "/work/z19/shared/mlperf-hpc/deepcam/mini/"
+        
         self.executable_opts = [
             train_script,
             "--wireup_method mpi",
             "--run_tag reframe-cpu",
             "--output_dir ${JOB_OUTPUT_PATH}",
-            "--data_dir_prefix /work/z19/shared/mlperf-hpc/deepcam/mini",
+            f"--data_dir_prefix {data_dir_prefix}",
             "--local_batch_size 1",
             "--max_inter_threads ${SLURM_CPUS_PER_TASK}",
             "--max_epochs 5",
             "--seed ${SLURM_JOB_ID}",
         ]
+
         self.env_vars = {
             "OMP_NUM_THREADS": "${SLURM_CPUS_PER_TASK}",
             "HOME": "${HOME/home/work}",
