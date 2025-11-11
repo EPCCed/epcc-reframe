@@ -12,19 +12,34 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
     """OpenFOAM DamBreak test base class"""
 
     num_tasks_per_node = 1
-    num_cpus_per_task = 128
     time_limit = "10m"
-    freq = parameter(["2250000", "2000000"])
+
+   
 
     @run_after("init")
     def setup_params(self):
         """sets up extra parameters"""
+
+        if self.current_system.name in ["archer2"]:
+            freq = parameter(["2250000", "2000000"])
         if self.current_system.name in ["archer2"]:
             self.env_vars = {
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
                 "OMP_PLACES": "cores",
                 "SLURM_CPU_FREQ_REQ": self.freq,
             }
+
+    @run_before("run")
+    def set_num_tasks(self):
+        """Sets number of tasks"""
+        if self.current_system.name in ["archer2"]:
+            self.num_cpus_per_task = 128
+            self.num_tasks_per_node = 1
+            self.num_tasks = self.num_tasks_per_node * self.num_nodes
+        elif self.current_system.name in ["cirrus-ex"]:
+            self.num_cpus_per_task = 288
+            self.num_tasks_per_node = 1
+            self.num_tasks = self.num_tasks_per_node * self.num_nodes
 
     @run_before("run")
     def setup_testcase(self):
@@ -44,22 +59,27 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
         """Changes reference values"""
         if self.current_system.name in ["archer2"]:
             # https://reframe-hpc.readthedocs.io/en/stable/utility_functions_reference.html#reframe.utility.ScopedDict
-            self.reference["archer2:compute:performance"] = self.reference_performance[self.freq]
-
+            self.reference["archer2:compute:performance"] = self.reference_performance_archer2[self.freq]
+        
+        elif self.current_system.name in ["cirrus-ex"]:
+            self.reference["cirrus-ex:compute:performance"] = self.reference_performance_cirrus_ex
+        
 
 class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
     """OpenFOAM DamBreak base test on 1 node"""
 
     executable = "interFoam"
     executable_opts = ("").split()
-    modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
 
     num_tasks = 1
+    num_nodes = 1
 
-    reference_performance = {
+    reference_performance_archer2 = {
         "2000000": (6, -0.1, 0.1, "seconds"),
         "2250000": (3.6, -0.1, 0.1, "seconds"),
     }
+
+    reference_performance_cirrus_ex = (5, -0.5, 0.5, "seconds")
 
 
 @rfm.simple_test
@@ -67,8 +87,14 @@ class OpenFOAMDamBreakOneNodeModule(OpenFOAMDamBreakOneNode):
     """OpenFOAM DamBreak test on 1 node with module"""
 
     executable = "interFoam"
-    modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
 
+    @run_before("run")
+    def load_modules(self):
+        if self.current_system.name in ["archer2"]:
+            self.modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
+        elif self.current_system.name in ["cirrus-ex"]:
+            self.modules = [f"openfoam-org"]
+    
 
 @rfm.simple_test
 class OpenFOAMDamBreakOneNodeBuild(OpenFOAMDamBreakOneNode):
@@ -98,10 +124,12 @@ class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
     num_tasks = 4
     executable_opts = ("-parallel").split()
 
-    reference_performance = {
+    reference_performance_archer2 = {
         "2000000": (5, -0.5, 0.5, "seconds"),
         "2250000": (5, -0.5, 0.5, "seconds"),
     }
+
+    reference_performance_cirrus_ex = (5, -0.5, 0.5, "seconds")    
 
     @run_before("run")
     def setup_testcase(self):
@@ -118,9 +146,15 @@ class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
 @rfm.simple_test
 class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
     """OpenFOAM DamBreak test on 4 nodes with module"""
-
+    
     executable = "interFoam"
-    modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
+    @run_before("run")
+    def load_modules(self): 
+        if  self.current_system.name in ["archer2"]:
+            modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
+        elif self.current_system.name in ["cirrus-ex"]:
+            modules = [f"openfoam-org"]
+    
 
 
 @rfm.simple_test

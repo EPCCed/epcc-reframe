@@ -10,7 +10,7 @@ class OpenFOAMBase(rfm.RunOnlyRegressionTest):
     v_major = "10"
     v_patch = "20230119"
     version = f"{v_major}.{v_patch}"
-    valid_systems = ["archer2:compute"]
+    valid_systems = ["archer2:compute","cirrus-ex:compute"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
     maintainers = ["e.broadway@epcc.ed.ac.uk", "j.richings@epcc.ed.ac.uk"]
