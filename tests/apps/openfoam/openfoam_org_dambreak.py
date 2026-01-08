@@ -8,11 +8,13 @@ from openfoam_org_base import OpenFOAMBase
 from openfoam_org_build import CompileOpenFOAM
 
 
+
 class OpenFOAMDamBreakBase(OpenFOAMBase):
     """OpenFOAM DamBreak test base class"""
 
     num_tasks_per_node = 1
     time_limit = "10m"
+    valid_systems = ["archer2:compute"]
 
    
 
@@ -28,6 +30,12 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
                 "OMP_PLACES": "cores",
                 "SLURM_CPU_FREQ_REQ": self.freq,
             }
+        
+        if self.current_system.name in ["cirrus-ex"]:
+            self.env_vars.update(
+            {"FOAM_INSTALL_DIR": "$FOAM_ETC/.."}
+                                 )
+            
 
     @run_before("run")
     def set_num_tasks(self):
@@ -44,9 +52,19 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
     @run_before("run")
     def setup_testcase(self):
         """set up test case"""
+
+        if (self.v_major == "10"):
+            tutorial_sub_dir="tutorials/multiphase/interFoam/laminar/damBreak/damBreak"
+        else:
+            if (self.v_major == "12"):
+                tutorial_sub_dir="tutorials/incompressibleVoF/damBreak"
+            else:
+                raise ValueError("Unsupported OpenFOAM version")        
+        
+        
         self.prerun_cmds = [
             "source ${FOAM_INSTALL_DIR}/etc/bashrc",
-            "cp -r ${FOAM_INSTALL_DIR}/tutorials/multiphase/interFoam/laminar/damBreak/damBreak .",
+            f"cp -r $FOAM_INSTALL_DIR/{tutorial_sub_dir} .",
             "cd damBreak",
             "blockMesh",
             "cp 0/alpha.water.orig 0/alpha.water",
@@ -71,6 +89,7 @@ class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
     executable = "interFoam"
     executable_opts = ("").split()
 
+
     num_tasks = 1
     num_nodes = 1
 
@@ -79,12 +98,13 @@ class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
         "2250000": (3.6, -0.1, 0.1, "seconds"),
     }
 
-    reference_performance_cirrus_ex = (5, -0.5, 0.5, "seconds")
+    reference_performance_cirrus_ex = (3, -0.5, 0.5, "seconds")
 
 
 @rfm.simple_test
 class OpenFOAMDamBreakOneNodeModule(OpenFOAMDamBreakOneNode):
     """OpenFOAM DamBreak test on 1 node with module"""
+    valid_systems = ["archer2:compute","cirrus-ex:compute"]
 
     executable = "interFoam"
 
@@ -121,7 +141,7 @@ class OpenFOAMDamBreakOneNodeBuild(OpenFOAMDamBreakOneNode):
 class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
     """OpenFOAM DamBreak base test on 4 nodes"""
 
-    num_tasks = 4
+    num_nodes = 4
     executable_opts = ("-parallel").split()
 
     reference_performance_archer2 = {
@@ -135,7 +155,9 @@ class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
     def setup_testcase(self):
         """Set up test case"""
         super().setup_testcase()
-        self.prerun_cmds = [*self.prerun_cmds, "decomposePar"]
+        self.prerun_cmds = [*self.prerun_cmds, 
+            "cp -r ../decomposeParDict system",
+        "decomposePar"]
 
     @sanity_function
     def assert_finished_parallel(self):
@@ -147,13 +169,15 @@ class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
 class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
     """OpenFOAM DamBreak test on 4 nodes with module"""
     
+    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+    
     executable = "interFoam"
     @run_before("run")
     def load_modules(self): 
         if  self.current_system.name in ["archer2"]:
-            modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
+            self.modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
-            modules = [f"openfoam-org"]
+            self.modules = [f"openfoam-org"]
     
 
 

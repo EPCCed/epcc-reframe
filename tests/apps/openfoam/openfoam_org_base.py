@@ -6,11 +6,10 @@ import reframe.utility.sanity as sn
 
 class OpenFOAMBase(rfm.RunOnlyRegressionTest):
     """ReFrame OpenFOAM test base class"""
-
-    v_major = "10"
+    
+    v_major = "12"
     v_patch = "20230119"
     version = f"{v_major}.{v_patch}"
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
     valid_prog_environs = ["PrgEnv-gnu"]
 
     maintainers = ["e.broadway@epcc.ed.ac.uk", "j.richings@epcc.ed.ac.uk"]
