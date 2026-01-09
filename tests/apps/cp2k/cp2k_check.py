@@ -115,7 +115,8 @@ class FetchCP2K(rfm.RunOnlyRegressionTest):
     executable_opts = [f"https://github.com/cp2k/cp2k/archive/refs/tags/v{version}.tar.gz"]
     local = True
     valid_systems = ["cirrus-ex:login"]
-    valid_prog_environs = ["*"]
+    valid_prog_environs = ["PgEnv-gnu"]
+    
 
     @sanity_function
     def validate_download(self):
