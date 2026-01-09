@@ -15,12 +15,13 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
     num_tasks_per_node = 1
     time_limit = "10m"
     valid_systems = ["archer2:compute"]
-
-   
-
+    
     @run_after("init")
     def setup_params(self):
         """sets up extra parameters"""
+
+       
+
 
         if self.current_system.name in ["archer2"]:
             freq = parameter(["2250000", "2000000"])
@@ -53,13 +54,13 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
     def setup_testcase(self):
         """set up test case"""
 
-        if (self.v_major == "10"):
+        if (self.version.startswith("10")):
             tutorial_sub_dir="tutorials/multiphase/interFoam/laminar/damBreak/damBreak"
         else:
-            if (self.v_major == "12"):
+            if (self.version.startswith("12")):
                 tutorial_sub_dir="tutorials/incompressibleVoF/damBreak"
             else:
-                raise ValueError("Unsupported OpenFOAM version")        
+                raise ValueError("Unsupported OpenFOAM version")
         
         
         self.prerun_cmds = [
@@ -88,8 +89,8 @@ class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
 
     executable = "interFoam"
     executable_opts = ("").split()
-
-
+    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+    
     num_tasks = 1
     num_nodes = 1
 
@@ -170,6 +171,7 @@ class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
     """OpenFOAM DamBreak test on 4 nodes with module"""
     
     valid_systems = ["archer2:compute","cirrus-ex:compute"]
+
     
     executable = "interFoam"
     @run_before("run")
