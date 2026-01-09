@@ -85,9 +85,10 @@ class DeepCAMCPUtest(DeepCAMBase):
     num_tasks = 32
     time_limit = "1h"
     valid_systems = ["archer2:compute","cirrus-ex:compute"]
+
     valid_prog_environs = ["PrgEnv-cray"]
     reference = {"archer2:compute": {"epoch-time": (272, -0.1, 0.1, "s")}
-                 ,"cirrus-ex:compute": {"epoch-time": (119.7, -0.01, 0.01, "s")}
+                 ,"cirrus-ex:compute": {"epoch-time": (40.08, -0.01, 0.01, "s")}
                  }
 
     @run_after("init")
