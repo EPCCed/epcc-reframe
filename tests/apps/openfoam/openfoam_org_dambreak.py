@@ -89,7 +89,7 @@ class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
 
     executable = "interFoam"
     executable_opts = ("").split()
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+    valid_systems = ["archer2:compute"]
     
     num_tasks = 1
     num_nodes = 1
