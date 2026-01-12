@@ -12,6 +12,10 @@ class OpenFOAMBase(rfm.RunOnlyRegressionTest):
     use_multithreading = False
     tags = {"applications", "performance"}
 
+    v_major = None
+    v_patch = None
+    version = None
+
     @run_after("init")
     def set_version_vars(self):
         """sets up version variables"""

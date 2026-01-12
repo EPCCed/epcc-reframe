@@ -42,6 +42,8 @@ class BuildMLPerfPytorchEnv(rfm.CompileOnlyRegressionTest):
     def prepare_env(self):
         """Load the correct modules and name env"""
         part = self.current_partition.fullname
+        build_script = None
+
         if part in ("archer2:compute-gpu", "cirrus:compute-gpu"):
             self.modules = ["pytorch/1.13.1-gpu"]
             self.env_vars["PYVENV_NAME"] = "reframe-mlperf-gpu"

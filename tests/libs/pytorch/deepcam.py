@@ -94,11 +94,13 @@ class DeepCAMCPUtest(DeepCAMBase):
 
     @run_after("init")
     def set_modules(self):
+        "Defined modules to load based on current system"
         if self.current_system.name in ["cirrus-ex"]:
             self.modules = ["py-torch"]
 
     @run_after("init")
     def set_num_tasks(self):
+        "Set number of tasks based on current system"
 
         if self.current_system.name in ["cirrus-ex"]:
             self.num_tasks_per_node = 24
