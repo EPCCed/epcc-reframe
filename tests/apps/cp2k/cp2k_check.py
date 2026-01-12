@@ -145,16 +145,7 @@ class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
 
     cp2k_src = fixture(FetchCP2K, scope="environment")
 
-<<<<<<< HEAD
-    env_vars = {
-        "OMP_NUM_THREADS": str(num_cpus_per_task),
-        "OMP_PLACES": "cores",
-        "CP2K_APP": "$(which cp2k.psmp)",
-        "CP2K_DIR": "${CP2K_APP::-10}",
-    }
-=======
     env_vars = {"OMP_PLACES": "cores", "CP2K_APP": "$(which cp2k.psmp)", "CP2K_DIR": "${CP2K_APP::-10}"}
->>>>>>> 05a6ec6 (Generalised cp2k regression tests to different topologies)
 
     @sanity_function
     def assert_all_tests_completed(self):
@@ -176,15 +167,10 @@ class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
         """
         The command to launch the regression tests is a python script executed serially ( not in parallel).
 
-<<<<<<< HEAD
-        In this implementation we use pre-run commands. An alternative is to use a custom launcher.
-        However this needs to be specified in the config, in a custom programming environment.
-=======
         In this implementation we use pre-run commands.
         An alternative is to use a custom launcher.
         However this needs to be specified in the config,
         in a custom programming environment.
->>>>>>> 05a6ec6 (Generalised cp2k regression tests to different topologies)
         I think that solution is worse , because it pollutes a configuration file with test specific logic.
 
         """
