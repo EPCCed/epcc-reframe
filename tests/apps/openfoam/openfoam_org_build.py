@@ -5,7 +5,7 @@ import reframe.utility.sanity as sn
 from openfoam_org_base import OpenFOAMBase
 
 
-class FetchOpenFOAM(rfm.RunOnlyRegressionTest):
+class FetchOpenFOAM(OpenFOAMBase):
     """Download OpenFoam"""
 
     local = True
@@ -15,10 +15,10 @@ class FetchOpenFOAM(rfm.RunOnlyRegressionTest):
     executable = "bash"
 
     
-    @run_after("init")
+    @run_before("run")
     def set_args(self):
         """sets up download commands"""
-        executable_opts = [
+        self.executable_opts = [
             "-c",
             f"""
             wget -O OpenFOAM-{self.v_major}-{self.v_patch}.tar.gz \
@@ -27,7 +27,7 @@ class FetchOpenFOAM(rfm.RunOnlyRegressionTest):
             http://dl.openfoam.org/third-party/{self.v_major}
             """,
         ]
-    
+       
     @sanity_function
     def validate_download(self):
         """Validate OpenFoam Downloaded"""

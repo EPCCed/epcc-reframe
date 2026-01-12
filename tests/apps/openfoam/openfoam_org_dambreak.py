@@ -8,23 +8,34 @@ from openfoam_org_base import OpenFOAMBase
 from openfoam_org_build import CompileOpenFOAM
 
 
-
 class OpenFOAMDamBreakBase(OpenFOAMBase):
     """OpenFOAM DamBreak test base class"""
 
     num_tasks_per_node = 1
     time_limit = "10m"
     valid_systems = ["archer2:compute"]
+
+    freq = parameter(["2250000", "2000000"])
+
+    @sanity_function
+    def assert_finished(self):
+        """Sanity check that simulation finished successfully"""
+        return sn.assert_found("End", self.stdout)
+
+    @performance_function("seconds", perf_key="performance")
+    def extract_perf(self):
+        """Extract performance value to compare with reference value"""
+        return sn.extractsingle(
+            r"ExecutionTime\s+=\s+(?P<time>\d+.?\d*\s+)s\s+ClockTime\s+=\s+\d*\s+s\n\nEnd",
+            self.stdout,
+            "time",
+            float,
+        )
     
     @run_after("init")
     def setup_params(self):
         """sets up extra parameters"""
-
        
-
-
-        if self.current_system.name in ["archer2"]:
-            freq = parameter(["2250000", "2000000"])
         if self.current_system.name in ["archer2"]:
             self.env_vars = {
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
@@ -112,7 +123,7 @@ class OpenFOAMDamBreakOneNodeModule(OpenFOAMDamBreakOneNode):
     @run_before("run")
     def load_modules(self):
         if self.current_system.name in ["archer2"]:
-            self.modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
+            self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
             self.modules = [f"openfoam-org"]
     
@@ -128,14 +139,14 @@ class OpenFOAMDamBreakOneNodeBuild(OpenFOAMDamBreakOneNode):
         """sets up extra parameters"""
         super().setup_params()
         self.env_vars.update(
-            {"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{OpenFOAMBase.v_major}")}
+            {"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}")}
         )
 
     @run_after("setup")
     def set_executable(self):
         """Sets up executable"""
         self.executable = os.path.join(
-            self.interfoam_binary.stagedir, f"OpenFOAM-{OpenFOAMBase.v_major}/platforms/crayGccDPInt32Opt/bin/interFoam"
+            self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}/platforms/crayGccDPInt32Opt/bin/interFoam"
         )
 
 
@@ -177,7 +188,7 @@ class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
     @run_before("run")
     def load_modules(self): 
         if  self.current_system.name in ["archer2"]:
-            self.modules = [f"openfoam/org/v{OpenFOAMBase.version}"]
+            self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
             self.modules = [f"openfoam-org"]
     
@@ -188,18 +199,18 @@ class OpenFOAMDamBreakParallelBuild(OpenFOAMDamBreakParallel):
     """OpenFOAM DamBreak test on 4 nodes with reframe source build"""
 
     interfoam_binary = fixture(CompileOpenFOAM, scope="environment")
-
+    
     @run_after("setup")
     def setup_extra_params(self):
         """sets up extra parameters"""
         super().setup_params()
         self.env_vars.update(
-            {"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{OpenFOAMBase.v_major}")}
+            {"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}")}
         )
 
     @run_after("setup")
     def set_executable(self):
         """Sets up executable"""
         self.executable = os.path.join(
-            self.interfoam_binary.stagedir, f"OpenFOAM-{OpenFOAMBase.v_major}/platforms/crayGccDPInt32Opt/bin/interFoam"
+            self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}/platforms/crayGccDPInt32Opt/bin/interFoam"
         )
