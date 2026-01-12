@@ -49,6 +49,7 @@ class BuildMLPerfPytorchEnv(rfm.CompileOnlyRegressionTest):
         elif part == "archer2:compute":
             self.modules = ["pytorch/1.13.0a0"]
             self.env_vars["PYVENV_NAME"] = "reframe-mlperf-cpu"
+            build_script = "build_pytorch_env.sh"
         elif part == "cirrus-ex:compute":
             self.modules = ["py-torch"]
             self.env_vars["PYVENV_NAME"] = "reframe-mlperf-cpu"
