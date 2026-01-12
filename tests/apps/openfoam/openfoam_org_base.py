@@ -1,7 +1,6 @@
 """Base class for OpenFoam.org tests"""
 
 import reframe as rfm
-import reframe.utility.sanity as sn
 
 
 class OpenFOAMBase(rfm.RunOnlyRegressionTest):

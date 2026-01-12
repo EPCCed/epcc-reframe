@@ -122,7 +122,7 @@ class OpenFOAMDamBreakOneNodeModule(OpenFOAMDamBreakOneNode):
         if self.current_system.name in ["archer2"]:
             self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
-            self.modules = [f"openfoam-org"]
+            self.modules = ["openfoam-org"]
 
 
 @rfm.simple_test
@@ -185,7 +185,7 @@ class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
         if self.current_system.name in ["archer2"]:
             self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
-            self.modules = [f"openfoam-org"]
+            self.modules = ["openfoam-org"]
 
 
 @rfm.simple_test

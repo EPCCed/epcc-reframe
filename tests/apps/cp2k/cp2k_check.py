@@ -4,8 +4,6 @@
 
 import reframe as rfm
 import reframe.utility.sanity as sn
-from reframe.core.backends import register_launcher
-from reframe.core.launchers import JobLauncher
 
 
 class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
@@ -170,7 +168,9 @@ class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
         """
         The command to launch the regression tests is a python script executed serially ( not in parallel).
 
-        In this implementation we use pre-run commands. An alternative is to use a custom launcher. However this needs to be specified in the config, in a custom programming environment. I think that solution is worse , because it pollutes a configuration file with test specific logic.
+        In this implementation we use pre-run commands. An alternative is to use a custom launcher.
+        However this needs to be specified in the config, in a custom programming environment.
+        I think that solution is worse , because it pollutes a configuration file with test specific logic.
 
         """
 
