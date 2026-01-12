@@ -183,6 +183,7 @@ class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
 
     @run_before("run")
     def load_modules(self):
+        "Loads modules based on current system"
         if self.current_system.name in ["archer2"]:
             self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
