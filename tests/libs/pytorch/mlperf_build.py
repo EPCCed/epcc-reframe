@@ -54,7 +54,6 @@ class BuildMLPerfPytorchEnv(rfm.CompileOnlyRegressionTest):
             self.modules = ["py-torch"]
             self.env_vars["PYVENV_NAME"] = "reframe-mlperf-cpu"
             build_script = "build_pytorch_cirrus_ex_env.sh"
-        
 
         self.build_system.commands = [f"chmod u+x {build_script}", f"./{build_script}"]
 
