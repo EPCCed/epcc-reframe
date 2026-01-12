@@ -54,7 +54,7 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
     """ReFrame LAMMPS Ethanol test for performance checks"""
 
     descr = LAMMPSBaseEthanol.descr + " -- CPU"
-    
+
     reference["archer2-tds:compute"] = {}
     reference["archer2:compute"] = {}
     reference["cirrus-ex:compute"] = {}
@@ -63,7 +63,7 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
     reference["cirrus-ex:compute"]["performance"] = (27.56, -0.05, None, "ns/day")
 
     reference["archer2-tds:compute"]["performance"] = (11.250, -0.05, None, "ns/day")
-    
+
     @run_after("init")
     def setup_nnodes(self):
         """sets up number of tasks per node"""
@@ -83,6 +83,7 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
         """sets up number of tasks"""
         self.num_tasks = self.n_nodes * self.num_tasks_per_node
 
+
 @rfm.simple_test
 class LAMMPSEthanolCPURunReframeBuild(LAMMPSEthanolCPU):
     """ReFrame LAMMPS Ethanol test for performance checks of the reframe-built executable"""
@@ -101,13 +102,14 @@ class LAMMPSEthanolCPURunReframeBuild(LAMMPSEthanolCPU):
 class LAMMPSEthanolCPURunModule(LAMMPSEthanolCPU):
     """ReFrame LAMMPS Ethanol test for performance checks of the default lammps module"""
 
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
     descr = LAMMPSEthanolCPU.descr + ", default lammps module -- CPU"
-    
+
     @run_after("setup")
     def set_executable(self):
         """sets up executable"""
         self.executable = "lmp"
+
 
 @rfm.simple_test
 class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
@@ -135,9 +137,7 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
         if self.current_system.name in ["archer2"]:
             # self.num_tasks_per_node = 32
             self.extra_resources["qos"] = {"qos": "gpu-exc"}
-            self.executable_opts = LAMMPSBaseEthanol.executable_opts + [
-                "-k on g 4 -sf kk -pk kokkos newton on neigh half"
-            ]
+            self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-k on g 4 -sf kk -pk kokkos newton on neigh half"]
         elif self.current_system.name in ["cirrus"]:
             self.executable_opts = LAMMPSBaseEthanol.executable_opts + ["-sf gpu -pk gpu 4"]
             self.extra_resources["qos"] = {"qos": "short"}

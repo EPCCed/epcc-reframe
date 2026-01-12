@@ -31,23 +31,20 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
             "time",
             float,
         )
-    
+
     @run_after("init")
     def setup_params(self):
         """sets up extra parameters"""
-       
+
         if self.current_system.name in ["archer2"]:
             self.env_vars = {
                 "OMP_NUM_THREADS": str(self.num_cpus_per_task),
                 "OMP_PLACES": "cores",
                 "SLURM_CPU_FREQ_REQ": self.freq,
             }
-        
+
         if self.current_system.name in ["cirrus-ex"]:
-            self.env_vars.update(
-            {"FOAM_INSTALL_DIR": "$FOAM_ETC/.."}
-                                 )
-            
+            self.env_vars.update({"FOAM_INSTALL_DIR": "$FOAM_ETC/.."})
 
     @run_before("run")
     def set_num_tasks(self):
@@ -65,15 +62,14 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
     def setup_testcase(self):
         """set up test case"""
 
-        if (self.version.startswith("10")):
-            tutorial_sub_dir="tutorials/multiphase/interFoam/laminar/damBreak/damBreak"
+        if self.version.startswith("10"):
+            tutorial_sub_dir = "tutorials/multiphase/interFoam/laminar/damBreak/damBreak"
         else:
-            if (self.version.startswith("12")):
-                tutorial_sub_dir="tutorials/incompressibleVoF/damBreak"
+            if self.version.startswith("12"):
+                tutorial_sub_dir = "tutorials/incompressibleVoF/damBreak"
             else:
                 raise ValueError("Unsupported OpenFOAM version")
-        
-        
+
         self.prerun_cmds = [
             "source ${FOAM_INSTALL_DIR}/etc/bashrc",
             f"cp -r $FOAM_INSTALL_DIR/{tutorial_sub_dir} .",
@@ -90,10 +86,10 @@ class OpenFOAMDamBreakBase(OpenFOAMBase):
         if self.current_system.name in ["archer2"]:
             # https://reframe-hpc.readthedocs.io/en/stable/utility_functions_reference.html#reframe.utility.ScopedDict
             self.reference["archer2:compute:performance"] = self.reference_performance_archer2[self.freq]
-        
+
         elif self.current_system.name in ["cirrus-ex"]:
             self.reference["cirrus-ex:compute:performance"] = self.reference_performance_cirrus_ex
-        
+
 
 class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
     """OpenFOAM DamBreak base test on 1 node"""
@@ -101,7 +97,7 @@ class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
     executable = "interFoam"
     executable_opts = ("").split()
     valid_systems = ["archer2:compute"]
-    
+
     num_tasks = 1
     num_nodes = 1
 
@@ -116,7 +112,8 @@ class OpenFOAMDamBreakOneNode(OpenFOAMDamBreakBase):
 @rfm.simple_test
 class OpenFOAMDamBreakOneNodeModule(OpenFOAMDamBreakOneNode):
     """OpenFOAM DamBreak test on 1 node with module"""
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
 
     executable = "interFoam"
 
@@ -126,7 +123,7 @@ class OpenFOAMDamBreakOneNodeModule(OpenFOAMDamBreakOneNode):
             self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
             self.modules = [f"openfoam-org"]
-    
+
 
 @rfm.simple_test
 class OpenFOAMDamBreakOneNodeBuild(OpenFOAMDamBreakOneNode):
@@ -138,9 +135,7 @@ class OpenFOAMDamBreakOneNodeBuild(OpenFOAMDamBreakOneNode):
     def setup_extra_params(self):
         """sets up extra parameters"""
         super().setup_params()
-        self.env_vars.update(
-            {"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}")}
-        )
+        self.env_vars.update({"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}")})
 
     @run_after("setup")
     def set_executable(self):
@@ -161,15 +156,13 @@ class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
         "2250000": (5, -0.5, 0.5, "seconds"),
     }
 
-    reference_performance_cirrus_ex = (5, -0.5, 0.5, "seconds")    
+    reference_performance_cirrus_ex = (5, -0.5, 0.5, "seconds")
 
     @run_before("run")
     def setup_testcase(self):
         """Set up test case"""
         super().setup_testcase()
-        self.prerun_cmds = [*self.prerun_cmds, 
-            "cp -r ../decomposeParDict system",
-        "decomposePar"]
+        self.prerun_cmds = [*self.prerun_cmds, "cp -r ../decomposeParDict system", "decomposePar"]
 
     @sanity_function
     def assert_finished_parallel(self):
@@ -180,18 +173,17 @@ class OpenFOAMDamBreakParallel(OpenFOAMDamBreakBase):
 @rfm.simple_test
 class OpenFOAMDamBreakParallelModule(OpenFOAMDamBreakParallel):
     """OpenFOAM DamBreak test on 4 nodes with module"""
-    
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
 
-    
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
+
     executable = "interFoam"
+
     @run_before("run")
-    def load_modules(self): 
-        if  self.current_system.name in ["archer2"]:
+    def load_modules(self):
+        if self.current_system.name in ["archer2"]:
             self.modules = [f"openfoam/org/v{self.version}"]
         elif self.current_system.name in ["cirrus-ex"]:
             self.modules = [f"openfoam-org"]
-    
 
 
 @rfm.simple_test
@@ -199,14 +191,12 @@ class OpenFOAMDamBreakParallelBuild(OpenFOAMDamBreakParallel):
     """OpenFOAM DamBreak test on 4 nodes with reframe source build"""
 
     interfoam_binary = fixture(CompileOpenFOAM, scope="environment")
-    
+
     @run_after("setup")
     def setup_extra_params(self):
         """sets up extra parameters"""
         super().setup_params()
-        self.env_vars.update(
-            {"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}")}
-        )
+        self.env_vars.update({"FOAM_INSTALL_DIR": os.path.join(self.interfoam_binary.stagedir, f"OpenFOAM-{self.v_major}")})
 
     @run_after("setup")
     def set_executable(self):

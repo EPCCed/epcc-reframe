@@ -14,7 +14,6 @@ class FetchOpenFOAM(OpenFOAMBase):
     valid_systems = ["archer2:login"]
     executable = "bash"
 
-    
     @run_before("run")
     def set_args(self):
         """sets up download commands"""
@@ -27,7 +26,7 @@ class FetchOpenFOAM(OpenFOAMBase):
             http://dl.openfoam.org/third-party/{self.v_major}
             """,
         ]
-       
+
     @sanity_function
     def validate_download(self):
         """Validate OpenFoam Downloaded"""

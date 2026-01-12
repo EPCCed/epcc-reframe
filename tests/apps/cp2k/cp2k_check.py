@@ -17,15 +17,16 @@ class CP2KBaseCheck(rfm.RunOnlyRegressionTest):
     executable = "cp2k.psmp"
     # Additional Slurm parameters. Requires adding to config file first.
     extra_resources = {"qos": {"qos": "standard"}}
-    
+
     maintainers = ["j.richings@epcc.ed.ac.uk"]
     use_multithreading = False
-    tags = {"applications"}    
+    tags = {"applications"}
+
 
 @rfm.simple_test
 class CP2KARCHER2HFX(CP2KBaseCheck):
     """CP2K performance test"""
-    
+
     # Select system to use
     valid_systems = ["archer2:compute"]
     # Output files to be retained
@@ -61,9 +62,7 @@ class CP2KARCHER2HFX(CP2KBaseCheck):
         """sets up extra parameters"""
         # self.descr += self.freq
         if self.current_system.name in ["archer2"]:
-            self.env_vars = {"OMP_NUM_THREADS": str(self.num_cpus_per_task), 
-            "OMP_PLACES": "cores"
-            }
+            self.env_vars = {"OMP_NUM_THREADS": str(self.num_cpus_per_task), "OMP_PLACES": "cores"}
 
     @run_before("performance")
     def set_reference(self):
@@ -73,9 +72,8 @@ class CP2KARCHER2HFX(CP2KBaseCheck):
             self.reference["archer2:compute:performance"] = self.reference_performance[
                 "2250000" if self.current_environ.name[-3:] == "-hf" else "2000000"
             ]
-    reference = {
-        "*": {"energy": (energy_reference, -0.01, 0.01, "a.u.")}
-    }
+
+    reference = {"*": {"energy": (energy_reference, -0.01, 0.01, "a.u.")}}
 
     reference_performance = {
         "2000000": (350, -0.1, 0.1, "seconds"),
@@ -106,7 +104,7 @@ class CP2KARCHER2HFX(CP2KBaseCheck):
 @rfm.simple_test
 class FetchCP2K(rfm.RunOnlyRegressionTest):
     """
-    Fetch CP2K source code, which contains the regression tests and benchmarks. 
+    Fetch CP2K source code, which contains the regression tests and benchmarks.
     """
 
     descr = "Fetch cp2k code"
@@ -116,12 +114,12 @@ class FetchCP2K(rfm.RunOnlyRegressionTest):
     local = True
     valid_systems = ["cirrus-ex:login"]
     valid_prog_environs = ["PgEnv-gnu"]
-    
 
     @sanity_function
     def validate_download(self):
         """Validate the download was successful"""
         return sn.assert_eq(self.job.exitcode, 0)
+
 
 @rfm.simple_test
 class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
@@ -139,10 +137,10 @@ class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
     valid_prog_environs = ["PrgEnv-gnu"]
     # Description of test
     descr = "CP2K regression tests"
-    launcher="cp2k_reg_tests"    
-    
+    launcher = "cp2k_reg_tests"
+
     # Command line options for executable
-    
+
     executable = "cp2k.psmp"
 
     executable_opts = ["-v"]
@@ -158,14 +156,14 @@ class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
     env_vars = {
         "OMP_NUM_THREADS": str(num_cpus_per_task),
         "OMP_PLACES": "cores",
-        "CP2K_APP" : "$(which cp2k.psmp)",
-        "CP2K_DIR" : "${CP2K_APP::-10}"
+        "CP2K_APP": "$(which cp2k.psmp)",
+        "CP2K_DIR": "${CP2K_APP::-10}",
     }
 
     @sanity_function
     def assert_all_tests_completed(self):
         """Sanity check that simulation finished successfully"""
-        return sn.assert_found("Status: OK",self.stdout)
+        return sn.assert_found("Status: OK", self.stdout)
 
     @run_before("run")
     def launch_reg_tests(self):
@@ -175,16 +173,17 @@ class CP2KCPUCirrusExRegressionTests(CP2KBaseCheck):
         In this implementation we use pre-run commands. An alternative is to use a custom launcher. However this needs to be specified in the config, in a custom programming environment. I think that solution is worse , because it pollutes a configuration file with test specific logic.
 
         """
-        
-        source_tar_file=f"v{self.cp2k_src.version}.tar.gz"
+
+        source_tar_file = f"v{self.cp2k_src.version}.tar.gz"
 
         self.prerun_cmds = [
             f"cp {self.cp2k_src.stagedir}/{source_tar_file} .",
             f"tar -zxf {source_tar_file}",
-            f"cp2k-{self.cp2k_src.version}/tests/do_regtest.py \
+            f'cp2k-{self.cp2k_src.version}/tests/do_regtest.py \
         --workbasedir=$(pwd) \
         --maxtasks=72 \
         --mpiranks=2 \
         --ompthreads=${{OMP_NUM_THREADS}} \
-        --mpiexec=\"srun --ntasks=2 --cpus-per-task=${{OMP_NUM_THREADS}}\" \
-        $CP2K_DIR psmp" ]
+        --mpiexec="srun --ntasks=2 --cpus-per-task=${{OMP_NUM_THREADS}}" \
+        $CP2K_DIR psmp',
+        ]
