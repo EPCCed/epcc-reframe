@@ -38,7 +38,7 @@ class DeepCAMGPUtest(DeepCAMBase):
             }
         elif part == "cirrus:compute-gpu":
             self.modules = ["nvidia/cudnn/8.6.0-cuda-11.6"]
-            data_dir_prefix = "/work/z04/shared/mlperf-hpc/deepcam/mini/"
+            data_dir_prefix = "/work/z19/shared/mlperf-hpc/deepcam/mini/"
             local_batch_size = 1
             self.extra_resources = {
                 "qos": {"qos": "gpu"},
@@ -119,7 +119,7 @@ class DeepCAMCPUtest(DeepCAMBase):
 
         data_dir_prefix = None
         if self.current_system.name in ["cirrus-ex"]:
-            data_dir_prefix = "/work/z04/shared/mlperf-hpc/deepcam/mini/"
+            data_dir_prefix = "/work/z19/shared/mlperf-hpc/deepcam/mini/"
         if self.current_system.name in ["archer2"]:
             data_dir_prefix = "/work/z19/shared/mlperf-hpc/deepcam/mini/"
 
