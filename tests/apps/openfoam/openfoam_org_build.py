@@ -5,7 +5,7 @@ import reframe.utility.sanity as sn
 from openfoam_org_base import OpenFOAMBase
 
 
-class FetchOpenFOAM(rfm.RunOnlyRegressionTest):
+class FetchOpenFOAM(OpenFOAMBase):
     """Download OpenFoam"""
 
     local = True
@@ -13,23 +13,27 @@ class FetchOpenFOAM(rfm.RunOnlyRegressionTest):
 
     valid_systems = ["archer2:login"]
     executable = "bash"
-    executable_opts = [
-        "-c",
-        f"""
-        wget -O OpenFOAM-{OpenFOAMBase.v_major}-{OpenFOAMBase.v_patch}.tar.gz \
-        http://dl.openfoam.org/source/{OpenFOAMBase.version} &&
-        wget -O ThirdParty-{OpenFOAMBase.v_major}-version-{OpenFOAMBase.v_major}.tar.gz \
-        http://dl.openfoam.org/third-party/{OpenFOAMBase.v_major}
-        """,
-    ]
+
+    @run_before("run")
+    def set_args(self):
+        """sets up download commands"""
+        self.executable_opts = [
+            "-c",
+            f"""
+            wget -O OpenFOAM-{self.v_major}-{self.v_patch}.tar.gz \
+            http://dl.openfoam.org/source/{self.version} &&
+            wget -O ThirdParty-{self.v_major}-version-{self.v_major}.tar.gz \
+            http://dl.openfoam.org/third-party/{self.v_major}
+            """,
+        ]
 
     @sanity_function
     def validate_download(self):
         """Validate OpenFoam Downloaded"""
         return sn.all(
             [
-                sn.path_isfile(f"OpenFOAM-{OpenFOAMBase.v_major}-{OpenFOAMBase.v_patch}.tar.gz"),
-                sn.path_isfile(f"ThirdParty-{OpenFOAMBase.v_major}-version-{OpenFOAMBase.v_major}.tar.gz"),
+                sn.path_isfile(f"OpenFOAM-{self.v_major}-{self.v_patch}.tar.gz"),
+                sn.path_isfile(f"ThirdParty-{self.v_major}-version-{self.v_major}.tar.gz"),
             ]
         )
 

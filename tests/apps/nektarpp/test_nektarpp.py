@@ -11,7 +11,6 @@ import os
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-
 NEKTAR_VERSION = "5.5.0"
 NEKTAR_LABEL = "nektar"
 NEKTAR_ARCHIVE = f"{NEKTAR_LABEL}-v{NEKTAR_VERSION}.tar.gz"

@@ -42,14 +42,22 @@ class BuildMLPerfPytorchEnv(rfm.CompileOnlyRegressionTest):
     def prepare_env(self):
         """Load the correct modules and name env"""
         part = self.current_partition.fullname
+        build_script = None
+
         if part in ("archer2:compute-gpu", "cirrus:compute-gpu"):
             self.modules = ["pytorch/1.13.1-gpu"]
             self.env_vars["PYVENV_NAME"] = "reframe-mlperf-gpu"
+            build_script = "build_pytorch_env.sh"
         elif part == "archer2:compute":
             self.modules = ["pytorch/1.13.0a0"]
             self.env_vars["PYVENV_NAME"] = "reframe-mlperf-cpu"
+            build_script = "build_pytorch_env.sh"
+        elif part == "cirrus-ex:compute":
+            self.modules = ["py-torch"]
+            self.env_vars["PYVENV_NAME"] = "reframe-mlperf-cpu"
+            build_script = "build_pytorch_cirrus_ex_env.sh"
 
-        self.build_system.commands = ["chmod u+x build_pytorch_env.sh", "./build_pytorch_env.sh"]
+        self.build_system.commands = [f"chmod u+x {build_script}", f"./{build_script}"]
 
     @sanity_function
     def sanity_check_build(self):
