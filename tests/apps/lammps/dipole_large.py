@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ReFrame script for lammps dipole test"""
+
 import reframe as rfm
 
 from lammps_base import LAMMPSBase
