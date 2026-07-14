@@ -49,10 +49,11 @@ class VASPCdTeCheck(rfm.RunOnlyRegressionTest):
 		self.prerun_cmds = [
 			"cd CdTe",
 			"mv INCAR.base INCAR",
+			"cat $VASP_PSPOT_DIR/potpaw_PBE/Cd/POTCAR  $VASP_PSPOT_DIR/potpaw_PBE/Te/POTCAR > POTCAR",
 			"echo 'NCORE=4' >> INCAR",
 			"echo 'KPAR=2' >> INCAR",
 		]
-
+		
 	@sanity_function
 	def assert_finished(self):
 		"""Sanity check that VASP completed and printed timing."""
