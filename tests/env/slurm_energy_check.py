@@ -100,7 +100,7 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
         )
 
         nodelist_raw = rfm.utility.osext.run_command(
-            "ls nid* | tr '\n' ',' | sed 's/,$//g'",
+            "ls cs-n* | tr '\n' ',' | sed 's/,$//g'",
             check=True,
             shell=True,
         )
@@ -109,9 +109,12 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
         energy_data = []
         energy_counters = []
 
+        assert len(nodelist) == self.num_nodes, "Number of nodes in nodelist does not match number of nodes requested"
+        
         for nodeid in nodelist:
             energy_data.append(sn.extractall(r"(?P<energy>[0-9]+)\sJ\s(?P<time>[0-9]+)\sus", nodeid, "energy"))
-
+        
+        print("Node list: ", nodelist_raw)
         for energy in energy_data:
             energy_counters.append(int(str(energy[0])))
             energy_counters.append(int(str(energy[1])))

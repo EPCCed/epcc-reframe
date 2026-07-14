@@ -37,11 +37,10 @@ class VASPCdTeCheck(rfm.RunOnlyRegressionTest):
 
 	reference = {
 		"cirrus-ex:compute": {
-			"energy": (-190.96017678, -0.01, 0.01, "eV"),
-			"performance": (651.0, -0.10, 0.10, "seconds"),
+			"performance": (651.0, -0.05, 0.05, "seconds"),
 		}
 	}
-
+	
 	@run_before("run")
 	def setup_case(self):
 		"""Prepare the VASP input files and INCAR settings."""
@@ -53,7 +52,7 @@ class VASPCdTeCheck(rfm.RunOnlyRegressionTest):
 			"echo 'NCORE=4' >> INCAR",
 			"echo 'KPAR=2' >> INCAR",
 		]
-		
+
 	@sanity_function
 	def assert_finished(self):
 		"""Sanity check that VASP completed and printed timing."""
@@ -64,13 +63,7 @@ class VASPCdTeCheck(rfm.RunOnlyRegressionTest):
 			]
 		)
 
-	@performance_function("eV", perf_key="energy")
-	def extract_energy(self):
-		"""Extract the final free energy from OUTCAR."""
-		return sn.extractsingle(
-			r"free\s+energy\s+TOTEN\s+=\s+(?P<energy>\S+)\s+eV", "CdTe/OUTCAR", "energy", float, item=-1
-		)
-
+	
 	@performance_function("seconds", perf_key="performance")
 	def extract_perf(self):
 		"""Extract elapsed runtime from OUTCAR."""

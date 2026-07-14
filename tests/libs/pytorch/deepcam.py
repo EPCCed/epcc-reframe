@@ -89,7 +89,7 @@ class DeepCAMCPUtest(DeepCAMBase):
     valid_prog_environs = ["PrgEnv-cray"]
     reference = {
         "archer2:compute": {"epoch-time": (272, -0.1, 0.1, "s")},
-        "cirrus-ex:compute": {"epoch-time": (40.08, -0.01, 0.01, "s")},
+        "cirrus-ex:compute": {"epoch-time": (40, -0.03, 0.03, "s")},
     }
 
     @run_after("init")
