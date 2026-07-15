@@ -1,0 +1,5 @@
+nodes: [1 ]
+tasks_per_node: [1,8,24,144,288]
+base_path: ["/work/z19/z19/lparisi/nfs-testing/run/data"]
+api: ["posix"]
+chunk_size: [ 4 ] # KiB
