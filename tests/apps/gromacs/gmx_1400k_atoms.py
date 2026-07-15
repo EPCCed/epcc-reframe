@@ -92,11 +92,11 @@ class GromacsGPUCheck(Gromacs1400kAtomsBase):
         "OMP_NUM_THREADS": "1",
         "PARAMS": '"--ntasks=40 --tasks-per-node=40"',
     }
-
+    
     n_nodes = 1
     num_tasks = None
     num_cpus_per_tasks = None
-    
+
     @run_after("setup")
     def setup_gpu_options(self):
         """sets up different resources for gpu systems"""
