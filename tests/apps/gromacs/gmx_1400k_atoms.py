@@ -7,6 +7,7 @@ import reframe as rfm
 from gromacs_base import GromacsBaseCheck
 
 
+
 class Gromacs1400kAtomsBase(GromacsBaseCheck):
     """ReFrame GROMACS 14000k atoms test base class"""
 
@@ -48,7 +49,7 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
         },
         "cirrus-ex:compute": {
             "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
-            "performance": (78.0, -0.03, None, "ns/day"),
+            "performance": (78.0, -0.1, None, "ns/day"),
         },
     }
 

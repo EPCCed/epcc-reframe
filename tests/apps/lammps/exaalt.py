@@ -83,7 +83,8 @@ class LAMMPSExaaltSmall(LAMMPSBaseExaalt):
 @rfm.simple_test
 class LAMMPSExaaltRef(LAMMPSBaseExaalt):
     
-    valid_systems = ["archer2:compute"]
+    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+    
     
     """ReFrame LAMMPS largescale test based on NERSC-10 Exaalt benchmark"""
 
@@ -93,11 +94,11 @@ class LAMMPSExaaltRef(LAMMPSBaseExaalt):
     executable_opts = [
         "-in in.snap.test",
         "-var snapdir 2J8_W.SNAP",
-        "-var nx 1024",
-        "-var ny 1024",
-        "-var nz 1024",
+        "-var nx 512",
+        "-var ny 512",
+        "-var nz 512",
         "-var nsteps 100",
     ]
-
-    n_nodes = 1024
+    
+    n_nodes = 256
     time_limit = "30m"

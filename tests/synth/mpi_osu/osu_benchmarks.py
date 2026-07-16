@@ -155,7 +155,7 @@ class OSUAllreduceTest(OSUBenchmarkTestBase):
     descr = "OSU Allreduce test"
     mpi_tasks = parameter(1 << i for i in range(1, 5))
     osu_binaries = fixture(OSUBuild, scope="environment")
-
+    
     @run_after("init")
     def set_num_tasks(self):
         """Sets number of tasks"""

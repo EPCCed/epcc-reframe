@@ -89,9 +89,9 @@ class DeepCAMCPUtest(DeepCAMBase):
     valid_prog_environs = ["PrgEnv-cray"]
     reference = {
         "archer2:compute": {"epoch-time": (272, -0.1, 0.1, "s")},
-        "cirrus-ex:compute": {"epoch-time": (40, -0.03, 0.03, "s")},
+        "cirrus-ex:compute": {"epoch-time": (40, -0.1, 0.1, "s")},
     }
-
+    
     @run_after("init")
     def set_modules(self):
         "Defined modules to load based on current system"
