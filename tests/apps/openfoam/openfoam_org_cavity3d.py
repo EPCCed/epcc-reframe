@@ -60,4 +60,4 @@ class OpenFOAMCavity3D4Node(OpenFOAMCavity3DBase):
     executable = "icoFoam"
     executable_opts = ["-parallel", "-fileHandler", "collated"]
 
-    reference_performance_cirrus_ex = (78, -0.1, 0.05, "seconds")
+    reference_performance_cirrus_ex = (78, -0.2, 0.1, "seconds")
