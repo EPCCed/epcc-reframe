@@ -1,0 +1,6 @@
+nodes: [ 1, 4 , 8 ]
+tasks_per_node: [ 288 ]
+base_path: ["/work/z19/shared/io_benchmarks" ]
+api: ["posix"]
+chunk_size: [ 4096 ]
+field_size_per_process_per_dimension: [  65536 ]
