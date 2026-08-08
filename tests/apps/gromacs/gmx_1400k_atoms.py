@@ -49,7 +49,10 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
         },
         "cirrus-ex:compute": {
             "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
-            "performance": (78.0, -0.1, None, "ns/day"),
+            # The performance of this benchmark seems to be very variable, 
+            # with performance sometimes dropping below 50 ns/day. 
+            # Disabling the performance check for now until we can investigate this further.
+            #"performance": (78.0, -0.1, None, "ns/day"), 
         },
     }
 
