@@ -11,9 +11,9 @@ import reframe.utility.sanity as sn
 import reframe.core.builtins as builtins
 
 try:
-    from yaml import CLoader as Loader, CDumper as Dumper
+    from yaml import CLoader as Loader
 except ImportError:
-    from yaml import Loader, Dumper
+    from yaml import Loader
 
 import reframe.core.meta as meta
 
@@ -31,8 +31,10 @@ def get_config(filename: str) -> dict:
     """Read parameters from a yaml file
 
     Args:
-        filename: The name of the yaml file containing the parameters. The file should be located in the same directory as this script.
-    Returns:        A dictionary containing the parameters read from the yaml file.
+        filename: The name of the yaml file containing the parameters.
+        The file should be located in the same directory as this script.
+    Returns:
+        A dictionary containing the parameters read from the yaml file.
 
     """
 
