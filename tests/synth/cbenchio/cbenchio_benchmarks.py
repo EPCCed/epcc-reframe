@@ -1,8 +1,4 @@
-from cbenchio import CbenchioWrite, make_read_test
-import reframe as rfm
-
-
-""" Cbenchio benchmarks
+"""Cbenchio benchmarks
 
 Contains I/O benchmarks based on cbenchio.
 
@@ -26,6 +22,8 @@ cbenchio_bandwidth_read = make_read_test(cbenchio_bandwidth_write)
 ```
 
 """
+
+from cbenchio import CbenchioWrite, make_read_test
 
 
 class CbenchioPosixSequentialWrite(CbenchioWrite):

@@ -15,7 +15,6 @@ except ImportError:
     from yaml import Loader
 
 
-
 def get_config(filename: str) -> dict:
     """Read parameters from a yaml file
 
@@ -33,6 +32,7 @@ def get_config(filename: str) -> dict:
     with open(filename, "r") as f:
         config = yaml.load(f, Loader=Loader)
     return config
+
 
 class Cbenchio(rfm.RunOnlyRegressionTest):
     """Base class for cbenchio tests."""
@@ -130,7 +130,7 @@ class CbenchioWrite(Cbenchio):
 
         # pylint: enable=access-member-before-definition
         # pylint: enable=attribute-defined-outside-init
-                
+
         self.prerun_cmds.append(
             f"chmod -R o+wXr {self.path}"
         )  # Allow anyone to delete the data from the benchmarks if not properly cleaned up
@@ -227,9 +227,9 @@ class CbenchioRead(Cbenchio):
         """
         # Remove the directory in path once we are done reading them.
 
-        result=os.system(f"rm -rf {self.path}")
+        result = os.system(f"rm -rf {self.path}")
         if result != 0:
-            print(f"Warning: Failed to clean up directory {self.path}: {e}")
+            print(f"Warning: Failed to clean up directory {self.path}. Return error code: {result}")
 
 
 def make_read_test(cls):
@@ -238,8 +238,9 @@ def make_read_test(cls):
     # check that the class contains write
     if cls.__name__.find("Write") == -1:
         raise ValueError("The class passed to make_read_test must contain 'Write' in its name")
-
+    # pylint: disable=no-member
     fixture = rfm.core.builtins.fixture(cls, scope="environment")
+    # pylint: enable=no-member
     module = fixture.cls.__module__
     return rfm.simple_test(
         rfm.core.meta.make_test(
