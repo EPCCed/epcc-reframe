@@ -119,7 +119,7 @@ class CbenchioWrite(Cbenchio):
         self.prerun_cmds.append(f"rm -rf {self.path}")  # Cleaun up any previously written data
         self.prerun_cmds.append(f"mkdir -p {self.path}")  # Create the directory where to write the data
 
-        # pylint complain about stripes but not 
+        # pylint complain about stripes but not
         # for the other similarly parameters, so we disable the
         # warning while we use stripes in this function.
         # pylint: disable=access-member-before-definition
