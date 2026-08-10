@@ -8,23 +8,15 @@ import yaml
 
 import reframe as rfm
 import reframe.utility.sanity as sn
-import reframe.core.builtins as builtins
+from reframe.core import builtins
 
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
 
-import reframe.core.meta as meta
+from reframe.core import meta
 
-
-""" Cbenchio tests
-
-Used for I/O benchmarking.
-
-Base and meta classes for cbenchio benchmarks
-
-"""
 
 
 def get_config(filename: str) -> dict:
@@ -55,7 +47,7 @@ class Parameterize(meta.RegressionTestMeta):
     """
 
     @classmethod
-    def __prepare__(metacls, name, bases, **kwds):
+    def __prepare__(cls, name, bases):
         mapping = super().__prepare__(name, bases)
         return mapping
 
@@ -71,7 +63,8 @@ class Parameterize(meta.RegressionTestMeta):
         return obj
 
 
-class cbenchio(rfm.RunOnlyRegressionTest):
+class Cbenchio(rfm.RunOnlyRegressionTest):
+    """Base class for cbenchio tests."""
 
     tags = {"performance", "io"}
 
@@ -81,8 +74,6 @@ class cbenchio(rfm.RunOnlyRegressionTest):
     config = None
     modules = ["cbenchio-gcc"]
 
-    def __init__(self):
-        super().__init__()
 
     executable = "benchio"
     executable_opts = ["config.yaml"]
@@ -97,10 +88,13 @@ class cbenchio(rfm.RunOnlyRegressionTest):
 
     @sanity_function
     def completed(self):
+        """Check that the test completed successfully."""
+
         return sn.assert_found(r"Done", self.stdout) and sn.assert_true(os.path.exists("report.yaml"))
 
     @run_before("performance")
     def extract_bandwidth(self):
+        """Extract the bandwidth from the cbenchio yaml report."""
 
         report_file = os.path.join(self.stagedir, "report.yaml")
         with open(report_file, "r") as file:
@@ -116,7 +110,9 @@ class cbenchio(rfm.RunOnlyRegressionTest):
             )
 
 
-class cbenchio_write(cbenchio):
+class CbenchioWrite(Cbenchio):
+    """Class for cbenchio write tests."""
+
 
     def set_default_parameter(self, param_name, default_value):
         """Set a default value for a parameter if it is not already set.
@@ -142,7 +138,8 @@ class cbenchio_write(cbenchio):
         self.set_default_parameter("fields", 1)
         self.set_default_parameter("n_dimensions", 1)
         self.set_default_parameter("decomposition", "slab")
-
+        self.set_default_parameter("path", None)
+        
     def create_write_directories(self):
         """If writing data, create the target directory."""
 
@@ -154,14 +151,18 @@ class cbenchio_write(cbenchio):
         if self.stripes == "num_nodes":
             self.stripes = self.nodes
 
-        if self.stripes != 1:  # Only valid on Lustre filesystem
-            self.prerun_cmds.append(f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}")
+        if hasattr(self, "stripes"):
+            if self.stripes != 1:  # Only valid on Lustre filesystem
+                self.prerun_cmds.append(f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}")
+        
         self.prerun_cmds.append(
             f"chmod -R o+wXr {self.path}"
         )  # Allow anyone to delete the data from the benchmarks if not properly cleaned up
 
     @run_before("run")
     def init_parameters(self):
+        """Initialise the parameters"""
+        
         self.num_tasks = self.nodes * self.tasks_per_node
         self.num_tasks_per_node = self.tasks_per_node
         self.num_cpus_per_task = self.current_partition.processor.num_cpus // self.num_tasks_per_node
@@ -221,10 +222,12 @@ class cbenchio_write(cbenchio):
         return config
 
 
-class cbenchio_read(cbenchio):
+class CbenchioRead(Cbenchio):
 
     @run_before("run")
     def set_read_parameters(self):
+        "" "Set the parameters for the read test based on the write test."""
+
         cbenchio_config = self.write_test.cbenchio_config
 
         # Create mirror read operation
@@ -255,15 +258,15 @@ class cbenchio_read(cbenchio):
 def make_read_test(cls):
 
     # check that the class contains write
-    if cls.__name__.find("write") == -1:
-        raise ValueError("The class passed to make_read_test must contain 'write' in its name")
+    if cls.__name__.find("Write") == -1:
+        raise ValueError("The class passed to make_read_test must contain 'Write' in its name")
 
     fixture = rfm.core.builtins.fixture(cls, scope="environment")
     module = fixture.cls.__module__
     return rfm.simple_test(
         rfm.core.meta.make_test(
             cls.__name__.replace("write", "read"),
-            (cbenchio_read,),
+            (CbenchioRead,),
             {
                 "operation": "read",
                 "write_test": fixture,
