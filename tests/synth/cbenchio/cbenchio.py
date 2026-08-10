@@ -120,12 +120,17 @@ class CbenchioWrite(Cbenchio):
         self.prerun_cmds.append(f"mkdir -p {self.path}")  # Create the directory where to write the data
 
         # pylint: disable=access-member-before-definition
+        # pylint: disable=attribute-defined-outside-init
+
         if self.stripes == "num_nodes":
             self.stripes = self.nodes
 
         if self.stripes != 1:  # Only valid on Lustre filesystem
             self.prerun_cmds.append(f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}")
 
+        # pylint: enable=access-member-before-definition
+        # pylint: enable=attribute-defined-outside-init
+                
         self.prerun_cmds.append(
             f"chmod -R o+wXr {self.path}"
         )  # Allow anyone to delete the data from the benchmarks if not properly cleaned up
