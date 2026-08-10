@@ -18,7 +18,6 @@ except ImportError:
 from reframe.core import meta
 
 
-
 def get_config(filename: str) -> dict:
     """Read parameters from a yaml file
 
@@ -38,30 +37,6 @@ def get_config(filename: str) -> dict:
     return config
 
 
-class Parameterize(meta.RegressionTestMeta):
-    """Metaclass to parameterize a regression test based on a yaml configuration file.
-    The yaml file should contain a dictionary where
-    each key is a parameter name and each value is a list of values for that parameter.
-    The metaclass will turn these into parameters.
-    This cannot be done in __init__() because the substitution needs to be done before the instance is created.
-    """
-
-    @classmethod
-    def __prepare__(cls, name, bases):
-        mapping = super().__prepare__(name, bases)
-        return mapping
-
-    def __new__(cls, name, bases, namespace, *args, **kwds):
-
-        # Turn all labels in the yaml configuration
-        config = get_config(namespace["config"])
-        for parameter_name, parameter_values in config.items():
-
-            namespace[parameter_name] = builtins.parameter(parameter_values)
-
-        obj = super().__new__(cls, name, bases, namespace, *args, **kwds)
-        return obj
-
 
 class Cbenchio(rfm.RunOnlyRegressionTest):
     """Base class for cbenchio tests."""
@@ -73,7 +48,6 @@ class Cbenchio(rfm.RunOnlyRegressionTest):
     maintainers = ["l.parisi@epcc.ed.ac.uk"]
     config = None
     modules = ["cbenchio-gcc"]
-
 
     executable = "benchio"
     executable_opts = ["config.yaml"]
@@ -113,7 +87,6 @@ class Cbenchio(rfm.RunOnlyRegressionTest):
 class CbenchioWrite(Cbenchio):
     """Class for cbenchio write tests."""
 
-
     def set_default_parameter(self, param_name, default_value):
         """Set a default value for a parameter if it is not already set.
 
@@ -139,7 +112,7 @@ class CbenchioWrite(Cbenchio):
         self.set_default_parameter("n_dimensions", 1)
         self.set_default_parameter("decomposition", "slab")
         self.set_default_parameter("path", None)
-        
+
     def create_write_directories(self):
         """If writing data, create the target directory."""
 
@@ -153,8 +126,10 @@ class CbenchioWrite(Cbenchio):
 
         if hasattr(self, "stripes"):
             if self.stripes != 1:  # Only valid on Lustre filesystem
-                self.prerun_cmds.append(f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}")
-        
+                self.prerun_cmds.append(
+                    f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}"
+                )
+
         self.prerun_cmds.append(
             f"chmod -R o+wXr {self.path}"
         )  # Allow anyone to delete the data from the benchmarks if not properly cleaned up
@@ -162,7 +137,7 @@ class CbenchioWrite(Cbenchio):
     @run_before("run")
     def init_parameters(self):
         """Initialise the parameters"""
-        
+
         self.num_tasks = self.nodes * self.tasks_per_node
         self.num_tasks_per_node = self.tasks_per_node
         self.num_cpus_per_task = self.current_partition.processor.num_cpus // self.num_tasks_per_node
@@ -226,7 +201,7 @@ class CbenchioRead(Cbenchio):
 
     @run_before("run")
     def set_read_parameters(self):
-        "" "Set the parameters for the read test based on the write test."""
+        "" "Set the parameters for the read test based on the write test." ""
 
         cbenchio_config = self.write_test.cbenchio_config
 
@@ -256,7 +231,8 @@ class CbenchioRead(Cbenchio):
 
 
 def make_read_test(cls):
-
+    """Create a read test based on a write test class."""
+    
     # check that the class contains write
     if cls.__name__.find("Write") == -1:
         raise ValueError("The class passed to make_read_test must contain 'Write' in its name")
@@ -265,7 +241,7 @@ def make_read_test(cls):
     module = fixture.cls.__module__
     return rfm.simple_test(
         rfm.core.meta.make_test(
-            cls.__name__.replace("write", "read"),
+            cls.__name__.replace("Write", "Read"),
             (CbenchioRead,),
             {
                 "operation": "read",
