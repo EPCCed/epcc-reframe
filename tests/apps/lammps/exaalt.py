@@ -77,6 +77,7 @@ class LAMMPSExaaltSmall(LAMMPSBaseExaalt):
 
 @rfm.simple_test
 class LAMMPSExaaltRef(LAMMPSBaseExaalt):
+    """ReFrame LAMMPS largescale test based on NERSC-10 Exaalt benchmark"""
 
     valid_systems = ["archer2:compute", "cirrus-ex:compute"]
 

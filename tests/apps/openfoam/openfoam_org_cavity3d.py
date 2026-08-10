@@ -16,6 +16,7 @@ class OpenFOAMCavity3DBase(OpenFOAMBase):
 
     @run_before("run")
     def setup_tasks(self):
+        """Set up the number of tasks and tasks per node for the test."""
         self.num_tasks_per_node = self.current_partition.processor.num_cpus
         self.num_tasks = self.num_nodes * self.num_tasks_per_node
 
@@ -61,4 +62,4 @@ class OpenFOAMCavity3D4Node(OpenFOAMCavity3DBase):
     executable = "icoFoam"
     executable_opts = ["-parallel", "-fileHandler", "collated"]
 
-    reference_performance_cirrus_ex = (78, -0.2, 0.1, "seconds")
+    reference_performance_cirrus_ex = (78, -0.2, 0.05, "seconds")
