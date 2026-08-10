@@ -1,6 +1,5 @@
-from cbenchio import cbenchio_write, Parameterize, cbenchio_read, make_read_test
+from cbenchio import cbenchio_write, Parameterize, make_read_test
 
-import reframe as rfm
 
 """ Cbenchio benchmarks
 
@@ -8,7 +7,9 @@ Contains I/O benchmarks based on cbenchio.
 
 ## Adding new tests
 
-Add a new test by inherting from cbenchio_write and using the Parameterize metaclass. The class should have a config attribute pointing to a yaml file. The yaml file should contain the parameters for the test. For example:
+Add a new test by inherting from cbenchio_write and using the Parameterize metaclass. 
+The class should have a config attribute pointing to a yaml file. 
+The yaml file should contain the parameters for the test. For example:
 
 ```python
 class cbenchio_bandwidth_write(cbenchio_write,metaclass=Parameterize):
@@ -16,7 +17,8 @@ class cbenchio_bandwidth_write(cbenchio_write,metaclass=Parameterize):
     config= "posix.yaml"
 ```
 
-Read tests can be generated from write tests using the make_read_test function. For example we can generate a read test from the write test above using:
+Read tests can be generated from write tests using the make_read_test function. 
+For instance we can generate a read test from the write test above using:
 
 ```python
 cbenchio_bandwidth_read = make_read_test(cbenchio_bandwidth_write)

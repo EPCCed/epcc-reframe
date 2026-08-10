@@ -3,16 +3,11 @@
 CBenchio Input/Output test
 """
 
-from fileinput import filename
 import os
-from tempfile import template
-import types
-from typing import List
 import yaml
 
 import reframe as rfm
 import reframe.utility.sanity as sn
-import numpy as np
 import reframe.core.builtins as builtins
 
 try:
@@ -20,7 +15,6 @@ try:
 except ImportError:
     from yaml import Loader, Dumper
 
-from reframe.core.builtins import fixture
 import reframe.core.meta as meta
 
 
@@ -42,7 +36,8 @@ def get_config(filename: str) -> dict:
 
     """
 
-    filename = os.path.join(os.path.dirname(__file__), filename)  # Filename is relative to the location of this script
+    # Filename is relative to the location of this script
+    filename = os.path.join(os.path.dirname(__file__), filename)
 
     with open(filename, "r") as f:
         config = yaml.load(f, Loader=Loader)
@@ -51,7 +46,10 @@ def get_config(filename: str) -> dict:
 
 class Parameterize(meta.RegressionTestMeta):
     """Metaclass to parameterize a regression test based on a yaml configuration file.
-    The yaml file should contain a dictionary where each key is a parameter name and each value is a list of values for that parameter. The metaclass will turn these into parameters. This cannot be done in __init__() because the subsitution need to be done before the instance is created.
+    The yaml file should contain a dictionary where
+    each key is a parameter name and each value is a list of values for that parameter.
+    The metaclass will turn these into parameters.
+    This cannot be done in __init__() because the substitution needs to be done before the instance is created.
     """
 
     @classmethod
@@ -125,7 +123,6 @@ class cbenchio_write(cbenchio):
         """
         if not hasattr(self, param_name):
             setattr(self, param_name, default_value)
-        #
 
     def set_default_parameters(self):
         """Set default values for parameters if they are not already set. This is needed as parameters are define at instance creation and will raise an error if the field is not defined, instead of overwriting. That means initialisation need to happen after the instance is initialised."""

@@ -1,11 +1,9 @@
 """ReFrame script for lammps dipole test"""
 
-import os
-
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-from lammps_base import BuildLAMMPS, LAMMPSBase
+from lammps_base import LAMMPSBase
 
 
 class LAMMPSBaseExaalt(LAMMPSBase):
