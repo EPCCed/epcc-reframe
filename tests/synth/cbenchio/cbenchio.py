@@ -37,7 +37,6 @@ def get_config(filename: str) -> dict:
     return config
 
 
-
 class Cbenchio(rfm.RunOnlyRegressionTest):
     """Base class for cbenchio tests."""
 
@@ -51,6 +50,8 @@ class Cbenchio(rfm.RunOnlyRegressionTest):
 
     executable = "benchio"
     executable_opts = ["config.yaml"]
+    path = None
+    cbenchio_config = None
 
     def write_config(self, config):
         """Write the configuration for cbenchio to a yaml file."""
@@ -105,13 +106,13 @@ class CbenchioWrite(Cbenchio):
         self.set_default_parameter("field_size_per_process_per_dimension", 1048576)
         self.set_default_parameter("repeat", 8)
         self.set_default_parameter("stripe_size", 1048576)
-        self.set_default_parameter("stripes", 1)
         self.set_default_parameter("random_strided", False)
         self.set_default_parameter("file_per_process", True)
         self.set_default_parameter("fields", 1)
         self.set_default_parameter("n_dimensions", 1)
         self.set_default_parameter("decomposition", "slab")
         self.set_default_parameter("path", None)
+        self.set_default_parameter("stripes", 1)
 
     def create_write_directories(self):
         """If writing data, create the target directory."""
@@ -124,11 +125,8 @@ class CbenchioWrite(Cbenchio):
         if self.stripes == "num_nodes":
             self.stripes = self.nodes
 
-        if hasattr(self, "stripes"):
-            if self.stripes != 1:  # Only valid on Lustre filesystem
-                self.prerun_cmds.append(
-                    f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}"
-                )
+        if self.stripes != 1:  # Only valid on Lustre filesystem
+            self.prerun_cmds.append(f"lfs setstripe -C {self.stripes} -S {int(self.stripe_size/2**10)}K {self.path}")
 
         self.prerun_cmds.append(
             f"chmod -R o+wXr {self.path}"
@@ -138,11 +136,12 @@ class CbenchioWrite(Cbenchio):
     def init_parameters(self):
         """Initialise the parameters"""
 
+        self.set_default_parameters()  # Set default values for parameters if they are not already set.
+
         self.num_tasks = self.nodes * self.tasks_per_node
         self.num_tasks_per_node = self.tasks_per_node
         self.num_cpus_per_task = self.current_partition.processor.num_cpus // self.num_tasks_per_node
         self.path = os.path.join(self.base_path, f"{self.short_name}")
-        self.set_default_parameters()  # Set default values for parameters if they are not already set.
         self.cbenchio_config = self.generate_config()  # Generate the parameters for cbenchio executable
         self.write_config(self.cbenchio_config)
         self.create_write_directories()
@@ -198,6 +197,7 @@ class CbenchioWrite(Cbenchio):
 
 
 class CbenchioRead(Cbenchio):
+    """Class for cbenchio read tests."""
 
     @run_before("run")
     def set_read_parameters(self):
@@ -232,7 +232,7 @@ class CbenchioRead(Cbenchio):
 
 def make_read_test(cls):
     """Create a read test based on a write test class."""
-    
+
     # check that the class contains write
     if cls.__name__.find("Write") == -1:
         raise ValueError("The class passed to make_read_test must contain 'Write' in its name")
