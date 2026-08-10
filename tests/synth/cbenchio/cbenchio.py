@@ -8,14 +8,12 @@ import yaml
 
 import reframe as rfm
 import reframe.utility.sanity as sn
-from reframe.core import builtins
 
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
 
-from reframe.core import meta
 
 
 def get_config(filename: str) -> dict:
@@ -35,7 +33,6 @@ def get_config(filename: str) -> dict:
     with open(filename, "r") as f:
         config = yaml.load(f, Loader=Loader)
     return config
-
 
 class Cbenchio(rfm.RunOnlyRegressionTest):
     """Base class for cbenchio tests."""
@@ -122,6 +119,7 @@ class CbenchioWrite(Cbenchio):
         self.prerun_cmds.append(f"rm -rf {self.path}")  # Cleaun up any previously written data
         self.prerun_cmds.append(f"mkdir -p {self.path}")  # Create the directory where to write the data
 
+        # pylint: disable=access-member-before-definition
         if self.stripes == "num_nodes":
             self.stripes = self.nodes
 
@@ -224,9 +222,8 @@ class CbenchioRead(Cbenchio):
         """
         # Remove the directory in path once we are done reading them.
 
-        try:
-            os.system(f"rm -rf {self.path}")
-        except Exception as e:
+        result=os.system(f"rm -rf {self.path}")
+        if result != 0:
             print(f"Warning: Failed to clean up directory {self.path}: {e}")
 
 
