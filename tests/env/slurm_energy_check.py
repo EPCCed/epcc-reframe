@@ -84,7 +84,7 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
     }
 
     def get_energy(self):
-        """ Return energy from slurm and energy from counters"""
+        """Return energy from slurm and energy from counters"""
         jobid = self.job.jobid
         slurm = rfm.utility.osext.run_command(
             "sacct -j " + str(jobid) + " --format=JobID,ConsumedEnergy --noconvert | tr '\n' ' ' ",
@@ -103,10 +103,10 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
         energy_counters = []
 
         assert len(nodelist) == self.num_nodes, "Number of nodes in nodelist does not match number of nodes requested"
-        
+
         for nodeid in nodelist:
             energy_data.append(sn.extractall(r"(?P<energy>[0-9]+)\sJ\s(?P<time>[0-9]+)\sus", nodeid, "energy"))
-        
+
         print("Node list: ", nodelist_raw)
         for energy in energy_data:
             energy_counters.append(int(str(energy[0])))
@@ -121,7 +121,7 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
             # print(energy_counters[i + 1] - energy_counters[i])
             energy_counters_diff += energy_counters[i + 1] - energy_counters[i]
 
-        return energy_counters_diff , int(str(energy_slurm[0]))
+        return energy_counters_diff, int(str(energy_slurm[0]))
 
         # Helpful debugging outputs:
         # print("jobid: ", jobid)
@@ -131,20 +131,20 @@ class SlurmEnergy4nodesTest(rfm.RunOnlyRegressionTest):
         # print("2x energy counter recordings: ", energy_counters)
         # print("Difference between the energy counters: ", energy_counters_diff)
         # print("difference between counters and slurm: ", diff)
-            
+
     @sanity_function
     def assert_energy_recorded(self):
         """Assert that the energy counters and slurm energy are greater than zero"""
 
         energy_counters_diff, energy_slurm = self.get_energy()
-        
-        return sn.assert_true(energy_counters_diff> 0) and sn.assert_true(energy_slurm> 0)    
+
+        return sn.assert_true(energy_counters_diff > 0) and sn.assert_true(energy_slurm > 0)
 
     @performance_function("J", perf_key="energy-diff")
     def extract_perf(self):
         """Extract relative energy difference between counters and slurm output"""
 
         energy_counters_diff, energy_slurm = self.get_energy()
-        diff = (energy_counters_diff - energy_slurm)/energy_slurm
+        diff = (energy_counters_diff - energy_slurm) / energy_slurm
 
         return diff

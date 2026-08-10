@@ -32,13 +32,23 @@ class LAMMPSBaseEthanol(LAMMPSBase):
     ethanol_energy_reference = 537394.35
 
     reference = {
-        "cirrus:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
-        "performance": (9.4, -0.05, None, "ns/day")
-                               },
-        "archer2:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"), "performance": (11.250, -0.05, None, "ns/day")},
-        "cirrus-ex:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"), "performance": (26, -0.1, None, "ns/day")},
-        "archer2-tds:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"), "performance": (11.250, -0.05, None, "ns/day")},
-    }   
+        "cirrus:compute-gpu": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (9.4, -0.05, None, "ns/day"),
+        },
+        "archer2:compute": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (11.250, -0.05, None, "ns/day"),
+        },
+        "cirrus-ex:compute": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (26, -0.1, None, "ns/day"),
+        },
+        "archer2-tds:compute": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (11.250, -0.05, None, "ns/day"),
+        },
+    }
 
     @performance_function("kJ/mol", perf_key="energy")
     def extract_energy(self):
@@ -54,7 +64,7 @@ class LAMMPSBaseEthanol(LAMMPSBase):
 
 class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
     """ReFrame LAMMPS Ethanol test for performance checks"""
-    
+
     descr = LAMMPSBaseEthanol.descr + " -- CPU"
 
     @run_after("init")
@@ -70,7 +80,7 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
     def set_executable(self):
         """sets up executable"""
         self.executable = os.path.join(self.stream_binary.build_system.builddir, "lmp")
-    
+
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
@@ -80,7 +90,7 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
 @rfm.simple_test
 class LAMMPSEthanolCPURunReframeBuild(LAMMPSEthanolCPU):
     """ReFrame LAMMPS Ethanol test for performance checks of the reframe-built executable"""
-    
+
     valid_systems = ["archer2:compute"]
     descr = LAMMPSEthanolCPU.descr + ", reframe-bult-executable -- CPU"
     stream_binary = fixture(BuildLAMMPS, scope="environment")

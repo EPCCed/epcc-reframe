@@ -160,7 +160,7 @@ class OSUContainerTestCirrusEX(rfm.RunOnlyRegressionTest):
     reference = {
         "cirrus-ex:compute": {"latency_big": (1100, -0.1, 0.30, "us"), "latency_small": (9.7, -0.1, 0.30, "us")}
     }
-    
+
     @require_deps
     def set_singularity_invoke(self):
         """Builds the command to be passed to srun"""

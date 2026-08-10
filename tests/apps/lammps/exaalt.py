@@ -7,18 +7,16 @@ import reframe.utility.sanity as sn
 
 from lammps_base import BuildLAMMPS, LAMMPSBase
 
+
 class LAMMPSBaseExaalt(LAMMPSBase):
     """ReFrame LAMMPS Base class for Exaalt tests"""
-    
+
     num_cpus_per_task = 1
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
     modules = ["lammps"]
     cores = variable(
         dict,
-        value={
-            "archer2:compute": 128,
-            "cirrus-ex:compute" : 288
-        },
+        value={"archer2:compute": 128, "cirrus-ex:compute": 288},
     )
 
     reference = {
@@ -30,7 +28,6 @@ class LAMMPSBaseExaalt(LAMMPSBase):
             "performance": (0.055, -0.15, None, "ns/day"),
         },
     }
-
 
     @run_after("init")
     def setup_nnodes(self):
@@ -63,10 +60,10 @@ class LAMMPSBaseExaalt(LAMMPSBase):
 @rfm.simple_test
 class LAMMPSExaaltSmall(LAMMPSBaseExaalt):
     """ReFrame LAMMPS small test based on NERSC-10 Exaalt benchmark"""
-    
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
+
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
     descr = "Small performance test using NERSC-10 Exaalt LAMMPS benchmark reference run"
-    tags = {"applications", "performance","small"}
+    tags = {"applications", "performance", "small"}
     executable_opts = [
         "-in in.snap.test",
         "-var snapdir 2J8_W.SNAP",
@@ -76,16 +73,15 @@ class LAMMPSExaaltSmall(LAMMPSBaseExaalt):
         "-var nsteps 200",
     ]
 
-    
     n_nodes = 4
     time_limit = "30m"
 
+
 @rfm.simple_test
 class LAMMPSExaaltRef(LAMMPSBaseExaalt):
-    
-    valid_systems = ["archer2:compute","cirrus-ex:compute"]
-    
-    
+
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
+
     """ReFrame LAMMPS largescale test based on NERSC-10 Exaalt benchmark"""
 
     descr = "Largescale performance test using NERSC-10 Exaalt LAMMPS benchmark reference run"
@@ -99,6 +95,6 @@ class LAMMPSExaaltRef(LAMMPSBaseExaalt):
         "-var nz 512",
         "-var nsteps 100",
     ]
-    
+
     n_nodes = 256
     time_limit = "30m"

@@ -10,7 +10,7 @@ class OpenFOAMCavity3DBase(OpenFOAMBase):
     """OpenFOAM 3D lid-driven cavity base test."""
 
     valid_systems = ["cirrus-ex:compute"]
-    
+
     num_cpus_per_task = 1
     time_limit = "20m"
 
@@ -37,12 +37,12 @@ class OpenFOAMCavity3DBase(OpenFOAMBase):
     @run_before("run")
     def setup_testcase(self):
         """Prepare to run OpenFoam in parallel, by performance the mesh decomposition and partitioning."""
-        
+
         self.prerun_cmds = [
             "cd cavity_3d",
             "blockMesh",
             f"cp system/decomposeParDict{self.num_tasks:04.0f}  system/decomposeParDict",
-            "decomposePar -force -fileHandler collated"
+            "decomposePar -force -fileHandler collated",
         ]
 
     modules = ["openfoam-org"]
@@ -52,10 +52,11 @@ class OpenFOAMCavity3DBase(OpenFOAMBase):
         """Set the reference performance for Cirrus."""
         self.reference["cirrus-ex:compute:performance"] = self.reference_performance_cirrus_ex
 
+
 @rfm.simple_test
 class OpenFOAMCavity3D4Node(OpenFOAMCavity3DBase):
     """OpenFOAM 3D lid-driven cavity test on four nodes."""
-    
+
     num_nodes = 4
     executable = "icoFoam"
     executable_opts = ["-parallel", "-fileHandler", "collated"]
