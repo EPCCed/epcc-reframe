@@ -27,12 +27,15 @@ class Mdtest(rfm.RunOnlyRegressionTest):
     # Set the number of tasks based on test parameters, defined in derived classes.
     @run_after("init")
     def set_num_tasks(self):
+        """Set the number of tasks based on test parameters."""
+
         self.num_tasks = self.tasks_per_node * self.nodes
         self.num_tasks_per_node = self.tasks_per_node
         self.num_cpus_per_task = 288 // self.tasks_per_node
 
     @run_before("run")
     def set_executable_opts(self):
+        """Set the executable options for mdtest based on test parameters."""
 
         opts = [
             "-F",
