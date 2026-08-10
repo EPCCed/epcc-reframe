@@ -119,6 +119,7 @@ class CbenchioWrite(Cbenchio):
         self.prerun_cmds.append(f"rm -rf {self.path}")  # Cleaun up any previously written data
         self.prerun_cmds.append(f"mkdir -p {self.path}")  # Create the directory where to write the data
 
+        # pylint complain about stripes but not for the other similarly parameters, so we disable the warning while we use stripes in this function.
         # pylint: disable=access-member-before-definition
         # pylint: disable=attribute-defined-outside-init
 
@@ -130,7 +131,7 @@ class CbenchioWrite(Cbenchio):
 
         # pylint: enable=access-member-before-definition
         # pylint: enable=attribute-defined-outside-init
-
+        
         self.prerun_cmds.append(
             f"chmod -R o+wXr {self.path}"
         )  # Allow anyone to delete the data from the benchmarks if not properly cleaned up
@@ -238,6 +239,7 @@ def make_read_test(cls):
     # check that the class contains write
     if cls.__name__.find("Write") == -1:
         raise ValueError("The class passed to make_read_test must contain 'Write' in its name")
+    # The fixture confuses pylint, so we disable the warning for the next line.
     # pylint: disable=no-member
     fixture = rfm.core.builtins.fixture(cls, scope="environment")
     # pylint: enable=no-member
