@@ -5,9 +5,6 @@ import reframe as rfm
 import reframe.utility.sanity as sn
 
 
-VASP_BENCHMARK_DIR = "/work/z19/z19/lparisi/2026-06_NCR-expansion-9Jul2026/VASP/CdTe/6.5.1_GCC13_LibSci-OFI"
-
-
 @rfm.simple_test
 class VASPCdTeCheck(rfm.RunOnlyRegressionTest):
     """VASP CdTe correctness and performance check."""
