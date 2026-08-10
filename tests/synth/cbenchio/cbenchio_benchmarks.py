@@ -52,7 +52,7 @@ cbenchio_posix_random_read = make_read_test(cbenchio_posix_random_write)
 
 class cbenchio_mpi_1D_write(cbenchio_write, metaclass=Parameterize):
     """Ideal scaling of a 1D array with one task per node.
-       This tests the ideal scaling of parallel writes to a single file.
+    This tests the ideal scaling of parallel writes to a single file.
     """
 
     operation = "write"

@@ -128,9 +128,9 @@ class cbenchio_write(cbenchio):
 
     def set_default_parameters(self):
         """Set default values for parameters if they are not already set.
-          This is needed as parameters are define at instance creation and
-          will raise an error if the field is not defined, instead of overwriting.
-          That means initialisation need to happen after the instance is initialised.
+        This is needed as parameters are define at instance creation and
+        will raise an error if the field is not defined, instead of overwriting.
+        That means initialisation need to happen after the instance is initialised.
         """
 
         self.set_default_parameter("field_size_per_process_per_dimension", 1048576)
