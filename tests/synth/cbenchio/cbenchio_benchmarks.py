@@ -5,7 +5,7 @@ Contains I/O benchmarks based on cbenchio.
 """
 
 from cbenchio import CbenchioWrite, make_read_test
-
+import reframe as rfm
 
 class CbenchioPosixSequentialWrite(CbenchioWrite):
     """Measure the bandwidth of the filesystem for file per process patterns for large sequential I/O."""
