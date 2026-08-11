@@ -1,6 +1,0 @@
-nodes: [ 1, 4, 8 ]
-tasks_per_node: [ 1 ]
-base_path: ["/work/z19/shared/io_benchmarks"]
-api: ["mpi"]
-stripes: [ "num_nodes" ]
-field_size_per_process_per_dimension: [ 1073741824 ]
