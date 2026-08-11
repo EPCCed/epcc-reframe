@@ -5,7 +5,11 @@ Contains I/O benchmarks based on cbenchio.
 """
 
 from cbenchio import CbenchioWrite, make_read_test
-import reframe as rfm
+# Needs to import reframe so that the test runner can find the test classes, even if they are not used directly in this file.
+#pylint: disable=unused-import
+import reframe as rfm 
+#pylint: enable=unused-import
+
 
 class CbenchioPosixSequentialWrite(CbenchioWrite):
     """Measure the bandwidth of the filesystem for file per process patterns for large sequential I/O."""
