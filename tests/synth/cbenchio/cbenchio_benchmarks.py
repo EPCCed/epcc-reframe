@@ -5,10 +5,13 @@ Contains I/O benchmarks based on cbenchio.
 """
 
 from cbenchio import CbenchioWrite, make_read_test
-# Needs to import reframe so that the test runner can find the test classes, even if they are not used directly in this file.
-#pylint: disable=unused-import
-import reframe as rfm 
-#pylint: enable=unused-import
+
+# Needs to import reframe so that the test runner can find the test classes,
+# even if they are not used directly in this file.
+# pylint: disable=unused-import
+import reframe as rfm
+
+# pylint: enable=unused-import
 
 
 class CbenchioPosixSequentialWrite(CbenchioWrite):
