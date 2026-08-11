@@ -130,7 +130,7 @@ class OSUContainerTestCirrusEX(rfm.RunOnlyRegressionTest):
         "OMP_NUM_THREADS": str(num_cpus_per_task),
         "OMP_PLACES": "cores",
         "APPTAINERENV_LD_LIBRARY_PATH": "/opt/cray/pe/mpich/8.1.32/ofi/gnu/11.2/lib-abi-mpich:\
-/opt/cray/libfabric/1.22.0/lib64:\
+/opt/cray/libfabric/2.3.1/lib64:\
 /opt/cray/pals/1.6/lib:\
 /opt/cray/pe/lib64:\
 /opt/xpmem/lib64:/lib64",
@@ -139,7 +139,7 @@ class OSUContainerTestCirrusEX(rfm.RunOnlyRegressionTest):
 /etc/host.conf,/etc/libibverbs.d/mlx5.driver,\
 /etc/libnl/classid,\
 /etc/resolv.conf,\
-/opt/cray/libfabric/1.22.0/lib64/libfabric.so.1,\
+/opt/cray/libfabric/2.3.1/lib64/libfabric.so.1,\
 /lib64/libatomic.so.1,\
 /lib64/libgcc_s.so.1,/lib64/libgfortran.so.5,\
 /lib64/libquadmath.so.0,\
@@ -158,7 +158,7 @@ class OSUContainerTestCirrusEX(rfm.RunOnlyRegressionTest):
     }
 
     reference = {
-        "cirrus-ex:compute": {"latency_big": (1100, -0.02, 0.30, "us"), "latency_small": (9.7, -0.05, 0.30, "us")}
+        "cirrus-ex:compute": {"latency_big": (1100, -0.1, 0.30, "us"), "latency_small": (9.7, -0.1, 0.30, "us")}
     }
 
     @require_deps

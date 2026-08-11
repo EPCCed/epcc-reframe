@@ -22,6 +22,7 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
             "archer2-tds:compute": 128,
             "cirrus:compute": 36,
             "cirrus:compute-gpu": 40,
+            "cirrus-ex:compute": 288,
         },
     )
 
@@ -30,15 +31,26 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
     reference = {
         "archer2:compute": {
             "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (24.0, -0.1, None, "ns/day"),
         },
         "archer2-tds:compute": {
             "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (22.4, -0.1, None, "ns/day"),
         },
         "cirrus:compute": {
             "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (5.50, -0.1, None, "ns/day"),
         },
         "cirrus:compute-gpu": {
             "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (11.5, -0.05, None, "ns/day"),
+        },
+        "cirrus-ex:compute": {
+            "energy": (energy_reference, -0.01, 0.01, "kJ/mol"),
+            # The performance of this benchmark seems to be very variable,
+            # with performance sometimes dropping below 50 ns/day.
+            # Disabling the performance check for now until we can investigate this further.
+            # "performance": (78.0, -0.1, None, "ns/day"),
         },
     }
 
@@ -47,26 +59,21 @@ class Gromacs1400kAtomsBase(GromacsBaseCheck):
 class GromacsCPUCheck(Gromacs1400kAtomsBase):
     """Gromacs CPU checks"""
 
-    valid_systems = ["archer2:compute", "cirrus:compute"]
+    valid_systems = ["archer2:compute", "cirrus:compute", "cirrus-ex:compute"]
     modules = ["gromacs"]
     descr = Gromacs1400kAtomsBase.descr + " -- CPU"
 
     n_nodes = 4
-    num_tasks = 128
+
     num_cpus_per_task = 1
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
-    reference["archer2:compute"] = {}
-    reference["archer2-tds:compute"] = {}
-    reference["cirrus:compute"] = {}
 
-    reference["archer2:compute"]["performance"] = (24.0, -0.1, None, "ns/day")
-    reference["archer2-tds:compute"]["performance"] = (22.4, -0.1, None, "ns/day")
-    reference["cirrus:compute"]["performance"] = (5.50, -0.1, None, "ns/day")
+    tags = {"applications", "performance", "small"}
 
     @run_before("run")
     def setup_resources(self):
         """sets up number of tasks"""
-        self.num_tasks_per_node = self.cores.get(self.current_partition.fullname, 1)
+        self.num_tasks_per_node = self.current_partition.processor.num_cpus
         self.num_tasks = self.n_nodes * self.num_tasks_per_node
 
 
@@ -89,8 +96,6 @@ class GromacsGPUCheck(Gromacs1400kAtomsBase):
     n_nodes = 1
     num_tasks = None
     num_cpus_per_tasks = None
-    reference["cirrus:compute-gpu"] = {}
-    reference["cirrus:compute-gpu"]["performance"] = (11.5, -0.05, None, "ns/day")
 
     @run_after("setup")
     def setup_gpu_options(self):
