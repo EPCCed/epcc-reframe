@@ -12,6 +12,7 @@ from cbenchio import CbenchioWrite, make_read_test
 # flake8: noqa: F401
 import reframe as rfm
 
+
 # pylint: enable=unused-import
 class CbenchioPosixSequentialWrite(CbenchioWrite):
     """Measure the bandwidth of the filesystem for file per process patterns for large sequential I/O."""
