@@ -16,14 +16,14 @@ import reframe as rfm
 # pylint: enable=unused-import
 class CbenchioPosixSequentialWrite(CbenchioWrite):
     """Measure the bandwidth of the filesystem for file per process patterns for large sequential I/O."""
-
+    
     operation = "write"
     fields = 1
-    nodes = parameter([1, 4, 8])
+    nodes = parameter([ 1])
     tasks_per_node = parameter([288])
-    base_path = parameter(["base_path"])
+    base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     chunk_size = parameter([1048576])
-    field_size_per_process_per_dimension = parameter([1073741824])
+    field_size_per_process_per_dimension = parameter([268435456])
     api = "posix"
 
 
@@ -39,7 +39,7 @@ class CbenchioPosixRandomWrite(CbenchioWrite):
 
     nodes = parameter([1, 4, 8])
     tasks_per_node = parameter([288])
-    base_path = parameter(["/work/z19/shared/io_benchmarks"])
+    base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     api = "posix"
     chunk_size = parameter([4096])
     field_size_per_process_per_dimension = parameter([65536])
@@ -59,12 +59,12 @@ class CbenchioMpi1DWrite(CbenchioWrite):
     fields = 4
     n_dimensions = 1
     stripe_size = 4194304
-
+    
     nodes = parameter([1, 4, 8])
     tasks_per_node = parameter([1])
-    base_path = parameter(["/work/z19/shared/io_benchmarks"])
+    base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     api = "mpi"
-    stripes = parameter(["num_nodes"])
+    stripes = parameter([1])
     field_size_per_process_per_dimension = parameter([1073741824])
 
 
@@ -82,9 +82,9 @@ class CbenchioMpi3DWrite(CbenchioWrite):
     stripe_size = 4194304
     nodes = parameter([1, 4, 8])
     tasks_per_node = parameter([288])
-    base_path = parameter(["/work/z19/shared/io_benchmarks"])
+    base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     api = "mpi"
-    stripes = parameter([-1])
+    stripes = parameter([1])
     field_size_per_process_per_dimension = parameter([1024])
 
 
