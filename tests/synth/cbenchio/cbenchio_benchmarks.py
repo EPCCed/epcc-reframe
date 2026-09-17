@@ -19,7 +19,7 @@ class CbenchioPosixSequentialWrite(CbenchioWrite):
     
     operation = "write"
     fields = 1
-    nodes = parameter([ 1])
+    nodes = parameter([ 1, 2, 4])
     tasks_per_node = parameter([288])
     base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     chunk_size = parameter([1048576])
@@ -37,7 +37,7 @@ class CbenchioPosixRandomWrite(CbenchioWrite):
     random_strided = True
     fields = 4
 
-    nodes = parameter([1, 4, 8])
+    nodes = parameter([1, 4 ])
     tasks_per_node = parameter([288])
     base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     api = "posix"
@@ -60,7 +60,7 @@ class CbenchioMpi1DWrite(CbenchioWrite):
     n_dimensions = 1
     stripe_size = 4194304
     
-    nodes = parameter([1, 4, 8])
+    nodes = parameter([1, 4])
     tasks_per_node = parameter([1])
     base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     api = "mpi"
@@ -80,7 +80,7 @@ class CbenchioMpi3DWrite(CbenchioWrite):
     fields = 4
     n_dimensions = 3
     stripe_size = 4194304
-    nodes = parameter([1, 4, 8])
+    nodes = parameter([1, 4])
     tasks_per_node = parameter([288])
     base_path = parameter(["/epccfs/z19/shared/io_benchmarks"])
     api = "mpi"
