@@ -1,32 +1,29 @@
 """ReFrame script for lammps dipole test"""
 
-import os
-
 import reframe as rfm
 import reframe.utility.sanity as sn
 
-from lammps_base import BuildLAMMPS, LAMMPSBase
+from lammps_base import LAMMPSBase
 
 
 class LAMMPSBaseExaalt(LAMMPSBase):
     """ReFrame LAMMPS Base class for Exaalt tests"""
 
-    valid_systems = ["archer2:compute"]
-    stream_binary = fixture(BuildLAMMPS, scope="environment")
     num_cpus_per_task = 1
     env_vars = {"OMP_NUM_THREADS": str(num_cpus_per_task)}
-
+    modules = ["lammps"]
     cores = variable(
         dict,
-        value={
-            "archer2:compute": 128,
-        },
+        value={"archer2:compute": 128, "cirrus-ex:compute": 288},
     )
 
     reference = {
         "archer2:compute": {
             "energy": (-8.7467248, -0.001, 0.001, "kJ/mol"),
             "performance": (0.007, -0.1, None, "ns/day"),
+        },
+        "cirrus-ex:compute": {
+            "performance": (0.055, -0.15, None, "ns/day"),
         },
     }
 
@@ -39,7 +36,7 @@ class LAMMPSBaseExaalt(LAMMPSBase):
     @run_after("setup")
     def set_executable(self):
         """sets up executable"""
-        self.executable = os.path.join(self.stream_binary.build_system.builddir, "lmp")
+        self.executable = "lmp"
 
     @run_before("run")
     def setup_resources(self):
@@ -62,23 +59,28 @@ class LAMMPSBaseExaalt(LAMMPSBase):
 class LAMMPSExaaltSmall(LAMMPSBaseExaalt):
     """ReFrame LAMMPS small test based on NERSC-10 Exaalt benchmark"""
 
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
     descr = "Small performance test using NERSC-10 Exaalt LAMMPS benchmark reference run"
-    tags = {"applications", "performance"}
+    tags = {"applications", "performance", "small"}
     executable_opts = [
         "-in in.snap.test",
         "-var snapdir 2J8_W.SNAP",
-        "-var nx 256",
-        "-var ny 256",
-        "-var nz 256",
-        "-var nsteps 100",
+        "-var nx 128",
+        "-var ny 128",
+        "-var nz 128",
+        "-var nsteps 200",
     ]
 
-    n_nodes = 16
+    n_nodes = 4
     time_limit = "30m"
 
 
 @rfm.simple_test
 class LAMMPSExaaltRef(LAMMPSBaseExaalt):
+    """ReFrame LAMMPS largescale test based on NERSC-10 Exaalt benchmark"""
+
+    valid_systems = ["archer2:compute", "cirrus-ex:compute"]
+
     """ReFrame LAMMPS largescale test based on NERSC-10 Exaalt benchmark"""
 
     descr = "Largescale performance test using NERSC-10 Exaalt LAMMPS benchmark reference run"
@@ -87,11 +89,11 @@ class LAMMPSExaaltRef(LAMMPSBaseExaalt):
     executable_opts = [
         "-in in.snap.test",
         "-var snapdir 2J8_W.SNAP",
-        "-var nx 1024",
-        "-var ny 1024",
-        "-var nz 1024",
+        "-var nx 512",
+        "-var ny 512",
+        "-var nz 512",
         "-var nsteps 100",
     ]
 
-    n_nodes = 1024
+    n_nodes = 256
     time_limit = "30m"

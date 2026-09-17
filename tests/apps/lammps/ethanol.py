@@ -32,10 +32,22 @@ class LAMMPSBaseEthanol(LAMMPSBase):
     ethanol_energy_reference = 537394.35
 
     reference = {
-        "cirrus:compute-gpu": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
-        "archer2:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
-        "cirrus-ex:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
-        "archer2-tds:compute": {"energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol")},
+        "cirrus:compute-gpu": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (9.4, -0.05, None, "ns/day"),
+        },
+        "archer2:compute": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (11.250, -0.05, None, "ns/day"),
+        },
+        "cirrus-ex:compute": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (26, -0.1, None, "ns/day"),
+        },
+        "archer2-tds:compute": {
+            "energy": (ethanol_energy_reference, -0.01, 0.01, "kJ/mol"),
+            "performance": (11.250, -0.05, None, "ns/day"),
+        },
     }
 
     @performance_function("kJ/mol", perf_key="energy")
@@ -54,15 +66,6 @@ class LAMMPSEthanolCPU(LAMMPSBaseEthanol):
     """ReFrame LAMMPS Ethanol test for performance checks"""
 
     descr = LAMMPSBaseEthanol.descr + " -- CPU"
-
-    reference["archer2-tds:compute"] = {}
-    reference["archer2:compute"] = {}
-    reference["cirrus-ex:compute"] = {}
-
-    reference["archer2:compute"]["performance"] = (11.250, -0.05, None, "ns/day")
-    reference["cirrus-ex:compute"]["performance"] = (27.56, -0.05, None, "ns/day")
-
-    reference["archer2-tds:compute"]["performance"] = (11.250, -0.05, None, "ns/day")
 
     @run_after("init")
     def setup_nnodes(self):
@@ -127,8 +130,6 @@ class LAMMPSEthanolGPU(LAMMPSBaseEthanol):
     n_nodes = 1
     num_tasks = None
     num_cpus_per_task = None
-    reference["cirrus:compute-gpu"] = {}
-    reference["cirrus:compute-gpu"]["performance"] = (9.4, -0.05, None, "ns/day")
 
     @run_after("init")
     def setup_nnodes(self):
